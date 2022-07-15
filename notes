@@ -1,0 +1,56 @@
+DEFINITIONS
+
+IRC est un protocole utilisant TCP et de facon optionnelle TLS et permettant des connexions de type client/server mais aussi server/server, permettant de gerer des grands reseaux et montees en charge. Il est asynchrone : serveurs et clients envoient des donnees sans se soucier de ce que repond l'autre.
+
+Les clients : tout ce qui se connecte a un serveur sans soi-meme etre un serveur, il existe 2types :
+- les clients utilisateurs qui fournissent une interface pour communiquer interactivement via IRC
+- les clients de service (des bots) pr fournir une fonctionnalite suppleentaire sur le reseau
+
+Les canaux : element de base pour communiquer sur un reseau. Ils peuvent etre vus de tout le reseau et leur nom commence par "#".
+
+Utilisateurs : 
+- operateurs IRC qui ont des fonctions d admin reseau
+- operateurs de chan qui ont des fonctions d admin channel
+
+RAPPEL DES CONSIGNES
+- multiclient possible
+- un seul poll() ou equiv ()
+- choisir un cli comme reference
+- com en TCI/IP
+- implem les operators
+
+Liste des clients
+https://fr.wikipedia.org/wiki/Liste_de_clients_IRC
+
+
+Pour programmer une application client-serveur, il est commode d’utiliser les
+sockets. Les sockets fournissent une interface qui permet d’utiliser facilement les
+protocoles de transport tels que TCP et UDP
+
+
+Ports
+https://www.cloudflare.com/learning/network-layer/what-is-a-computer-port/
+There are 65,535 possible port numbers
+
+Check open ports
+netstat -tulpn | grep LISTEN
+-t = TCP sockets
+-u = UDP sockets
+-l = Listening sockets
+-p = List process name that opened sockets
+
+
+
+RESSOURCES
+Sockets : https://du-isn.gricad-pages.univ-grenoble-alpes.fr/2-sr/Reseaux/3--cours_reseaux--sockets_java.pdf
+https://mathieu-lemoine.developpez.com/tutoriels/irc/protocole/
+
+https://studiofreya.com/2015/06/27/a-simple-modern-irc-client-library-in-cpp-part-1-the-parser/
+
+http://abcdrfc.free.fr/rfc-vf/rfc1459.html
+
+https://github.com/bloodead/IRC/blob/master/main.c
+
+https://github.com/kala13x/derpina
+
+https://irssi.org/documentation/manual/
