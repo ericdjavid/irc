@@ -12,10 +12,20 @@ Utilisateurs :
 - operateurs IRC qui ont des fonctions d admin reseau
 - operateurs de chan qui ont des fonctions d admin channel
 
+Telnet
+The telnet protocol is a text protocol that lets you communicate with any server and give commands that the server supports. Telnet can transfer any type of data. IRC servers tranfer text mostly, so text manipulaiton of data is all that is needed in order to communicate. Connecting to those servers requires telnet protocol, since in your program you will need to send commands using that protocol.
+
+Sockets : a way to speak to other programs using standard Unix file descriptors.
+BSD sockets are a communication API that relies on abstract entities called “sockets” to establish a network connection. Sockets work for the majority of the networking needs, providing communication between programs on the same computers, on different computers, ondifferent networks. They are used in many programs, like games, or internet browsers. The simplicity of their implementation makes them preferable for the majority of applications that need a fast and stable API to implement networking to their applications
+
+1. stream sockets are reliable two-way connected communication streams. Stream sockets are used by telnet application, HTTP protocol. They use a protocol called “The Transmission Control Protocol”, otherwise known as “TCP”. TCP makes sure your data arrives sequentially and error-free.
+
+2. datagrams sockets : if you send a datagram, it may arrive. It may arrive out of order. If it arrives, the data within the packet will be error-free. They don't use TCP, but "User Datagram Protocol", UDP. They are connexionless, they don't need to maintain Why would you use an unreliable underlying protocol? Two reasons: speed and speed. It’s way faster to fire-and-forget than it is to keep track of what has arrived safely and make sure it’s in order and all that. 
+
 RAPPEL DES CONSIGNES
 - multiclient possible
 - un seul poll() ou equiv ()
-- choisir un cli comme reference
+- choisir un cli comme reference (ISSRI déjà installé sur les PCs de l'école)
 - com en TCI/IP
 - implem les operators
 
@@ -42,8 +52,11 @@ netstat -tulpn | grep LISTEN
 
 
 RESSOURCES
-Sockets : https://du-isn.gricad-pages.univ-grenoble-alpes.fr/2-sr/Reseaux/3--cours_reseaux--sockets_java.pdf
-https://mathieu-lemoine.developpez.com/tutoriels/irc/protocole/
+Sockets : 
+https://beej.us/guide/bgnet/html/ (2.2)
+https://du-isn.gricad-pages.univ-grenoble-alpes.fr/2-sr/Reseaux/3--cours_reseaux--sockets_java.pdf
+
+https://mathieu-lemoine.developpez.com/tutoriels/irc/protocole/ [OK]
 
 https://studiofreya.com/2015/06/27/a-simple-modern-irc-client-library-in-cpp-part-1-the-parser/
 
@@ -54,3 +67,16 @@ https://github.com/bloodead/IRC/blob/master/main.c
 https://github.com/kala13x/derpina
 
 https://irssi.org/documentation/manual/
+
+
+IRC protocol
+https://datatracker.ietf.org/doc/html/rfc1459
+https://datatracker.ietf.org/doc/html/rfc2812#section-1.1
+
+Packet format
+:<nickname>@<username>!<hostname> <COMMAND> <arg>\r\n
+
+
+Exemples
+https://codes-sources.commentcamarche.net/source/browse/36603/daniel_legrand/src#browser
+
