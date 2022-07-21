@@ -14,6 +14,7 @@ Utilisateurs :
 
 Telnet
 The telnet protocol is a text protocol that lets you communicate with any server and give commands that the server supports. Telnet can transfer any type of data. IRC servers tranfer text mostly, so text manipulaiton of data is all that is needed in order to communicate. Connecting to those servers requires telnet protocol, since in your program you will need to send commands using that protocol.
+Command : telnet [host [port]]
 
 Sockets : a way to speak to other programs using standard Unix file descriptors.
 BSD sockets are a communication API that relies on abstract entities called “sockets” to establish a network connection. Sockets work for the majority of the networking needs, providing communication between programs on the same computers, on different computers, ondifferent networks. They are used in many programs, like games, or internet browsers. The simplicity of their implementation makes them preferable for the majority of applications that need a fast and stable API to implement networking to their applications
