@@ -40,13 +40,25 @@ class server
     fd_set                  _readfds;
 
     public:
-    int                     _master_socket;
-    int                     addrlen;
-    struct sockaddr_in      address;  
-    int         get_cli_nb(int nb) { return _cli_sock.at(nb);};
-    void        change_cli_nb(int i, int new_socket) { _cli_sock[i] = new_socket; }
-    fd_set      &ret_readfds() {return _readfds;};
-    int         get_master_socket(){return _master_socket;};
+    int				_master_socket;
+    socklen_t			addrlen;
+    struct sockaddr_in		address;  
+    int         get_cli_nb(int nb)
+    {
+	    return _cli_sock.at(nb);
+    };
+    void        change_cli_nb(int i, int new_socket)
+    {
+	    _cli_sock[i] = new_socket;
+    };
+    fd_set      &ret_readfds()
+    {
+	    return _readfds;
+    };
+    int         get_master_socket()
+    {
+	    return _master_socket;
+    };
     server(int port, std::string pswd) : _port(port), _password(pswd), _opt(1)
     {
         for (int i = 0; i < MAX_CLI; i++)
@@ -70,7 +82,7 @@ class server
      
         //type of socket created 
         address.sin_family = AF_INET;
-        address.sin_addr.s_addr = INADDR_ANY;
+        address.sin_addr.s_addr = htons(INADDR_ANY);
         address.sin_port = htons( _port );
 
         if (bind(_master_socket, (struct sockaddr *)&address, sizeof(address))<0)  
@@ -137,8 +149,12 @@ int main(int argc, char **argv)
         if (FD_ISSET(IRC_serv.get_master_socket(), &(IRC_serv.ret_readfds())))  
         {
             int new_socket;
+	std::cout << "master socket " << IRC_serv.get_master_socket() << std::endl;
             if ((new_socket = accept((int)IRC_serv.get_master_socket(), (struct sockaddr *)&IRC_serv.address, (socklen_t*)&IRC_serv.addrlen))<0)  
-            {  
+            {
+		    std::cout << "new socket accept " << new_socket << std::endl;
+		    if (errno == EINVAL)
+			    std::cout << "66666666666\n";
                 // ! ERROR
                 std::cout << "error is hereeeee" << std::endl;
                 perror("accept");  
