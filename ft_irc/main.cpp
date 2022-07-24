@@ -1,97 +1,25 @@
 #include <string>
 #include <iostream>
 #include <vector>
-#include "tools.cpp"
-#include <stdlib.h> 
-#include <errno.h> 
-#include <unistd.h>         //close 
-#include <arpa/inet.h>      //close 
-#include <sys/types.h> 
-#include <sys/socket.h> 
-#include <netinet/in.h> 
-#include <sys/time.h>       //FD_SET, FD_ISSET, FD_ZERO macros 
+#include <stdlib.h>
+#include <errno.h>
+#include <unistd.h>         //close
+#include <arpa/inet.h>      //close
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <sys/time.h>       //FD_SET, FD_ISSET, FD_ZERO macros
 #include <stdio.h>
 #include <string.h>
+
+#include "tools.hpp"
+#include "server.hpp"
+#include "commands.hpp"
 
 #define TRUE 1
 #define FALSE 0
 #define MAX_CLI 30
-
-class channel
-{
-    private:
-    std::string _name;
-
-    public:
-
-};
-
-class server 
-{
-    private:
-    std::string             _name;
-    int                     _port;
-    std::vector<channel>    chans;
-    std::string             _password;
-    //set of socket descriptors 
-    // client sockets
-    std::vector<int>        _cli_sock;
-    int                     _opt;
-    fd_set                  _readfds;
-
-    public:
-    int                     _master_socket;
-    int                     addrlen;
-    struct sockaddr_in      address;  
-    int         get_cli_nb(int nb) { return _cli_sock.at(nb);};
-    void        change_cli_nb(int i, int new_socket) { _cli_sock[i] = new_socket; }
-    fd_set      &ret_readfds() {return _readfds;};
-    int         get_master_socket(){return _master_socket;};
-    server(int port, std::string pswd) : _port(port), _password(pswd), _opt(1)
-    {
-        for (int i = 0; i < MAX_CLI; i++)
-            _cli_sock.push_back(0);
-        std::cout << "server class created with port " << port << std::endl;
-           //create a master socket 
-        if( (_master_socket = socket(AF_INET , SOCK_STREAM , 0)) == 0)  
-        {  
-            perror("socket failed");  
-            exit(EXIT_FAILURE);  
-        } 
-     
-        //set master socket to allow multiple connections , 
-        //this is just a good habit, it will work without this 
-        if( setsockopt(_master_socket, SOL_SOCKET, SO_REUSEADDR, (char *)&_opt, 
-            sizeof(_opt)) < 0 )  
-        {
-            perror("setsockopt");
-            exit(EXIT_FAILURE);
-        }
-     
-        //type of socket created 
-        address.sin_family = AF_INET;
-        address.sin_addr.s_addr = INADDR_ANY;
-        address.sin_port = htons( _port );
-
-        if (bind(_master_socket, (struct sockaddr *)&address, sizeof(address))<0)  
-        {
-            perror("bind failed");  
-            exit(EXIT_FAILURE);  
-        }
-
-        //accept the incoming connection 
-        addrlen = sizeof(address);
-        puts("Waiting for connections ...");
-    };
-    // if the client put /channel, return the list of chans
-    void get_list_of_chans(){};
-};
-
-void error(std::string str)
-{
-    std::cout << str << std::endl;
-    exit(EXIT_FAILURE);
-};
+#define BUFF 1024
 
 int main(int argc, char **argv)
 {
@@ -100,79 +28,215 @@ int main(int argc, char **argv)
     std::string port(argv[1]);
     std::string pswd(argv[2]);
     int uport = FromString<int>(port);
+    int PORT = uport;
 
-    // Instantiate the server class  
-    server IRC_serv(uport, pswd);
+    int opt = TRUE;
+    int master_socket , addrlen , new_socket , client_socket[30] , max_clients = 30 , activity, i , valread , sd;
+    int max_sd;
+    struct sockaddr_in address;
 
-    // Launch the fcking machine
-    while (TRUE)
+    char buffer[1025];
+
+    //set of socket descriptors
+    fd_set readfds;
+
+    the_serv irc_serv;
+
+    //initialise all client_socket[] to 0 so not checked
+    for (i = 0; i < max_clients; i++)
     {
-        FD_ZERO(&(IRC_serv.ret_readfds()));
+        client_socket[i] = 0;
+    }
 
-        //add master socket to set 
-        FD_SET(IRC_serv.get_master_socket(), &(IRC_serv.ret_readfds()));  
-        // max_sd = IRC_serv.get_master_socket();  
+    /*
+        The socket() function creates a new socket.
+        It takes 3 arguments,
+            a. AF_INET: address domain of the socket.
+            b. SOCK_STREAM: Type of socket. a stream socket in 
+            which characters are read in a continuous stream (TCP)
+            c. Third is a protocol argument: should always be 0. The 
+            OS will choose the most appropiate protocol.
+            This will return a small integer and is used for all 
+            references to this socket. If the socket call fails, 
+            it returns -1.
+    */
+    if( (master_socket = socket(AF_INET , SOCK_STREAM , 0)) == 0)
+    {
+        perror("socket failed");
+        exit(EXIT_FAILURE);
+    }
 
-        for ( int i = 0 ; i < MAX_CLI ; i++)  
-        {  
-            //socket descriptor 
-            int sd = IRC_serv.get_cli_nb(i);  
-                 
-            //if valid socket descriptor then add to read list 
-            if(sd > 0)  
-                FD_SET( sd , &(IRC_serv.ret_readfds()));  
-        }
+    //set master socket to allow multiple connections (optionnal)
+    if(setsockopt(master_socket, SOL_SOCKET, SO_REUSEADDR, (char *)&opt,
+          sizeof(opt)) < 0 )
+    {
+        perror("setsockopt");
+        exit(EXIT_FAILURE);
+    }
 
-        //wait for an activity on one of the sockets , timeout is NULL , 
-        //so wait indefinitely 
-        int activity = select( MAX_CLI + 1 , &(IRC_serv.ret_readfds()) , NULL , NULL , NULL);  
-       
-        if ((activity < 0) && (errno!=EINTR))  
-        {  
-            printf("select error");  
-        }
+    /* 
+        The variable serv_addr is a structure of sockaddr_in. 
+        sin_family contains a code for the address family. 
+        It should always be set to AF_INET.
+        INADDR_ANY contains the IP address of the host. For 
+        server code, this will always be the IP address of 
+        the machine on which the server is running.
+        htons() converts the port number from host byte order 
+        to a port number in network byte order.
+    */
+    address.sin_family = AF_INET;
+    address.sin_addr.s_addr = INADDR_ANY;
+    address.sin_port = htons( PORT );
 
-        //If something happened on the master socket , 
-        //then its an incoming connection 
-        if (FD_ISSET(IRC_serv.get_master_socket(), &(IRC_serv.ret_readfds())))  
+    /* 
+        The bind() system call binds a socket to an address. 
+        It takes three arguments, 
+        - the socket file descriptor. 
+        - a pointer to a structure of type sockaddr, this must be cast to
+        the correct type.
+        - the adress size
+    */
+    if (bind(master_socket, (struct sockaddr *)&address, sizeof(address))<0)
+    {
+        perror("bind failed");
+        exit(EXIT_FAILURE);
+    }
+    printf("Listener on port %d \n", PORT);
+
+    /*
+        The listen system call allows the process to listen
+        on the socket for connections.
+        The program will be stay idle here if there are no
+        incomming connections.
+        The first argument is the socket file descriptor,
+        and the second is the size for the number of clients
+        i.e the number of connections that the server can
+        handle while the process is handling a particular
+        connection. The maximum size permitted by most
+        systems is 5.
+    */
+    if (listen(master_socket, 5) < 0)
+    {
+        perror("listen");
+        exit(EXIT_FAILURE);
+    }
+
+    //accept the incoming connection
+    addrlen = sizeof(address);
+    puts("Waiting for connections ...");
+
+
+    while(TRUE)
+    {
+        //clear the socket set
+        FD_ZERO(&readfds);
+
+        //add master socket to set
+        FD_SET(master_socket, &readfds);
+        max_sd = master_socket;
+
+        //add child sockets to set
+        for ( i = 0 ; i < max_clients ; i++)
         {
-            int new_socket;
-            if ((new_socket = accept((int)IRC_serv.get_master_socket(), (struct sockaddr *)&IRC_serv.address, (socklen_t*)&IRC_serv.addrlen))<0)  
-            {  
-                // ! ERROR
-                std::cout << "error is hereeeee" << std::endl;
-                perror("accept");  
-                exit(EXIT_FAILURE);  
-            }  
-             
-            //inform user of socket number - used in send and receive commands 
-            printf("New connection , socket fd is %d , ip is : %s , port : %d \n" , new_socket , inet_ntoa(IRC_serv.address.sin_addr) , ntohs (IRC_serv.address.sin_port));  
-           
-            //send new connection greeting message 
-            // char *message = "WE MADE IT";
-            if( send(new_socket, "lol", 4, 0) != 4 )  
-            {  
-                perror("send");  
-            }  
-                 
-            puts("Welcome message sent successfully");  
-                 
-            //add new socket to array of sockets 
-            for (int i = 0; i < MAX_CLI; i++)  
-            {  
-                //if position is empty 
-                if( IRC_serv.get_cli_nb(i) == 0 )  
-                {  
-                    IRC_serv.change_cli_nb(i, new_socket);
+            //socket descriptor
+            sd = client_socket[i];
 
-                    printf("Adding to list of sockets as %d\n" , i);  
-                         
-                    break;  
-                }  
-            }  
-        }  
+            //if valid socket descriptor then add to read list
+            if(sd > 0)
+                FD_SET( sd , &readfds);
 
+            //highest file descriptor number, need it for the select function
+            if(sd > max_sd)
+                max_sd = sd;
+        }
 
+        //wait for an activity on one of the sockets , timeout is NULL ,
+        //so wait indefinitely
+        activity = select( max_sd + 1 , &readfds , NULL , NULL , NULL);
+
+        if ((activity < 0) && (errno!=EINTR))
+        {
+            printf("select error");
+        }
+
+        //If something happened on the master socket,
+        //then its an incoming connection
+        if (FD_ISSET(master_socket, &readfds))
+        {
+            if ((new_socket = accept(master_socket,
+                    (struct sockaddr *)&address, (socklen_t*)&addrlen))<0)
+            {
+                perror("accept");
+                exit(EXIT_FAILURE);
+            }
+
+            //Inform user of socket number - used in send and receive commands
+            printf("New connection , socket fd is %d , ip is : %s , port : %d \n" , new_socket , inet_ntoa(address.sin_addr) , ntohs (address.sin_port));
+            // TODO GET PASSWORD, IF NOT, CANCELL CONNEXION
+
+            //Send new connection greeting message
+            char const* greetings = "Welcome to our IRC server ✌\n";
+            if( send(new_socket, greetings, strlen(greetings), 0) != (ssize_t)strlen(greetings) )
+            {
+                perror("send");
+            }
+
+            puts("Welcome message sent successfully");
+
+            //add new socket to array of sockets
+            for (i = 0; i < max_clients; i++)
+            {
+                //if position is empty
+                if( client_socket[i] == 0 )
+                {
+                    client_socket[i] = new_socket;
+                    printf("Adding to list of sockets as %d\n" , i);
+
+                    break;
+                }
+            }
+        }
+
+        //else its some IO operation on some other socket
+        for (i = 0; i < max_clients; i++)
+        {
+            sd = client_socket[i];
+
+            if (FD_ISSET( sd , &readfds))
+            {
+                //Check if it was for closing , and also read the
+                //incoming message
+                if ((valread = read( sd , buffer, 1024)) == 0)
+                {
+                    //Somebody disconnected , get his details and print
+                    getpeername(sd , (struct sockaddr*)&address , \
+                        (socklen_t*)&addrlen);
+                    printf("Host disconnected , ip %s , port %d \n" ,
+                          inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
+
+                    //Close the socket and mark as 0 in list for reuse
+                    close( sd );
+                    client_socket[i] = 0;
+                }
+
+                else
+                {
+                    //set the string terminating NULL byte on the end
+                    //of the data read
+                    buffer[valread] = '\0';
+                    std::cout << "client: " << buffer;
+                    
+                    ft_get_command(buffer, &irc_serv);
+                    
+                    // if (strncmp("/nickname", buffer, 9) == 0)
+                    // {
+                    //     printf("Server: Client changing nickname\n");
+                    // } 
+                    send(sd , buffer , strlen(buffer) , 0 );
+                }
+
+            }
+        }
     }
 
     return 1;

@@ -1,3 +1,5 @@
+#pragma once
+
 #include <string>
 #include <sstream>
 
@@ -9,3 +11,9 @@ T FromString(const std::string& str)
     ss >> ret;
     return ret;
 }
+
+void error(std::string str)
+{
+    std::cout << str << std::endl;
+    exit(EXIT_FAILURE);
+};
