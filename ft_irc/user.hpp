@@ -13,8 +13,11 @@ class user
     bool        _is_operat;
 
     public:
-    user();
-    ~user();
+    user() {
+        (void)_id;
+        (void)_is_operat;
+    };
+    ~user() {};
     int set_nick(std::string nick);
     // set username
     int set_password(std::string pswd);
