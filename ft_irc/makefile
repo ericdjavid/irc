@@ -21,7 +21,7 @@ C_END		=	\e[0m
 #	CONSTANTS
 CC			=	c++ -std=c++98 -g
 FLAGS		=	-Wall -Wextra -Werror
-SRCS		=	main.cpp user.cpp tools.cpp
+SRCS		=	main.cpp user.cpp
 OBJS		=	$(SRCS:.cpp=.o)
 
 # Quand make va essayer de cr´eer la cible, il va regarder la (les) d´ependance(s).
@@ -42,6 +42,7 @@ all:	$(NAME)
 $(NAME):	$(OBJS)
 	@echo "$<\n[$(C_PURPLE)COMPILING$(C_END)]"
 	@$(CC) $(FLAGS) -o $(NAME) $(OBJS)
+	@rm *.o 
 	@echo "$<\n[$(C_GREEN)OK$(C_END)]"
 
 clean:
