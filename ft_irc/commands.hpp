@@ -5,6 +5,7 @@
 void ft_join_channel(char *buff, the_serv *irc_serv)
 {
     // Check if chan exists
+    
 
     // if not, add the channel
     std::cout << "Server: channel does not exist, creating it\n";

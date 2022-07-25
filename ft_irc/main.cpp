@@ -1,4 +1,5 @@
 #include <string>
+#include <sys/time.h>
 #include <iostream>
 #include <vector>
 #include <stdlib.h>
@@ -150,9 +151,11 @@ int main(int argc, char **argv)
                 max_sd = sd;
         }
 
-        //wait for an activity on one of the sockets , timeout is NULL ,
+        //wait for an activity on one of the sockets , timeout is equal to 5 sec ,
         //so wait indefinitely
-        activity = select( max_sd + 1 , &readfds , NULL , NULL , NULL);
+        timeval tmp;
+        tmp.tv_sec = 5;
+        activity = select( max_sd + 1 , &readfds , NULL , NULL , &tmp);
 
         if ((activity < 0) && (errno!=EINTR))
         {
@@ -172,11 +175,10 @@ int main(int argc, char **argv)
 
             //Inform user of socket number - used in send and receive commands
             printf("New connection , socket fd is %d , ip is : %s , port : %d \n" , new_socket , inet_ntoa(address.sin_addr) , ntohs (address.sin_port));
-            // TODO GET PASSWORD, IF NOT, CANCELL CONNEXION
 
             //Send new connection greeting message
             char const* greetings = 
-            "Welcome to our IRC server ✌\n 1) Enter the required password using the command [PASS password]\n 2) Join or create a server using the commande [JOIN name]";
+            "Welcome to our IRC server ✌\n 1) Enter the required password using the command [PASS password]\n 2) Join or create a server using the commande [JOIN name]\n";
             if( send(new_socket, greetings, strlen(greetings), 0) != (ssize_t)strlen(greetings) )
             {
                 perror("send");
@@ -184,6 +186,8 @@ int main(int argc, char **argv)
 
             puts("Welcome message sent successfully");
 
+            // TODO GET PASSWORD, IF NOT, CANCELL CONNEXION
+            
             //add new socket to array of sockets
             for (i = 0; i < max_clients; i++)
             {
@@ -219,21 +223,33 @@ int main(int argc, char **argv)
                     close( sd );
                     client_socket[i] = 0;
                 }
-
                 else
                 {
                     //set the string terminating NULL byte on the end
                     //of the data read
                     buffer[valread] = '\0';
-                    std::cout << "client: " << buffer;
-                    
-                    ft_get_command(buffer, &irc_serv);
-                    
-                    // if (strncmp("/nickname", buffer, 9) == 0)
-                    // {
-                    //     printf("Server: Client changing nickname\n");
-                    // } 
-                    send(sd , buffer , strlen(buffer) , 0 );
+                    std::cout << "client: " << buffer; 
+                    // IF NO PASS received from client, kill 
+
+                    // FIRST CONNEXION
+                    if (strncmp(buffer, "CAP LS", 6) == 0)
+                    {
+                        std::cout << "CAP END reached\n";
+                        printf("REACHED\n");
+                        char const *test = "CAP * LS :\r\n";
+                        send(sd , test , strlen(test) , 0 );
+                        char const *world = ":localhost 001 edjavid :Optionnal msg\r\n NICK john\r\n USER edjavid\r\n";
+                        send(sd, world, strlen(world), 0);
+                        char const *world2 = ":localhost 002 edjavid :Your host is localhost, running version 1.0\r\n";
+                        send(sd, world2, strlen(world2), 0);
+                        char const *world3 = ":localhost 003 edjavid :This localhost was created at 17:14\r\n";
+                        send(sd, world3, strlen(world3), 0);
+                        char const *world4 = ":localhost 004 <nick> <servername> <version> <available umodes> <available cmodes> [<cmodes with param>]\r\n";
+                        send(sd, world4, strlen(world4), 0);
+                    }
+                    else
+                        ft_get_command(buffer, &irc_serv);
+                    FD_ZERO(&readfds);
                 }
 
             }

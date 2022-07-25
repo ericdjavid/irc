@@ -6,6 +6,7 @@ class user
 {
     private:
     // NICK
+    // pseudonyme unique ayant une longueur maximale de neuf (9) caractères.
     std::string _nick;
     int        _id;
     std::string _password;
