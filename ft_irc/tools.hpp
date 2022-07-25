@@ -26,10 +26,11 @@ std::vector<std::string> split (std::string s, std::string delimiter)
     std::string token;
     std::vector<std::string> res;
 
+    //PBM DS SPLIT, SPLIT PAS TOUT LES ESPACES 
     while ((pos_end = s.find (delimiter, pos_start)) != std::string::npos) {
         token = s.substr (pos_start, pos_end - pos_start);
         pos_start = pos_end + delim_len;
-        std::cout << "Token is " << token << std::endl;
+        std::cout << "Token is " << token << " lol"<< std::endl;
         res.push_back (token);
     }
     res.push_back (s.substr (pos_start));
