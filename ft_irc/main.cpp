@@ -176,10 +176,7 @@ int main(int argc, char **argv)
 
             //Send new connection greeting message
             char const* greetings = 
-            "Welcome to our IRC server ✌\n
-            1) Enter the required password using the command [PASS password]\n
-            2) Join or create a server using the commande [JOIN name] 
-            ";
+            "Welcome to our IRC server ✌\n 1) Enter the required password using the command [PASS password]\n 2) Join or create a server using the commande [JOIN name]";
             if( send(new_socket, greetings, strlen(greetings), 0) != (ssize_t)strlen(greetings) )
             {
                 perror("send");
