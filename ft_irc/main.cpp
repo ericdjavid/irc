@@ -42,6 +42,7 @@ int main(int argc, char **argv)
     fd_set readfds;
 
     the_serv irc_serv;
+    irc_serv.password = pswd;
 
     //initialise all client_socket[] to 0 so not checked
     for (i = 0; i < max_clients; i++)
@@ -186,7 +187,8 @@ int main(int argc, char **argv)
 
             puts("Welcome message sent successfully");
 
-            // TODO GET PASSWORD, IF NOT, CANCELL CONNEXION
+            
+
             
             //add new socket to array of sockets
             for (i = 0; i < max_clients; i++)
@@ -228,8 +230,28 @@ int main(int argc, char **argv)
                     //set the string terminating NULL byte on the end
                     //of the data read
                     buffer[valread] = '\0';
-                    std::cout << "client: " << buffer; 
-                    // IF NO PASS received from client, kill 
+
+                    // TODO : SPLIT THE BUFFER
+                    std::string cpp_buf(buffer);
+                    std::string delimiter = " ";
+                    std::vector<std::string> buff_arr = split(cpp_buf, delimiter);
+                    std::vector<std::string>::iterator it = buff_arr.begin();
+                    while(it != buff_arr.end())
+                    {
+                        // std::cout << "BUFFER: ";
+                        // std::cout << i << std::endl;
+                        // it++;
+                    }
+                    
+
+                    // std::cout << "client: " << buffer; 
+                    
+                    // TODO GET PASSWORD, IF NOT, CANCELL CONNEXION
+                    if (strncmp(buffer, "PASS", 3) == 0)
+                    {
+                        std::cout << "Password received";
+                        // 
+                    }
 
                     // FIRST CONNEXION
                     if (strncmp(buffer, "CAP LS", 6) == 0)
