@@ -16,6 +16,7 @@ class user
     user();
     ~user();
     int set_nick(std::string nick);
+    // set username
     int set_password(std::string pswd);
 };
 

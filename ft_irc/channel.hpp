@@ -1,11 +1,15 @@
 #pragma once
 
 #include <string>
+#include <vector>
+#include "user.hpp"
 
 class channel
 {
     private:
     std::string _name;
+    // list of users that have joined the channel
+    std::vector<user> id;
 
     public:
     ~channel() {};
