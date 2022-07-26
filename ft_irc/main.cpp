@@ -16,6 +16,7 @@
 #include "tools.hpp"
 #include "server.hpp"
 #include "commands.hpp"
+#include "new_connection.cpp"
 
 #define TRUE 1
 #define FALSE 0
@@ -154,9 +155,10 @@ int main(int argc, char **argv)
 
         //wait for an activity on one of the sockets , timeout is equal to 5 sec ,
         //so wait indefinitely
-        timeval tmp;
-        tmp.tv_sec = 5;
-        activity = select( max_sd + 1 , &readfds , NULL , NULL , &tmp);
+        // timeval tmp;
+        // tmp.tv_sec = 5;
+        // (void)tmp
+        activity = select( max_sd + 1 , &readfds , NULL , NULL , NULL); //third argument of select equals NULL, so select can wait an infinite time. If 3rd value set to 5 sec, select will wait 5sec
 
         if ((activity < 0) && (errno!=EINTR))
         {
@@ -247,7 +249,7 @@ int main(int argc, char **argv)
                     // std::cout << "client: " << buffer; 
                     
                     // TODO GET PASSWORD, IF NOT, CANCELL CONNEXION
-                    if (strncmp(buffer, "PASS", 3) == 0)
+                    if (strncmp(buffer, "PASS", 4) == 0)
                     {
                         std::cout << "Password received";
                         // 
@@ -255,25 +257,11 @@ int main(int argc, char **argv)
 
                     // FIRST CONNEXION
                     if (strncmp(buffer, "CAP LS", 6) == 0)
-                    {
-                        std::cout << "CAP END reached\n";
-                        printf("REACHED\n");
-                        char const *test = "CAP * LS :\r\n";
-                        send(sd , test , strlen(test) , 0 );
-                        char const *world = ":localhost 001 edjavid :Optionnal msg\r\n NICK john\r\n USER edjavid\r\n";
-                        send(sd, world, strlen(world), 0);
-                        char const *world2 = ":localhost 002 edjavid :Your host is localhost, running version 1.0\r\n";
-                        send(sd, world2, strlen(world2), 0);
-                        char const *world3 = ":localhost 003 edjavid :This localhost was created at 17:14\r\n";
-                        send(sd, world3, strlen(world3), 0);
-                        char const *world4 = ":localhost 004 <nick> <servername> <version> <available umodes> <available cmodes> [<cmodes with param>]\r\n";
-                        send(sd, world4, strlen(world4), 0);
-                    }
+                       new_connection(sd);
                     else
                         ft_get_command(buffer, &irc_serv);
                     FD_ZERO(&readfds);
                 }
-
             }
         }
     }
