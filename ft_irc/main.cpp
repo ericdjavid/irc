@@ -231,12 +231,11 @@ int main(int argc, char **argv)
                     std::vector<std::string> buff_arr = split(cpp_buf, delimiter);
                     for (std::vector<std::string>::const_iterator it = buff_arr.begin() ; it != buff_arr.end() ; ++it)
                     {
-                        // std::cout << *it << std::endl;
-                        // char *str = FromString<char *>(*it); 
-                        // if (strncmp(str, "CAP LS", 6) == 0)
 
-                        // COMPRENDS PAS PK IL CAPTE PAS
-                        if (*it == "CAP LS\r")
+                        std::string cap = "CAP";
+                        std::string test = *it;
+                        std::cout << "|" << *it << "|" << std::endl;
+                        if (cap.compare(0, 3, test) == 0)
                         {
                             std::cout << "CAP LS received\n";
                             char const *test = "CAP * LS :\r\n";
