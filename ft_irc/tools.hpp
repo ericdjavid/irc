@@ -44,9 +44,9 @@ void get_buffer(char *buff)
 }
 
 // Function to compare strings and return true if it matches
-bool ft_compare_tokens(std::string token, int jump, std::string expected)
-{
-    if (expected.compare(token.substr(jump, token.length())))
-        return true;
-    return false;
-}
+// bool ft_compare_tokens(std::string token, int jump, std::string expected)
+// {
+//     // if (expected.compare(token.substr(0, token.length())))
+//         return true;
+//     return false;
+// }

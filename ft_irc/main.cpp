@@ -264,7 +264,7 @@ int main(int argc, char **argv)
                                 std::cout << "pswd is correct, lfg" << std::endl; 
                                 irc_serv.the_users.push_back(user(1, "lolcat", "loca"));
 
-                                std::string  nick_line(*(++it));
+                                // std::string  nick_line(*(++it));
                                 // ft_compare_tokens(nick_line, 0, "PASS")
                             }
                             else
