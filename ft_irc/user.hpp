@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <iostream>
 
 class user 
 {
@@ -14,14 +15,15 @@ class user
     bool        _is_operat;
 
     public:
-    user() {
-        (void)_id;
-        (void)_is_operat;
+    user(int id, std::string nick) : _nick(nick), _id(id)
+    {
+        _is_operat = false;
+        std::cout << "new user created of id : " << _id << std::endl;
     };
     ~user() {};
     int set_nick(std::string nick);
-    // set username
     int set_password(std::string pswd);
+    // set username
 };
 
 

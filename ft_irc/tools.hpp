@@ -4,12 +4,13 @@
 #include <sstream>
 #include <vector>
 #include <iostream>
+#include <fstream>
 
 template<typename T>
 T FromString(const std::string& str)
 {
     std::istringstream ss(str);
-    T ret;
+    T ret = 0; 
     ss >> ret;
     return ret;
 }
@@ -30,9 +31,18 @@ std::vector<std::string> split (std::string s, std::string delimiter)
     while ((pos_end = s.find (delimiter, pos_start)) != std::string::npos) {
         token = s.substr (pos_start, pos_end - pos_start);
         pos_start = pos_end + delim_len;
-        std::cout << "Token is " << token << " lol"<< std::endl;
         res.push_back (token);
     }
     res.push_back (s.substr (pos_start));
     return res;
+}
+
+
+void get_buffer(char *buff)
+{
+    std::ofstream myfile;
+    myfile.open ("buffer.txt", std::ios::app);
+    myfile << buff;
+    myfile.close();
+
 }

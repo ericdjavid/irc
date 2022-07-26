@@ -130,30 +130,29 @@ int main(int argc, char **argv)
 
     while(TRUE)
     {
-        //clear the socket set
+        // Clear the socket set
         FD_ZERO(&readfds);
 
-        //add master socket to set
+        // Add master socket to set
         FD_SET(master_socket, &readfds);
         max_sd = master_socket;
 
-        //add child sockets to set
+        // Add child sockets to set
         for ( i = 0 ; i < max_clients ; i++)
         {
-            //socket descriptor
+            // Socket descriptor
             sd = client_socket[i];
 
-            //if valid socket descriptor then add to read list
+            // If valid socket descriptor then add to read list
             if(sd > 0)
                 FD_SET( sd , &readfds);
 
-            //highest file descriptor number, need it for the select function
+            // Highest file descriptor number, need it for the select function
             if(sd > max_sd)
                 max_sd = sd;
         }
 
-        //wait for an activity on one of the sockets , timeout is equal to 5 sec ,
-        //so wait indefinitely
+        // Wait for an activity on one of the sockets , timeout is equal to 5 sec
         timeval tmp;
         tmp.tv_sec = 5;
         activity = select( max_sd + 1 , &readfds , NULL , NULL , &tmp);
@@ -163,8 +162,8 @@ int main(int argc, char **argv)
             printf("select error");
         }
 
-        //If something happened on the master socket,
-        //then its an incoming connection
+        // If something happened on the master socket,
+        // then its an incoming connection
         if (FD_ISSET(master_socket, &readfds))
         {
             if ((new_socket = accept(master_socket,
@@ -174,10 +173,10 @@ int main(int argc, char **argv)
                 exit(EXIT_FAILURE);
             }
 
-            //Inform user of socket number - used in send and receive commands
+            // Inform user of socket number - used in send and receive commands
             printf("New connection , socket fd is %d , ip is : %s , port : %d \n" , new_socket , inet_ntoa(address.sin_addr) , ntohs (address.sin_port));
 
-            //Send new connection greeting message
+            // Send new connection greeting message
             char const* greetings = 
             "Welcome to our IRC server ✌\n 1) Enter the required password using the command [PASS password]\n 2) Join or create a server using the commande [JOIN name]\n";
             if( send(new_socket, greetings, strlen(greetings), 0) != (ssize_t)strlen(greetings) )
@@ -185,26 +184,20 @@ int main(int argc, char **argv)
                 perror("send");
             }
 
-            puts("Welcome message sent successfully");
-
-            
-
-            
-            //add new socket to array of sockets
+            // Add new socket to array of sockets
             for (i = 0; i < max_clients; i++)
             {
-                //if position is empty
+                // If position is empty
                 if( client_socket[i] == 0 )
                 {
                     client_socket[i] = new_socket;
                     printf("Adding to list of sockets as %d\n" , i);
-
                     break;
                 }
             }
         }
 
-        //else its some IO operation on some other socket
+        // Else it is some IO operation on some other socket
         for (i = 0; i < max_clients; i++)
         {
             sd = client_socket[i];
@@ -227,50 +220,61 @@ int main(int argc, char **argv)
                 }
                 else
                 {
-                    //set the string terminating NULL byte on the end
-                    //of the data read
+                    // Set the string terminating NULL byte on the end
+                    // of the data read
                     buffer[valread] = '\0';
+                    get_buffer(buffer);
 
                     // TODO : SPLIT THE BUFFER
                     std::string cpp_buf(buffer);
                     std::string delimiter = " ";
                     std::vector<std::string> buff_arr = split(cpp_buf, delimiter);
-                    std::vector<std::string>::iterator it = buff_arr.begin();
-                    while(it != buff_arr.end())
+                    for (std::vector<std::string>::const_iterator it = buff_arr.begin() ; it != buff_arr.end() ; ++it)
                     {
-                        // std::cout << "BUFFER: ";
-                        // std::cout << i << std::endl;
-                        // it++;
+                        // std::cout << *it << std::endl;
+                        // char *str = FromString<char *>(*it); 
+                        // if (strncmp(str, "CAP LS", 6) == 0)
+
+                        // COMPRENDS PAS PK IL CAPTE PAS
+                        if (*it == "CAP LS\r")
+                        {
+                            std::cout << "CAP LS received\n";
+                            char const *test = "CAP * LS :\r\n";
+                            send(sd , test , strlen(test) , 0 );
+                            char const *world = ":localhost 001 edjavid :Optionnal msg\r\n NICK john\r\n USER edjavid\r\n";
+                            send(sd, world, strlen(world), 0);
+                            char const *world2 = ":localhost 002 edjavid :Your host is localhost, running version 1.0\r\n";
+                            send(sd, world2, strlen(world2), 0);
+                            char const *world3 = ":localhost 003 edjavid :This localhost was created at 17:14\r\n";
+                            send(sd, world3, strlen(world3), 0);
+                            char const *world4 = ":localhost 004 <nick> <servername> <version> <available umodes> <available cmodes> [<cmodes with param>]\r\n";
+                            send(sd, world4, strlen(world4), 0);
+                            continue;
+                        }
+                        if (*it == "END")
+                        {
+                            // TODO GET PASSWORD, IF NOT, CANCELL CONNEXION
+                            std::cout << "End reached" << std::endl;
+                            it++;
+                            if (*it == "PASS")
+                            {
+                                // Check if following word is == to password
+                                std::string supposed_pswd(*++it);
+                                std::cout << "Suppposed password is " << supposed_pswd << std::endl;
+                                if (supposed_pswd == pswd)
+                                {
+                                    std::cout << "pswd is correct, lfg" << std::endl;
+                                    irc_serv.the_users.push_back(user(1, "lolcat"));
+                                }
+                            }
+                            else
+                            {
+                                std::cout << "No password set =( " << std::endl;
+                            }
+                        }
                     }
                     
-
-                    // std::cout << "client: " << buffer; 
-                    
-                    // TODO GET PASSWORD, IF NOT, CANCELL CONNEXION
-                    if (strncmp(buffer, "PASS", 3) == 0)
-                    {
-                        std::cout << "Password received";
-                        // 
-                    }
-
-                    // FIRST CONNEXION
-                    if (strncmp(buffer, "CAP LS", 6) == 0)
-                    {
-                        std::cout << "CAP END reached\n";
-                        printf("REACHED\n");
-                        char const *test = "CAP * LS :\r\n";
-                        send(sd , test , strlen(test) , 0 );
-                        char const *world = ":localhost 001 edjavid :Optionnal msg\r\n NICK john\r\n USER edjavid\r\n";
-                        send(sd, world, strlen(world), 0);
-                        char const *world2 = ":localhost 002 edjavid :Your host is localhost, running version 1.0\r\n";
-                        send(sd, world2, strlen(world2), 0);
-                        char const *world3 = ":localhost 003 edjavid :This localhost was created at 17:14\r\n";
-                        send(sd, world3, strlen(world3), 0);
-                        char const *world4 = ":localhost 004 <nick> <servername> <version> <available umodes> <available cmodes> [<cmodes with param>]\r\n";
-                        send(sd, world4, strlen(world4), 0);
-                    }
-                    else
-                        ft_get_command(buffer, &irc_serv);
+                    ft_get_command(buffer, &irc_serv);
                     FD_ZERO(&readfds);
                 }
 
