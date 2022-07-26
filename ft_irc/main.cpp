@@ -252,15 +252,7 @@ int main(int argc, char **argv)
                             char const *world3 = ":localhost 003 edjavid :This localhost was created at 17:14\r\n";
                             send(sd, world3, strlen(world3), 0);
 
-                            // go to next line
                             ++it;
-                            // check if we did not reach the end
-                            // if(it == buff_arr.end())
-                            // {
-                            //     std::cout << "end of buff arr" << std::endl;
-                            //     break;
-                            // }
-                            // TODO GET PASSWORD, IF NOT, CANCELL CONNEXION
                             std::string good(*it);
                             std::string good2(good.substr(5, good.length()));
                             std::cout << "irc_serv pswd is :" << irc_serv.password << std::endl;
@@ -269,18 +261,15 @@ int main(int argc, char **argv)
 
                             if (irc_serv.password.compare(good2) == 0)
                             {
-                                // Check if following word is == to password
-                                // std::string supposed_pswd(*it);
-                                // std::cout << "Suppposed password is " << supposed_pswd << std::endl;
-                                // if (supposed_pswd == pswd)
-                                // {
-                                    std::cout << "pswd is correct, lfg" << std::endl;
-                                    irc_serv.the_users.push_back(user(1, "lolcat"));
-                                // }
+                                std::cout << "pswd is correct, lfg" << std::endl; 
+                                irc_serv.the_users.push_back(user(1, "lolcat", "loca"));
+
+                                std::string  nick_line(*(++it));
+                                // ft_compare_tokens(nick_line, 0, "PASS")
                             }
                             else
                             {
-                                std::cout << "No password set =( , ask the admin" << std::endl;
+                                std::cout << "No password set =(" << std::endl;
                             }
                             continue;
                         }

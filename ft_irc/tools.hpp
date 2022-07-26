@@ -41,5 +41,12 @@ void get_buffer(char *buff)
     myfile.open ("buffer.txt", std::ios::app);
     myfile << buff;
     myfile.close();
+}
 
+// Function to compare strings and return true if it matches
+bool ft_compare_tokens(std::string token, int jump, std::string expected)
+{
+    if (expected.compare(token.substr(jump, token.length())))
+        return true;
+    return false;
 }
