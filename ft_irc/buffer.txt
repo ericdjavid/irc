@@ -1,10 +1,8 @@
 CAP LS
-PASS PASS
+PASS lolcat
 NICK jam
 USER edjavid edjavid localhost :Eric DJAVID
 CAP END
-MODE edjavid +i
-WHOIS jam
 MODE edjavid +i
 WHOIS jam
 PING localhost
