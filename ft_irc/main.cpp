@@ -1,5 +1,4 @@
 #include <string>
-#include <sys/time.h>
 #include <iostream>
 #include <vector>
 #include <stdlib.h>
@@ -152,10 +151,7 @@ int main(int argc, char **argv)
                 max_sd = sd;
         }
 
-        // Wait for an activity on one of the sockets , timeout is equal to 5 sec
-        timeval tmp;
-        tmp.tv_sec = 5;
-        activity = select( max_sd + 1 , &readfds , NULL , NULL , &tmp);
+        activity = select( max_sd + 1 , &readfds , NULL , NULL , NULL);
 
         if ((activity < 0) && (errno!=EINTR))
         {
@@ -233,7 +229,6 @@ int main(int argc, char **argv)
                     {
 
                         std::string cap = "CAP";
-                        std::string test = *it;
                         std::cout << "|" << *it << "|" << std::endl;
                         if (cap.compare(0, 3, test) == 0)
                         {

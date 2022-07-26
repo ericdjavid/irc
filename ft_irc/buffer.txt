@@ -1,4 +1,5 @@
 CAP LS
+PASS PASS
 NICK jam
 USER edjavid edjavid localhost :Eric DJAVID
 CAP END
@@ -7,4 +8,3 @@ WHOIS jam
 MODE edjavid +i
 WHOIS jam
 PING localhost
-QUIT :leaving
