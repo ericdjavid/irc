@@ -1,11 +1,19 @@
 #pragma once
 #include <cstring>
 #include <iostream>
+#include <vector>
+#include "channel.hpp"
 
-void ft_join_channel(char *buff, the_serv *irc_serv)
+void ft_join_channel(char* buff, the_serv *irc_serv)
 {
     // Check if chan exists
-    
+    std::vector<channel>::iterator channs = irc_serv->the_channel.begin();
+    std::string     channel_name;
+    channel_name = buff;
+    while (channs->get_name() != channel_name && channs != irc_serv->the_channel.end())
+    {
+        channs++;
+    }
 
     // if not, add the channel
     std::cout << "Server: channel does not exist, creating it\n";
