@@ -1,7 +1,20 @@
-CAP LS
 PASS lolcat
-NICK jam
-USER edjavid edjavid localhost :Eric DJAVID
-CAP END
-MODE edjavid +i
-WHOIS jam
+NICK edjavid
+USER edjavid localhost localhost :edjavid
+JOIN lol
+PASS lolcat
+NICK edjavid
+USER edjavid localhost localhost :edjavid
+JOIN lol
+PASS lolcat
+NICK edjavid
+USER edjavid localhost localhost :edjavid
+JOIN lol
+PASS lolcat
+NICK edjavid
+USER edjavid localhost localhost :edjavid
+JOIN lol
+PASS lolcat
+NICK edjavid
+USER edjavid localhost localhost :edjavid
+JOIN lol

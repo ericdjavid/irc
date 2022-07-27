@@ -221,16 +221,17 @@ int main(int argc, char **argv)
                     buffer[valread] = '\0';
                     get_buffer(buffer);
 
-                    // TODO : SPLIT THE BUFFER
+                    //?SPLIT THE BUFFER
                     std::string const cpp_buf(buffer);
                     const char delimiter = '\n';
                     std::vector<std::string> buff_arr;
                     tokenize(cpp_buf, delimiter, buff_arr);
                     int i = 0;
+
+
                     for (std::vector<std::string>::iterator it = buff_arr.begin() ; it != buff_arr.end() ; ++it)
                     {
                         i++;    
-                        std::string cap = "CAP LS\r";
                     //     std::cout << *it << std::endl;
                     //     std::cout << "comparing |";
                     //     std::cout << *it << std::endl;
@@ -238,7 +239,9 @@ int main(int argc, char **argv)
                     //     std::cout << "value of compare is " << cap.compare(*it) << std::endl;
                     //     std::cout << "cap egal : " << cap << std::endl;
                     //     std::cout << "it egal : " << *it << std::endl;
-
+                        std::string cap = "CAP LS\r";
+                        std::string cap_end = "CAP END\r";
+                        cap = "CAP END\r";
                         if (cap.compare(*it) == 0)
                         {
                             
@@ -273,8 +276,7 @@ int main(int argc, char **argv)
                             }
                             continue;
                         }
-                        cap = "CAP END\r";
-                        if (cap.compare(*it) == 0)
+                        if (cap_end.compare(*it) == 0)
                         {
                             std::cout << "End reached" << std::endl;
                         }

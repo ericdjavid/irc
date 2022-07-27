@@ -6,13 +6,15 @@
 
 void ft_join_channel(char* buff, the_serv *irc_serv)
 {
-    // Check if chan exists
-    std::vector<channel>::iterator channs = irc_serv->the_channel.begin();
-    std::string     channel_name;
-    channel_name = buff;
-    while (channs->get_name() != channel_name && channs != irc_serv->the_channel.end())
+    if (!(irc_serv->the_channel.empty()))
     {
-        channs++;
+        // Check if chan exists
+        std::vector<channel>::iterator channs = irc_serv->the_channel.begin();
+        std::string     channel_name(buff);
+        while (channs->get_name() != channel_name && channs != irc_serv->the_channel.end())
+        {
+            channs++;
+        }
     }
 
     // if not, add the channel
