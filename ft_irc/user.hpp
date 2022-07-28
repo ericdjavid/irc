@@ -5,26 +5,63 @@
 
 class user 
 {
-    private:
-    // NICK
-    // pseudonyme unique ayant une longueur maximale de neuf (9) caractères.
-    std::string _nick;
-    int        _id;
-    std::string _password;
-    std::string _user;
-    // Operators have increased power than the classic user
-    bool        _is_operat;
+	private:
+    		int		_id;
+		bool		_is_operat;
+		std::string	_nick;
+		std::string	_username;
+		std::string	_last_command;
+		std::string	_message_received;
+		std::string	_pass;
+		Channel		_current;
 
-    public:
-    user(int id, std::string nick, std::string user) : _nick(nick), _id(id), _user(user)
-    {
-        _is_operat = false;
-        std::cout << "new user created of id : " << _id << std::endl;
-    };
-    ~user() {};
-    int set_nick(std::string nick);
-    int set_password(std::string pswd);
-    // set username
+	public:
+    		user(int id, std::string nick, std::string user) : _id(id), _nick(nick), _user(user)
+    		{
+       			_is_operat = false;
+			_pass = NULL;
+			_last_command = "";
+			_message_received = "";
+			_current = NULL;
+	        	std::cout << "new user created of id : " << _id << std::endl;
+		};
+
+		~user() {};
+    
+		void	set_id(int id)
+		{
+			_id = id;
+		};
+
+		void	set_last_command(std::string str)
+		{
+			_last_command = str;
+		};
+
+		void	set_message_received(std::string str)
+		{
+			_message_received = str;
+		};
+
+		void	set_nick(std::string nick)
+    		{
+    			_nick = nick;
+    		};
+
+		void	set_username(std::string username)
+		{
+			_username = username;
+		}
+
+    		void	set_pass(std::string pswd)
+    		{
+    			_pass = pswd;
+    		};
+
+		void	connect_to_channel(Channel chann)
+		{
+			_current = chann;
+		}
 };
 
 
