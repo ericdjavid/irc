@@ -6,6 +6,7 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
+#include <sstream>
 
 template<typename T>
 T FromString(const std::string& str)
@@ -50,3 +51,23 @@ void get_buffer(char *buff)
 //         return true;
 //     return false;
 // }
+
+
+void client_printer(int sd, char const *str, int numeric, std::string user)
+{   
+    std::string the_str(str);
+    std::stringstream ss;
+    ss << numeric;
+    std::string num = ss.str();
+    std::string the_print = ":localhost " + num + " " + user + " :" + the_str + "\r\n";
+    std::cout << the_print << std::endl;
+    // Allocate memory
+    char* ccx = new char[the_print.length() + 1];
+    // Copy contents
+    std::copy(the_print.begin(), the_print.end(), ccx);
+    if (send(sd , ccx, strlen(ccx) , 0 ) != (ssize_t)strlen(ccx))
+    {
+        perror("send");
+    }
+
+}

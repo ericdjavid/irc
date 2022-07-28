@@ -58,12 +58,8 @@ int check_vector_arr(std::vector<std::string> buff_arr, std::string target)
 }
 
 
-void ft_treat_commands(std::vector<std::string> buff_arr, the_serv *irc_serv, int sd, fd_set *readfds)
+void ft_treat_commands(std::vector<std::string> buff_arr, the_serv *irc_serv, int sd)
 {
-
-    if (FD_ISSET( sd , readfds))
-    {
-
     char const *test2 = "pass received";
     send(sd , test2 , strlen(test2) , 0 );
     (void)irc_serv;
@@ -74,11 +70,8 @@ void ft_treat_commands(std::vector<std::string> buff_arr, the_serv *irc_serv, in
         send(sd , test , strlen(test) , 0 );
     }
     if (check_vector_arr(buff_arr, "PASS") > 0)
-    {
-        std::cout << "Pass received" << std::endl;
-        char const *test = "pass received";
-        send(sd , test , strlen(test) , 0 );
-    }
+    { 
+        client_printer(sd, "The password has been received", 371, "EDJAV");
     }
 
 
