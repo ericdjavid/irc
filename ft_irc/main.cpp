@@ -162,6 +162,7 @@ int main(int argc, char **argv)
         // then its an incoming connection
         if (FD_ISSET(master_socket, &readfds))
         {
+
             if ((new_socket = accept(master_socket,
                     (struct sockaddr *)&address, (socklen_t*)&addrlen))<0)
             {
@@ -223,66 +224,72 @@ int main(int argc, char **argv)
 
                     //?SPLIT THE BUFFER
                     std::string const cpp_buf(buffer);
-                    const char delimiter = '\n';
+                    // const char delimiter = '\n';
                     std::vector<std::string> buff_arr;
-                    tokenize(cpp_buf, delimiter, buff_arr);
+                    tokenize(cpp_buf, '\n', buff_arr);
                     int i = 0;
 
 
                     for (std::vector<std::string>::iterator it = buff_arr.begin() ; it != buff_arr.end() ; ++it)
                     {
-                        i++;    
-                    //     std::cout << *it << std::endl;
-                    //     std::cout << "comparing |";
-                    //     std::cout << *it << std::endl;
-                    //     std::cout << "| with |" << cap << "|." << std::endl;
-                    //     std::cout << "value of compare is " << cap.compare(*it) << std::endl;
-                    //     std::cout << "cap egal : " << cap << std::endl;
-                    //     std::cout << "it egal : " << *it << std::endl;
-                        std::string cap = "CAP LS\r";
-                        std::string cap_end = "CAP END\r";
-                        cap = "CAP END\r";
-                        if (cap.compare(*it) == 0)
-                        {
-                            
-                            std::cout << "CAP LS received" << std::endl;
-                            char const *test = "CAP * LS :\r\n";
-                            send(sd , test , strlen(test) , 0 );
-                            char const *world = ":localhost 001 edjavid :Optionnal msg\r\n NICK john\r\n USER edjavid\r\n";
-                            send(sd, world, strlen(world), 0);
-                            char const *world2 = ":localhost 002 edjavid :Your host is localhost, running version 1.0\r\n";
-                            send(sd, world2, strlen(world2), 0);
-                            char const *world3 = ":localhost 003 edjavid :This localhost was created at 17:14\r\n";
-                            send(sd, world3, strlen(world3), 0);
-
-                            ++it;
-                            std::string good(*it);
-                            std::string good2(good.substr(5, good.length()));
-                            std::cout << "irc_serv pswd is :" << irc_serv.password << std::endl;
-                            std::cout << "supposed pswd is is :";
-                            std::cout << good2 << std::endl;
-
-                            if (irc_serv.password.compare(good2) == 0)
-                            {
-                                std::cout << "pswd is correct, lfg" << std::endl; 
-                                irc_serv.the_users.push_back(user(1, "lolcat", "loca"));
-
-                                // std::string  nick_line(*(++it));
-                                // ft_compare_tokens(nick_line, 0, "PASS")
-                            }
-                            else
-                            {
-                                std::cout << "No password set =(" << std::endl;
-                            }
-                            continue;
-                        }
-                        if (cap_end.compare(*it) == 0)
-                        {
-                            std::cout << "End reached" << std::endl;
-                        }
+                        i++;
+                        std::cout << "vector:";
+                        std::cout << *it << std::endl;
                     }
+                    char const *test2 = "from main";
+                    if (send(sd , test2 , strlen(test2) , 0 ) != (ssize_t)strlen(test2))
+                    {
+                        perror("send");
+                    }
+                    ft_treat_commands(buff_arr, &irc_serv, sd, &readfds);
 
-                    ft_get_command(buffer, &irc_serv);
+                    // if (get_vect_elem(buff_arr, "CAP LS\r")) 
+
+
+                    //     std::string cap = "CAP LS\r";
+                    //     std::string cap_end = "CAP END\r";
+                    //     cap = "CAP END\r";
+                    //     if (cap.compare(*it) == 0)
+                    //     {
+                            
+                    //         std::cout << "CAP LS received" << std::endl;
+                    //         char const *test = "CAP * LS :\r\n";
+                    //         send(sd , test , strlen(test) , 0 );
+                    //         char const *world = ":localhost 001 edjavid :Optionnal msg\r\n NICK john\r\n USER edjavid\r\n";
+                    //         send(sd, world, strlen(world), 0);
+                    //         char const *world2 = ":localhost 002 edjavid :Your host is localhost, running version 1.0\r\n";
+                    //         send(sd, world2, strlen(world2), 0);
+                    //         char const *world3 = ":localhost 003 edjavid :This localhost was created at 17:14\r\n";
+                    //         send(sd, world3, strlen(world3), 0);
+
+                    //         ++it;
+                    //         std::string good(*it);
+                    //         std::string good2(good.substr(5, good.length()));
+                    //         std::cout << "irc_serv pswd is :" << irc_serv.password << std::endl;
+                    //         std::cout << "supposed pswd is is :";
+                    //         std::cout << good2 << std::endl;
+
+                    //         if (irc_serv.password.compare(good2) == 0)
+                    //         {
+                    //             std::cout << "pswd is correct, lfg" << std::endl; 
+                    //             irc_serv.the_users.push_back(user(1, "lolcat", "loca"));
+
+                    //             // std::string  nick_line(*(++it));
+                    //             // ft_compare_tokens(nick_line, 0, "PASS")
+                    //         }
+                    //         else
+                    //         {
+                    //             std::cout << "No password set =(" << std::endl;
+                    //         }
+                    //         continue;
+                    //     }
+                    //     if (cap_end.compare(*it) == 0)
+                    //     {
+                    //         std::cout << "End reached" << std::endl;
+                    //     }
+                    // }
+
+                    // ft_get_command(buffer, &irc_serv, sd);
                     FD_ZERO(&readfds);
                 }
 

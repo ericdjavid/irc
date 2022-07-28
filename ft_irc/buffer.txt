@@ -1,20 +1,3 @@
 PASS lolcat
 NICK edjavid
 USER edjavid localhost localhost :edjavid
-JOIN lol
-PASS lolcat
-NICK edjavid
-USER edjavid localhost localhost :edjavid
-JOIN lol
-PASS lolcat
-NICK edjavid
-USER edjavid localhost localhost :edjavid
-JOIN lol
-PASS lolcat
-NICK edjavid
-USER edjavid localhost localhost :edjavid
-JOIN lol
-PASS lolcat
-NICK edjavid
-USER edjavid localhost localhost :edjavid
-JOIN lol
