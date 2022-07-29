@@ -1,5 +1,6 @@
 #include "user.hpp"
 
+/*
 int user::set_nick(std::string nick)
 {
     _nick = nick;
@@ -50,3 +51,4 @@ int user()
 	close(user);
 	return (0);
 }
+*/

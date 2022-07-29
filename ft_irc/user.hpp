@@ -21,16 +21,16 @@ class user
 		std::string	_last_command;
 		std::string	_message_received;
 		std::string	_pass;
-		Channel		_current;
+		//Channel		_current;
 
 	public:
-    		user(int id, std::string nick, std::string user) : _id(id), _nick(nick), _user(user)
+    		user(int id, std::string nick, std::string user) : _id(id), _nick(nick), _username(user)
     		{
        			_is_operat = false;
-			_pass = NULL;
+			_pass.clear();
 			_last_command = "";
 			_message_received = "";
-			_current = NULL;
+//			_current = NULL;
 	        	std::cout << "new user created of id : " << _id << std::endl;
 		};
 
@@ -66,10 +66,11 @@ class user
     			_pass = pswd;
     		};
 
-		void	connect_to_channel(Channel chann)
+/*		void	connect_to_channel(Channel chann)
 		{
 			_current = chann;
 		}
+*/
 };
 
 
