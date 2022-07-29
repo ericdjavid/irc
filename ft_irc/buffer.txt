@@ -1,0 +1,13 @@
+CAP LS
+PASS lolcat
+NICK antton-t
+USER antton-t antton-t localhost :Antoine an TON THAT
+-----
+CAP END
+MODE edjavid +i
+WHOIS antton-t
+-----
+PING localhost
+-----
+QUIT :leaving
+-----
