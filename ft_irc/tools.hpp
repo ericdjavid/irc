@@ -4,12 +4,14 @@
 #include <sstream>
 #include <vector>
 #include <iostream>
+#include <fstream>
+#include <algorithm>
 
 template<typename T>
 T FromString(const std::string& str)
 {
     std::istringstream ss(str);
-    T ret;
+    T ret = 0; 
     ss >> ret;
     return ret;
 }
@@ -20,19 +22,31 @@ void error(std::string str)
     exit(EXIT_FAILURE);
 };
 
-std::vector<std::string> split (std::string s, std::string delimiter)
+void tokenize(std::string const &str, const char delim,
+            std::vector<std::string> &out)
 {
-    size_t pos_start = 0, pos_end, delim_len = delimiter.length();
-    std::string token;
-    std::vector<std::string> res;
-
-    //PBM DS SPLIT, SPLIT PAS TOUT LES ESPACES 
-    while ((pos_end = s.find (delimiter, pos_start)) != std::string::npos) {
-        token = s.substr (pos_start, pos_end - pos_start);
-        pos_start = pos_end + delim_len;
-        std::cout << "Token is " << token << " lol"<< std::endl;
-        res.push_back (token);
+    size_t start;
+    size_t end = 0;
+ 
+    while ((start = str.find_first_not_of(delim, end)) != std::string::npos)
+    {
+        end = str.find(delim, start);
+        out.push_back(str.substr(start, end - start));
     }
-    res.push_back (s.substr (pos_start));
-    return res;
 }
+
+void get_buffer(char *buff)
+{
+    std::ofstream myfile;
+    myfile.open ("buffer.txt", std::ios::app);
+    myfile << buff;
+    myfile.close();
+}
+
+// Function to compare strings and return true if it matches
+// bool ft_compare_tokens(std::string token, int jump, std::string expected)
+// {
+//     // if (expected.compare(token.substr(0, token.length())))
+//         return true;
+//     return false;
+// }
