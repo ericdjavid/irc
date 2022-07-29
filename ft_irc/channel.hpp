@@ -16,7 +16,10 @@ class channel
     channel(std::string name) : _name(name) 
     {
         std::cout << "Channel " << _name << " created" << std::endl;
-
     };
+    std::string get_name()
+    {
+        return(_name);
+    }
 
 };
