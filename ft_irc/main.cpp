@@ -227,31 +227,13 @@ int main(int argc, char **argv)
                     // const char delimiter = '\n';
                     std::vector<std::string> buff_arr;
                     tokenize(cpp_buf, '\n', buff_arr);
-                    int i = 0;
 
-                    char const *test = "CAP * LS :\r\n";
-                    send(sd , test , strlen(test) , 0 );
-                    char const *world = ":localhost 001 edjavid :Optionnal msg\r\n NICK john\r\n USER edjavid\r\n";
-                    send(sd, world, strlen(world), 0);
-                    char const *world2 = ":localhost 002 edjavid :Your host is localhost, running version 1.0\r\n";
-                    send(sd, world2, strlen(world2), 0);
-                    char const *world3 = ":localhost 003 edjavid :This localhost was created at 17:14\r\n";
-                    send(sd, world3, strlen(world3), 0);
 
-                    for (std::vector<std::string>::iterator it = buff_arr.begin() ; it != buff_arr.end() ; ++it)
-                    {
-                        i++;
-                        std::cout << "vector:";
-                        std::cout << *it << std::endl;
-                    }
-                    // char const *test2 = ":localhost 332 borja :A channel for CMSC 23300 students\r\n";
-                    // if (send(sd , test2 , strlen(test2) , 0 ) != (ssize_t)strlen(test2))
-                    // {
-                    //     perror("send");
-                    // }
                     std::string edj = "edjavid";
-                    client_printer(sd, "A channel for the good guyz", 371, edj);
-                    ft_treat_commands(buff_arr, &irc_serv, sd);
+                    if (ft_treat_commands(buff_arr, &irc_serv, sd))
+                    {
+                        continue;
+                    }
 
                     // if (get_vect_elem(buff_arr, "CAP LS\r")) 
 

@@ -41,17 +41,9 @@ void get_buffer(char *buff)
     std::ofstream myfile;
     myfile.open ("buffer.txt", std::ios::app);
     myfile << buff;
+    myfile << "-----\n"; 
     myfile.close();
 }
-
-// Function to compare strings and return true if it matches
-// bool ft_compare_tokens(std::string token, int jump, std::string expected)
-// {
-//     // if (expected.compare(token.substr(0, token.length())))
-//         return true;
-//     return false;
-// }
-
 
 void client_printer(int sd, char const *str, int numeric, std::string user)
 {   
@@ -69,5 +61,17 @@ void client_printer(int sd, char const *str, int numeric, std::string user)
     {
         perror("send");
     }
+}
+
+void print_vector(std::vector<std::string> buff_arr)
+{
+    int i = 0;
+    for (std::vector<std::string>::iterator it = buff_arr.begin() ; it != buff_arr.end() ; ++it)
+    {
+        std::cout << "vector[" << i << "] = ";
+        std::cout << *it << std::endl;
+        i++;
+    }
+
 
 }
