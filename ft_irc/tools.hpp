@@ -82,7 +82,6 @@ int nick_already_in_use(std::string nick, std::vector<User> vector)
     std::vector<User>::iterator it;
 
     it = vector.begin();
-    //std::cout << "dans ma fonction ////////////////////////" << std::endl;
     while (it != vector.end())
     {
         if (it->get_nick() == nick)
@@ -102,3 +101,11 @@ int nick_already_in_use(std::string nick, std::vector<User> vector)
 
 
 // }
+
+		// class User	create_new_user(int id, std::string nick, std::string username, std::vector<User> *tab)
+		// {
+		// 	if (nick_already_in_use(nick, tab->the_users))
+		// 	{
+
+		// 	}
+		// }

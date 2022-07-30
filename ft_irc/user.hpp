@@ -98,16 +98,8 @@ class User
 			_current = chann;
 		}
 
-		// void	disconnect_from_channel (void)
-		// {
-		// 	_current = NULL;
-		// }
-
-		// User	create_new_user(int id, std::string nick, std::string username, std::vector<User> *tab)
-		// {
-		// 	if (nick_already_in_use(nick, tab->the_users))
-		// 	{
-
-		// 	}
-		// }
+		void	disconnect_from_channel (void)
+		{
+			_current = NULL;
+		}
 };
