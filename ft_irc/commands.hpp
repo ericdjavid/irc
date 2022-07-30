@@ -11,7 +11,7 @@ void ft_join_channel(char* buff, the_serv *irc_serv)
 	if (!(irc_serv->the_channel.empty()))
 	{
 		// Check if chan exists
-		std::vector<channel>::iterator channs = irc_serv->the_channel.begin();
+		std::vector<Channel>::iterator channs = irc_serv->the_channel.begin();
 		std::string     channel_name(buff);
 		while (channs->get_name() != channel_name && channs != irc_serv->the_channel.end())
 		{
@@ -24,7 +24,7 @@ void ft_join_channel(char* buff, the_serv *irc_serv)
 	for (int i = 0; i < 4; i++)
 		buff++;
 	std::string name(buff); 
-	irc_serv->the_channel.push_back(channel(buff));
+	irc_serv->the_channel.push_back(Channel(buff));
 
 }
 
@@ -107,11 +107,11 @@ int ft_treat_commands(std::vector<std::string> buff_arr, the_serv *irc_serv, int
 			std::string pass = buff_arr.at(ret).substr(5);
 			if (!pass.compare(irc_serv->password))
 			{
-				client_printer(sd, "Good password entered =)", 371, "EDJAV");
+				client_printer(sd, "Good password entered =)", 371, user);
 				std::cout << "Good password entered =)" << std::endl;
 
 				// TODO ALEX ADD NEW USER --> check if sd is adapted for id
-				class user tmp_user(sd, nick, user);
+				class User tmp_user(sd, nick, user);
 				irc_serv->the_users.push_back(tmp_user);
 				return 1;
 			}
@@ -131,4 +131,3 @@ int ft_treat_commands(std::vector<std::string> buff_arr, the_serv *irc_serv, int
 
 	return 0;
 }
-
