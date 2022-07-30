@@ -7,6 +7,7 @@
 #include <fstream>
 #include <algorithm>
 #include <sstream>
+#include "user.hpp"
 
 template<typename T>
 T FromString(const std::string& str)
@@ -74,6 +75,30 @@ void print_vector(std::vector<std::string> buff_arr)
         std::cout << *it << std::endl;
         i++;
     }
-
-
 }
+
+int nick_already_in_use(std::string nick, std::vector<User> vector)
+{
+    std::vector<User>::iterator it;
+
+    it = vector.begin();
+    //std::cout << "dans ma fonction ////////////////////////" << std::endl;
+    while (it != vector.end())
+    {
+        if (it->get_nick() == nick)
+            return (1);
+        it++;
+    }
+    if (vector.size() > 0 && it->get_nick() == nick)
+    {
+        std::cout << "only one user and nick is " << it->get_nick() << std::endl;
+        return (1);
+    }
+    return (0);
+}
+
+// void display_users(std::vector<User> the_users)
+// {
+
+
+// }

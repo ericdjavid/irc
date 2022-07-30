@@ -5,6 +5,8 @@
 #include "user.hpp"
 #include "channel.hpp"
 #include <sys/time.h>       //FD_SET, FD_ISSET, FD_ZERO macros
+#include "server.hpp"
+#include "tools.hpp"
 
 void ft_join_channel(char* buff, the_serv *irc_serv)
 {
@@ -60,6 +62,8 @@ int ft_treat_commands(std::vector<std::string> buff_arr, the_serv *irc_serv, int
 	std::string user;
 	std::cout << "STATIC INT FIRST IS " << first << std::endl;
 	// IF NICK ALREADY USED, SEND 433 INSTEAD
+	//if (nick_already_in_use(nick, irc_serv->the_users))
+
 	print_vector(buff_arr);
 
 	if (check_vector_arr(buff_arr, "PING localhost\r") > 0)
@@ -80,19 +84,20 @@ int ft_treat_commands(std::vector<std::string> buff_arr, the_serv *irc_serv, int
 		}
 		if ((ret = check_vector_arr(buff_arr, "NICK")) > 0)
 		{
-			nick = buff_arr.at(ret - 1).substr(5);
+			nick = buff_arr.at(ret - 1).substr(5) + '\0';
 			std::cout << "nick is " << nick << std::endl;
 
 			ret = check_vector_arr(buff_arr, "USER");
-			user = buff_arr.at(ret - 1).substr(5);
+			user = buff_arr.at(ret - 1).substr(5) + '\0';
 			std::cout << "user is " << user << std::endl;
 
-			// TODO ALEX CHECK IF NICK IS ALREADY USED
-			// if(is_already_used)
-			// 		print_already used
-			// 		return 2
-
-
+			// VERIFIER SI C'EST OKAY
+			if (nick_already_in_use(nick, irc_serv->the_users))
+			{
+				std::cout << "Nick already in use, please pick another one" << std::endl;
+				return (2);
+			}
+			/////////////////////////
 			char const *test = "CAP * LS :\r\n";
 			send(sd , test , strlen(test) , 0 );
 			char const *world = ":localhost 001 edjavid :Optionnal msg\r\n NICK john\r\n USER edjavid\r\n";
@@ -111,8 +116,9 @@ int ft_treat_commands(std::vector<std::string> buff_arr, the_serv *irc_serv, int
 				std::cout << "Good password entered =)" << std::endl;
 
 				// TODO ALEX ADD NEW USER --> check if sd is adapted for id
-				class User tmp_user(sd, nick, user);
+				class User tmp_user(sd, "nick", user);
 				irc_serv->the_users.push_back(tmp_user);
+				std::cout << "USER NICK IS " << tmp_user.get_nick() << std::endl;
 				return 1;
 			}
 			else
