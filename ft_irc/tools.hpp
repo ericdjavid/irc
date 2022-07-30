@@ -6,6 +6,7 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
+#include <sstream>
 
 template<typename T>
 T FromString(const std::string& str)
@@ -40,13 +41,39 @@ void get_buffer(char *buff)
     std::ofstream myfile;
     myfile.open ("buffer.txt", std::ios::app);
     myfile << buff;
+    myfile << "-----\n"; 
     myfile.close();
 }
 
-// Function to compare strings and return true if it matches
-// bool ft_compare_tokens(std::string token, int jump, std::string expected)
-// {
-//     // if (expected.compare(token.substr(0, token.length())))
-//         return true;
-//     return false;
-// }
+void client_printer(int sd, char const *str, int numeric, std::string user)
+{   
+    std::string the_str(str);
+    std::stringstream ss;
+    ss << numeric;
+    std::string num = ss.str();
+    std::string the_print = ":localhost " + num + " " + user + " :" + the_str + "\r\n";
+    std::cout << the_print << std::endl;
+    // Allocate memory
+    char *ccx = new char[the_print.length() + 1];
+    // Copy contents
+    std::copy(the_print.begin(), the_print.end(), ccx);
+    if (send(sd , ccx, the_print.size() , 0 ) != (ssize_t)the_print.size())
+    {
+        perror("send");
+    }
+    delete[] ccx;
+    return ;
+}
+
+void print_vector(std::vector<std::string> buff_arr)
+{
+    int i = 0;
+    for (std::vector<std::string>::iterator it = buff_arr.begin() ; it != buff_arr.end() ; ++it)
+    {
+        std::cout << "vector[" << i << "] = ";
+        std::cout << *it << std::endl;
+        i++;
+    }
+
+
+}

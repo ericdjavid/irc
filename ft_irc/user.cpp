@@ -6,8 +6,8 @@ int user::set_nick(std::string nick)
     return 1;
 };
 
-int user::set_password(std::string pswd)
-{
-    _password = pswd;
-    return 1;
-};
+// int user::set_password(std::string pswd)
+// {
+//     _password = pswd;
+//     return 1;
+// };

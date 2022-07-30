@@ -10,7 +10,6 @@ class user
     // pseudonyme unique ayant une longueur maximale de neuf (9) caractères.
     std::string _nick;
     int        _id;
-    std::string _password;
     std::string _user;
     // Operators have increased power than the classic user
     bool        _is_operat;
