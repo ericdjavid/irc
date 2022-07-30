@@ -54,13 +54,15 @@ void client_printer(int sd, char const *str, int numeric, std::string user)
     std::string the_print = ":localhost " + num + " " + user + " :" + the_str + "\r\n";
     std::cout << the_print << std::endl;
     // Allocate memory
-    char* ccx = new char[the_print.length() + 1];
+    char *ccx = new char[the_print.length() + 1];
     // Copy contents
     std::copy(the_print.begin(), the_print.end(), ccx);
-    if (send(sd , ccx, strlen(ccx) , 0 ) != (ssize_t)strlen(ccx))
+    if (send(sd , ccx, the_print.size() , 0 ) != (ssize_t)the_print.size())
     {
         perror("send");
     }
+    delete[] ccx;
+    return ;
 }
 
 void print_vector(std::vector<std::string> buff_arr)

@@ -2,6 +2,7 @@
 #include <cstring>
 #include <iostream>
 #include <vector>
+#include "user.hpp"
 #include "channel.hpp"
 #include <sys/time.h>       //FD_SET, FD_ISSET, FD_ZERO macros
 
@@ -27,14 +28,6 @@ void ft_join_channel(char* buff, the_serv *irc_serv)
 
 }
 
-// void ft_get_command(char *buff, the_serv *irc_serv, int sd)
-// {
-//     if (strncmp(buff, "JOIN ", 5) == 0)
-//         ft_join_channel(buff, irc_serv);
-//     if (strncmp(buff, "PING ", 5) == 0)
-//         send(sd, "PONG localhost", 14, 0);
-// }
-
 int check_vector_arr(std::vector<std::string> buff_arr, std::string target)
 {
 	int i = 0;
@@ -44,10 +37,10 @@ int check_vector_arr(std::vector<std::string> buff_arr, std::string target)
 		size_t s = target.length();
 		std::string new_str(*it);
 		new_str = new_str.substr(0, s);
-		std::cout << "comparing:";
-		std::cout << new_str;
-		std::cout << " with:";
-		std::cout << target << std::endl;
+		// std::cout << "comparing:";
+		// std::cout << new_str;
+		// std::cout << " with:";
+		// std::cout << target << std::endl;
 		if (new_str.compare(target) == 0)
 		{
 			// int index = std::distance(buff_arr.begin(), it);
@@ -62,56 +55,78 @@ int check_vector_arr(std::vector<std::string> buff_arr, std::string target)
 int ft_treat_commands(std::vector<std::string> buff_arr, the_serv *irc_serv, int sd)
 {
 	static int first = 0;
-	// int	erase_count = 0;
 	int ret = 0;
+	std::string nick;
+	std::string user;
+	std::cout << "STATIC INT FIRST IS " << first << std::endl;
+	// IF NICK ALREADY USED, SEND 433 INSTEAD
 	print_vector(buff_arr);
+
+	if (check_vector_arr(buff_arr, "PING localhost\r") > 0)
+	{
+		// TODO FIX PONG, not working
+		// client_printer(sd, "PONG localhost", 371, "edj");
+		send(sd, "PONG localhost\r", 15, 0);
+		return 1;
+	}
+	if (check_vector_arr(buff_arr, "CAP END\r") > 0)
+		return 1;
 	if (!first)
 	{
 		if ((ret = check_vector_arr(buff_arr, "CAP LS\r")) > 0)
 		{
-			client_printer(sd, "A channel for the good guyz", 371, "edj");
+			if (buff_arr.size() == 1)
+				return 1;
+		}
+		if ((ret = check_vector_arr(buff_arr, "NICK")) > 0)
+		{
+			nick = buff_arr.at(ret - 1).substr(5);
+			std::cout << "nick is " << nick << std::endl;
+
+			ret = check_vector_arr(buff_arr, "USER");
+			user = buff_arr.at(ret - 1).substr(5);
+			std::cout << "user is " << user << std::endl;
+
+			// TODO ALEX CHECK IF NICK IS ALREADY USED
+			// if(is_already_used)
+			// 		print_already used
+			// 		return 2
+
+
 			char const *test = "CAP * LS :\r\n";
 			send(sd , test , strlen(test) , 0 );
 			char const *world = ":localhost 001 edjavid :Optionnal msg\r\n NICK john\r\n USER edjavid\r\n";
 			send(sd, world, strlen(world), 0);
-			char const *world2 = ":localhost 002 edjavid :Your host is localhost, running version 1.0\r\n";
-			send(sd, world2, strlen(world2), 0);
-			char const *world3 = ":localhost 003 edjavid :This localhost was created at 17:14\r\n";
-			send(sd, world3, strlen(world3), 0);
-			if (buff_arr.size() == 1)
-				return 1;
+			client_printer(sd, "Your host is localhost, running version 1\n", 002, user);
+			client_printer(sd, "This localhost was created at [add hour]\n", 003, user);
 		}
 		if ((ret = check_vector_arr(buff_arr, "PASS")) > 0)
 		{ 
-			// grab user and nick name
-			// if((ret = check_vector_arr(buff_arr, "USER")) > 0)
-			// {
-				// add user name
-				// buff_arr.erase(buff_arr.begin() + ret);
-			// }
 			first++;
-			client_printer(sd, "Password entered", 371, "EDJAV");
-			// comparer
-			(void)irc_serv;
-
-			int siz = buff_arr.at(ret -1).size();
-			std::cout << "Password: " << buff_arr.at(ret) << std::endl;
-			std::cout << "Size of the line is " << siz << std::endl;
+			ret -= 1;
 			std::string pass = buff_arr.at(ret).substr(5);
 			if (!pass.compare(irc_serv->password))
 			{
+				client_printer(sd, "Good password entered =)", 371, "EDJAV");
 				std::cout << "Good password entered =)" << std::endl;
+
+				// TODO ALEX ADD NEW USER --> check if sd is adapted for id
+				class user tmp_user(sd, nick, user);
+				irc_serv->the_users.push_back(tmp_user);
+				return 1;
 			}
 			else
 			{
 				std::cout << "Wrong password entered =(" << std::endl;
+				first--;
+				return 2;
 			}
-
 		}
-		// else
-		// {
-		//     client_printer(sd, "Password incorrect or missing", 471, "EDJAV");
-		// }
+		else
+		{
+		    client_printer(sd, "No password set up, please connect with password", 471, "EDJAV");
+			return 2;
+		}
 	}
 
 	return 0;

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "user.hpp"
 #include "channel.hpp"
 #include <vector>
 
