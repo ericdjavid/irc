@@ -31,8 +31,10 @@ class User
 	        std::cout << "new User created of id : " << _id << std::endl;
 		};
 
+		User() {};
+
 		~User() {};
-    
+
 		void	set_id(int id)
 		{
 			_id = id;

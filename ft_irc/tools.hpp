@@ -96,16 +96,29 @@ int nick_already_in_use(std::string nick, std::vector<User> vector)
     return (0);
 }
 
-// void display_users(std::vector<User> the_users)
-// {
+class User	*create_new_user(int id, std::string nick, std::string username, std::vector<User> *tab)
+{
+	if (nick_already_in_use(nick, *tab))
+	{
+        std::cout << "Nick already in use, please choose another one." << std::endl;
+        return NULL;
+	}
+    class User *new_one = new User(id, nick, username);
+    return new_one;
+}
 
+void display_users(std::vector<User> the_users)
+{
+    std::vector<User>::iterator it;
 
-// }
-
-		// class User	create_new_user(int id, std::string nick, std::string username, std::vector<User> *tab)
-		// {
-		// 	if (nick_already_in_use(nick, tab->the_users))
-		// 	{
-
-		// 	}
-		// }
+    it = the_users.begin();
+    while (it != the_users.end())
+    {
+        std::cout << "id : " << it->get_id() << "nick : " << it->get_nick() << "username : " << it->get_username() << std::endl;
+        it++;
+    }
+    if (the_users.size() > 0)
+    {
+         std::cout << "id : " << it->get_id() << "nick : " << it->get_nick() << "username : " << it->get_username() << std::endl;
+    }
+}

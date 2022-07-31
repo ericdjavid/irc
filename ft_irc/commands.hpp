@@ -91,13 +91,11 @@ int ft_treat_commands(std::vector<std::string> buff_arr, the_serv *irc_serv, int
 			user = buff_arr.at(ret - 1).substr(5) + '\0';
 			std::cout << "user is " << user << std::endl;
 
-			// VERIFIER SI C'EST OKAY
 			if (nick_already_in_use(nick, irc_serv->the_users))
 			{
 				std::cout << "Nick already in use, please pick another one" << std::endl;
 				return (2);
 			}
-			/////////////////////////
 			char const *test = "CAP * LS :\r\n";
 			send(sd , test , strlen(test) , 0 );
 			char const *world = ":localhost 001 edjavid :Optionnal msg\r\n NICK john\r\n USER edjavid\r\n";
@@ -116,9 +114,9 @@ int ft_treat_commands(std::vector<std::string> buff_arr, the_serv *irc_serv, int
 				std::cout << "Good password entered =)" << std::endl;
 
 				// TODO ALEX ADD NEW USER --> check if sd is adapted for id
-				class User tmp_user(sd, "nick", user);
-				irc_serv->the_users.push_back(tmp_user);
-				std::cout << "USER NICK IS " << tmp_user.get_nick() << std::endl;
+				class User *tmp_user = create_new_user(sd, "nick", "username", &(irc_serv->the_users));
+				irc_serv->the_users.push_back(*tmp_user);
+				std::cout << "USER NICK IS " << tmp_user->get_nick() << std::endl;
 				return 1;
 			}
 			else
