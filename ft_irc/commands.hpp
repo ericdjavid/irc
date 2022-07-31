@@ -117,6 +117,9 @@ int ft_treat_commands(std::vector<std::string> buff_arr, the_serv *irc_serv, int
 				class User *tmp_user = create_new_user(sd, "nick", "username", &(irc_serv->the_users));
 				irc_serv->the_users.push_back(*tmp_user);
 				std::cout << "USER NICK IS " << tmp_user->get_nick() << std::endl;
+				std::cout << "||||||||||||| USERS |||||||||||||||" << std::endl;
+				display_users(irc_serv->the_users);
+				std::cout <<  "|||||||||||||END |||||||||||||||" << std::endl;
 				return 1;
 			}
 			else

@@ -117,8 +117,4 @@ void display_users(std::vector<User> the_users)
         std::cout << "id : " << it->get_id() << "nick : " << it->get_nick() << "username : " << it->get_username() << std::endl;
         it++;
     }
-    if (the_users.size() > 0)
-    {
-         std::cout << "id : " << it->get_id() << "nick : " << it->get_nick() << "username : " << it->get_username() << std::endl;
-    }
 }
