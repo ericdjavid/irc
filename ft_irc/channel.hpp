@@ -45,7 +45,7 @@ class Channel
         const char  *reference;
 
         reference = name.c_str();
-        if (compare_first_char(reference[0]) == '0' && name.length() <= 50)
+        if (compare_first_char(reference[0]) == '0' || name.length() >= 50)
         {
             std::cout << "wrong channel name, please select a correct one(starts with &-#-+-! and lenght of 50 char max)." << std::endl;
             return 1;
