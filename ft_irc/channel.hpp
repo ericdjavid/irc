@@ -52,6 +52,8 @@ class Channel
         }
         if (compare_to_existing_channels(name, channels))
             return 1;
+        if (syntax_channel_name(name))
+            return 1;
         std::vector<User> users;
         Channel *tmp = new Channel(name, users, reference[0]);
     }
@@ -77,6 +79,29 @@ class Channel
             }
             it++;
         }
+        return 0;
+    }
+
+    int     syntax_channel_name(std::string name)
+    {
+        const char  *reference;
+        int         i;
+
+        reference = name.c_str();
+        i = 0;
+        while(reference[i])
+        {
+            if (is_forbidden(reference[i]) == 1)
+                return 1;
+            i++;
+        }
+        return 0;
+    }
+    
+    int     is_forbidden(char c)
+    {
+        if (c == ',' || c == ':' || c == ' ' || c == 7)
+            return 1;
         return 0;
     }
 };
