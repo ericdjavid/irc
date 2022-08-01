@@ -119,9 +119,9 @@ int ft_treat_commands(std::vector<std::string> buff_arr, the_serv *irc_serv, int
 					return (3);
 				irc_serv->the_users.push_back(*tmp_user);
 				std::cout << "USER NICK IS " << tmp_user->get_nick() << std::endl;
-				std::cout << "||||||||||||| USERS |||||||||||||||" << std::endl;
+				std::cout << "||||||||||||| USERS |||||||||||||" << std::endl;
 				display_users(irc_serv->the_users);
-				std::cout <<  "|||||||||||||END |||||||||||||||" << std::endl;
+				std::cout <<  "||||||||||||| END |||||||||||||" << std::endl;
 				return 1;
 			}
 			else
