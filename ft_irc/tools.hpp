@@ -89,10 +89,7 @@ int nick_already_in_use(std::string nick, std::vector<User> vector)
         it++;
     }
     if (vector.size() > 0 && it->get_nick() == nick)
-    {
-        std::cout << "only one user and nick is " << it->get_nick() << std::endl;
         return (1);
-    }
     return (0);
 }
 

@@ -5,7 +5,7 @@
 #include "channel.hpp"
 // #include "tools.hpp"
 
-class User 
+typedef class User 
 {
 	private:
     	int			_id;
@@ -104,4 +104,4 @@ class User
 		{
 			_current = NULL;
 		}
-};
+} User;
