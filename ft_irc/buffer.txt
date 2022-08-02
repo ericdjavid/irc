@@ -3,11 +3,3 @@ PASS lolcat
 NICK jam
 USER edjavid edjavid localhost :Eric DJAVID
 -----
-CAP END
-MODE edjavid +i
-WHOIS jam
------
-PING localhost
------
-QUIT :leaving
------

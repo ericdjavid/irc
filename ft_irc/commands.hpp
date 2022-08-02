@@ -1,5 +1,6 @@
 #pragma once
-#include <cstring>
+// #include <cstring>
+#include <string.h>
 #include <iostream>
 #include <vector>
 #include "user.hpp"
@@ -56,11 +57,23 @@ int check_vector_arr(std::vector<std::string> buff_arr, std::string target)
 
 int ft_treat_commands(std::vector<std::string> buff_arr, the_serv *irc_serv, int sd)
 {
-	static int first = 0;
+
+	// CHECK IF SD IS IN THE LIST OF USER
+	std::cout << "sd = " << sd << std::endl;
+	if (check_if_user_exist(sd, irc_serv->the_users) > 0)
+	{
+		std::cout << "The user with the same fd exists" << std::endl;
+	}
+	// -> check pas le password	
+
+	// ON LE RAJOUTE EN TEMPORAIRE
+	// CHECK PASSWORD
+
+	// static int first = 0;
 	int ret = 0;
 	std::string nick;
 	std::string user;
-	std::cout << "STATIC INT FIRST IS " << first << std::endl;
+	std::string tmp_user("edjavid");
 	// IF NICK ALREADY USED, SEND 433 INSTEAD
 	//if (nick_already_in_use(nick, irc_serv->the_users))
 
@@ -75,68 +88,69 @@ int ft_treat_commands(std::vector<std::string> buff_arr, the_serv *irc_serv, int
 	}
 	if (check_vector_arr(buff_arr, "CAP END\r") > 0)
 		return 1;
-	if (!first)
+	// if (!first)
+	// {
+	if ((ret = check_vector_arr(buff_arr, "CAP LS\r")) > 0)
 	{
-		if ((ret = check_vector_arr(buff_arr, "CAP LS\r")) > 0)
+		if (buff_arr.size() == 1)
+			return 1;
+	}
+	if ((ret = check_vector_arr(buff_arr, "NICK")) > 0)
+	{
+		nick = buff_arr.at(ret - 1).substr(5);
+		std::cout << "nick is " << nick << std::endl;
+
+		ret = check_vector_arr(buff_arr, "USER");
+		user = buff_arr.at(ret - 1).substr(5);
+		std::cout << "user is " << user << "lollol"<< std::endl;
+
+		// if (nick_already_in_use(nick, irc_serv->the_users))
+		// {
+		// 	std::cout << "Nick already in use, please pick another one" << std::endl;
+		// 	return (2);
+		// }
+		char const *test = "CAP * LS :\r\n";
+		send(sd , test , strlen(test) , 0 );
+		// char const *world = ":localhost 001 edjavid :Optionnal msg\r\n NICK john\r\n USER edjavid\n";
+		// send(sd, world, strlen(world), 0);
+		client_printer(sd, "Optionnal msg NICK XXX USER XXX\n", "001", tmp_user);
+		std::string the_str("Your host is localhost, running version 1");
+		client_printer(sd, the_str, "002", tmp_user);
+		client_printer(sd, "This localhost was created at [add hour]", "003", tmp_user);
+	}
+	if ((ret = check_vector_arr(buff_arr, "PASS")) > 0)
+	{ 
+		ret -= 1;
+		std::string pass = buff_arr.at(ret).substr(5);
+		if (!pass.compare(irc_serv->password))
 		{
-			if (buff_arr.size() == 1)
-				return 1;
-		}
-		if ((ret = check_vector_arr(buff_arr, "NICK")) > 0)
-		{
-			nick = buff_arr.at(ret - 1).substr(5) + '\0';
-			std::cout << "nick is " << nick << std::endl;
+			client_printer(sd, "Good password entered =)", "371", tmp_user);
+			// std::cout << "Good password entered =)" << std::endl;
 
-			ret = check_vector_arr(buff_arr, "USER");
-			user = buff_arr.at(ret - 1).substr(5) + '\0';
-			std::cout << "user is " << user << std::endl;
-
-			if (nick_already_in_use(nick, irc_serv->the_users))
-			{
-				std::cout << "Nick already in use, please pick another one" << std::endl;
-				return (2);
-			}
-			char const *test = "CAP * LS :\r\n";
-			send(sd , test , strlen(test) , 0 );
-			char const *world = ":localhost 001 edjavid :Optionnal msg\r\n NICK john\r\n USER edjavid\r\n";
-			send(sd, world, strlen(world), 0);
-			client_printer(sd, "Your host is localhost, running version 1\n", 002, user);
-			client_printer(sd, "This localhost was created at [add hour]\n", 003, user);
-		}
-		if ((ret = check_vector_arr(buff_arr, "PASS")) > 0)
-		{ 
-			first++;
-			ret -= 1;
-			std::string pass = buff_arr.at(ret).substr(5);
-			if (!pass.compare(irc_serv->password))
-			{
-				client_printer(sd, "Good password entered =)", 371, user);
-				std::cout << "Good password entered =)" << std::endl;
-
-				// TODO ALEX ADD NEW USER --> check if sd is adapted for id
-				class User *tmp_user = create_new_user(sd, "nick", "username", &(irc_serv->the_users));
-				if (tmp_user == NULL)
-					return (3);
-				irc_serv->the_users.push_back(*tmp_user);
-				std::cout << "USER NICK IS " << tmp_user->get_nick() << std::endl;
-				std::cout << "||||||||||||| USERS |||||||||||||" << std::endl;
-				display_users(irc_serv->the_users);
-				std::cout <<  "||||||||||||| END |||||||||||||" << std::endl;
-				return 1;
-			}
-			else
-			{
-				std::cout << "Wrong password entered =(" << std::endl;
-				first--;
-				return 2;
-			}
+			// TODO ALEX ADD NEW USER --> check if sd is adapted for id
+			class User *tmp_user = create_new_user(sd, "nick", "username", &(irc_serv->the_users));
+			if (tmp_user == NULL)
+				return (3);
+			irc_serv->the_users.push_back(*tmp_user);
+			std::cout << "USER NICK IS " << tmp_user->get_nick() << std::endl;
+			std::cout << "||||||||||||| USERS |||||||||||||" << std::endl;
+			display_users(irc_serv->the_users);
+			std::cout <<  "||||||||||||| END |||||||||||||" << std::endl;
+			return 1;
 		}
 		else
 		{
-		    client_printer(sd, "No password set up, please connect with password", 471, "EDJAV");
+			std::cout << "Wrong password entered =(" << std::endl;
+			// first--;
 			return 2;
 		}
 	}
+	else
+	{
+		client_printer(sd, "No password set up, please connect with password", "471", "EDJAV");
+		return 2;
+	}
+	// }
 
 	return 0;
 }
