@@ -48,10 +48,8 @@ void get_buffer(char *buff)
 
 void client_printer(int sd, std::string str, std::string numeric, std::string user)
 {   
-    std::cout << " ////////// PRINTING /////////////// " << std::endl; 
     std::string beg(":localhost ");
     std::string the_print = beg + numeric + " " + user + ": " + str + "\r\n";
-    std::cout << the_print << std::endl;
     // Allocate memory
     char *ccx = new char[the_print.length() + 1];
     // Copy contents
@@ -109,7 +107,7 @@ void display_users(std::vector<User> the_users)
     it = the_users.begin();
     while (it != the_users.end())
     {
-        std::cout << "id : " << it->get_id() << "nick : " << it->get_nick() << "username : " << it->get_username() << std::endl;
+        std::cout << "id : " << it->get_id() << " | nick : " << it->get_nick() << " | username : " << it->get_username() << std::endl;
         it++;
     }
 }
