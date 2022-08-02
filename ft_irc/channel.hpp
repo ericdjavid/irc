@@ -7,7 +7,7 @@
 class Channel
 {
     private:
-    std::vector<User>   _users;
+    std::vector<class User>   _users;
     std::string         _name;
     char                _properties;
 
@@ -38,6 +38,7 @@ class Channel
         if (verify_channel_name(name, channels) == 1)
             return NULL;
         //create channel
+        return NULL;
     }
 
     int     verify_channel_name(std::string name, std::vector<Channel> channels)
@@ -56,6 +57,8 @@ class Channel
             return 1;
         std::vector<User> users;
         Channel *tmp = new Channel(name, users, reference[0]);
+        (void)tmp;
+        return 1;
     }
 
    char     compare_first_char(char c)
@@ -67,12 +70,10 @@ class Channel
 
     int     compare_to_existing_channels(std::string name, std::vector<Channel> channels)
     {
-        std::vector<Channel>::iterator *it;
-        
-        *it = channels.begin();
-        while(*it != channels.end())
+        std::vector<Channel>::iterator it = channels.begin();
+        while(it != channels.end())
         {
-            if ((*it)->_name == name)
+            if ((it)->_name == name)
             {
                 std::cout << "name " << name << " is already used by another Channel. Please select another one." << std::endl;
                 return 1;
