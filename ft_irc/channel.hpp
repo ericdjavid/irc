@@ -4,22 +4,26 @@
 #include <vector>
 #include "user.hpp"
 
-class channel
+class Channel
 {
     private:
     std::string _name;
     // list of users that have joined the channel
-    std::vector<user> id;
+    //std::vector<User> id;
 
     public:
-    ~channel() {};
-    channel(std::string name) : _name(name) 
+    ~Channel() {};
+    Channel(std::string name) : _name(name) 
     {
+        //id = std::vector<User>;
         std::cout << "Channel " << _name << " created" << std::endl;
     };
     std::string get_name()
     {
         return(_name);
     }
-
+    Channel &operator= (Channel *ptr)
+    {
+        return (*ptr);
+    }
 };

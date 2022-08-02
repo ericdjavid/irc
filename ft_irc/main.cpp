@@ -31,7 +31,7 @@ int main(int argc, char **argv)
     int PORT = uport;
 
     int opt = TRUE;
-    int master_socket , addrlen , new_socket , client_socket[30] , max_clients = 30 , activity, i , valread , sd;
+    int master_socket , addrlen , new_socket , client_socket[30] , max_clients = 30 , activity, i , valread , sd = 0;
     int max_sd;
     struct sockaddr_in address;
 
@@ -125,7 +125,6 @@ int main(int argc, char **argv)
     //accept the incoming connection
     addrlen = sizeof(address);
     puts("Waiting for connections ...");
-
 
     while(TRUE)
     {
@@ -222,58 +221,30 @@ int main(int argc, char **argv)
                     buffer[valread] = '\0';
                     get_buffer(buffer);
 
-                    //?SPLIT THE BUFFER
+                    //SPLIT THE BUFFER
                     std::string const cpp_buf(buffer);
-                    // const char delimiter = '\n';
-                    std::vector<std::string> buff_arr;
+                    std::vector<std::string> buff_arr (0);
                     tokenize(cpp_buf, '\n', buff_arr);
 
-
-                    std::string edj = "edjavid";
-                    if (ft_treat_commands(buff_arr, &irc_serv, sd))
+                    int ret = 0;
+                    if ((ret = ft_treat_commands(buff_arr, &irc_serv, sd)) == 1)
                     {
+                        // the socket has been treated, we continue
                         continue;
                     }
+                    else if (ret == 2)
+                    {
+                        //Wrong password or no password, we close the connexion
+                        getpeername(sd , (struct sockaddr*)&address , \
+                            (socklen_t*)&addrlen);
+                        printf("Host disconnected , ip %s , port %d \n" ,
+                            inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
 
-                    // if (get_vect_elem(buff_arr, "CAP LS\r")) 
-
-
-                    //     std::string cap = "CAP LS\r";
-                    //     std::string cap_end = "CAP END\r";
-                    //     cap = "CAP END\r";
-                    //     if (cap.compare(*it) == 0)
-                    //     {
-                            
-
-                    //         ++it;
-                    //         std::string good(*it);
-                    //         std::string good2(good.substr(5, good.length()));
-                    //         std::cout << "irc_serv pswd is :" << irc_serv.password << std::endl;
-                    //         std::cout << "supposed pswd is is :";
-                    //         std::cout << good2 << std::endl;
-
-                    //         if (irc_serv.password.compare(good2) == 0)
-                    //         {
-                    //             std::cout << "pswd is correct, lfg" << std::endl; 
-                    //             irc_serv.the_users.push_back(user(1, "lolcat", "loca"));
-
-                    //             // std::string  nick_line(*(++it));
-                    //             // ft_compare_tokens(nick_line, 0, "PASS")
-                    //         }
-                    //         else
-                    //         {
-                    //             std::cout << "No password set =(" << std::endl;
-                    //         }
-                    //         continue;
-                    //     }
-                    //     if (cap_end.compare(*it) == 0)
-                    //     {
-                    //         std::cout << "End reached" << std::endl;
-                    //     }
-                    // }
-
-                    // ft_get_command(buffer, &irc_serv, sd);
-                    FD_ZERO(&readfds);
+                        //Close the socket and mark as 0 in list for reuse
+                        close( sd );
+                        client_socket[i] = 0;
+                    }
+                    // FD_ZERO(&readfds);
                 }
 
             }
