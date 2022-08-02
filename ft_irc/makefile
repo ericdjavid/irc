@@ -21,7 +21,7 @@ C_END		=	\e[0m
 #	CONSTANTS
 CC			=	c++ -std=c++98 -g
 FLAGS		=	-Wall -Wextra -Werror
-SRCS		=	main.cpp user.cpp
+SRCS		=	main.cpp
 OBJS		=	$(SRCS:.cpp=.o)
 
 # Quand make va essayer de cr´eer la cible, il va regarder la (les) d´ependance(s).
