@@ -41,7 +41,7 @@ int main(int argc, char **argv)
     fd_set readfds;
 
     the_serv irc_serv;
-    irc_serv.password = pswd + '\r';
+    irc_serv.password = pswd;
     class User test(1, "TEST USER", "TEST USER");
     irc_serv.the_users.push_back(test);
 
