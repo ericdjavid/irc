@@ -28,3 +28,19 @@ int 	check_if_user_exist(int sd, std::vector<class User> users)
     }
     return 0;
 }
+
+// FONCTION POUR PARCOURIR LA LISTE DES USERS, RENVOIE FALSE SI PAS TROUVE, SINN TRUE DE L USER
+bool 	check_if_user_exist_with_nick(std::string nick, std::vector<class User> users)
+{
+    std::vector<class User>::iterator it = users.begin();
+    while (it != users.end())
+    {
+        // std::cout << "Comparing " << sd << " with " << it->get_id() << std::endl;
+        if (nick == it->get_nick())
+        {
+            return (true);
+        }
+        it++;
+    }
+    return false;
+}

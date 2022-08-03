@@ -4,10 +4,8 @@ NICK jam
 USER edjavid edjavid localhost :Eric DJAVID
 -----
 CAP END
-MODE edjavid: +i
+MODE edjavid +i
 WHOIS jam
------
-PING localhost
 -----
 CAP LS
 PASS lolcat
@@ -15,9 +13,14 @@ NICK jam
 USER edjavid edjavid localhost :Eric DJAVID
 -----
 CAP END
------
-MODE edjavid: +i
+MODE edjavid +i
 WHOIS jam
 -----
 PING localhost
+-----
+PING localhost
+-----
+QUIT :leaving
+-----
+QUIT :leaving
 -----

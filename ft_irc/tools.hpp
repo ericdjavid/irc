@@ -17,6 +17,29 @@ T FromString(const std::string& str)
     return ret;
 }
 
+int check_vector_arr(std::vector<std::string> buff_arr, std::string target)
+{
+	int i = 0;
+	for (std::vector<std::string>::iterator it = buff_arr.begin() ; it != buff_arr.end() ; ++it)
+	{
+		i++;
+		size_t s = target.length();
+		std::string new_str(*it);
+		new_str = new_str.substr(0, s);
+		// std::cout << "comparing:";
+		// std::cout << new_str;
+		// std::cout << " with:";
+		// std::cout << target << std::endl;
+		if (new_str.compare(target) == 0)
+		{
+			// int index = std::distance(buff_arr.begin(), it);
+			printf("ret = %d\n", i);
+			return i;
+		}
+	}
+	return 0;
+}
+
 void error(std::string str)
 {
     std::cout << str << std::endl;
