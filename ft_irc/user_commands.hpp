@@ -14,7 +14,9 @@ int ft_deal_with_commands(class User the_user, int sd, the_serv *irc_serv, std::
     {
 	    // TODO FIX PONG, not working
 	    // client_printer(sd, "PONG localhost", "371", "edj");
-	    send(sd, "PONG localhost\r", 15, 0);
+	    send(sd, "PONG :localhost\r\n", 15, 0);
+        std::cout << "PONG now" << std::endl;
+        //send(sd, "PONG localhost\r", 15, 0);
 	    return (0);
     }
     // ? JOIN
