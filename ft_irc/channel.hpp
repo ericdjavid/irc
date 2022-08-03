@@ -33,16 +33,16 @@ class Channel
         return (*ptr);
     }
 
-    Channel *create_new_channel(std::string name, std::vector<Channel> channels)
+    void    create_new_channel(std::string name, std::vector<Channel> *channels)
     {
         const char  *reference;
 
         reference = name.c_str();
-        if (verify_channel_name(name, channels) == 1)
-            return NULL;
+        if (verify_channel_name(name, *channels) == 1)
+            return ;
         std::vector<User> users;
         Channel *tmp = new Channel(name, users, reference[0]);
-        return tmp;
+        channels->push_back(*tmp);
     }
 
     int     verify_channel_name(std::string name, std::vector<Channel> channels)
