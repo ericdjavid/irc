@@ -37,13 +37,15 @@ class Channel
     {
         if (verify_channel_name(name, channels) == 1)
             return NULL;
-        //create channel
+	else
+		creation_channel(name, channels);
         return NULL;
     }
     
     void creation_channel(std::string name, std::vector<Channel> channels)
     {
-	class Channel new_channel(name);
+        std::vector<User> users;
+	class Channel new_channel(name, users, reference[0]);
 	channels.push_back(new_channel);
     }
 
@@ -61,10 +63,7 @@ class Channel
             return 1;
         if (syntax_channel_name(name))
             return 1;
-        std::vector<User> users;
-        Channel *tmp = new Channel(name, users, reference[0]);
-        (void)tmp;
-        return 1;
+        return 0;
     }
 
    char     compare_first_char(char c)

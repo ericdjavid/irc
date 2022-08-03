@@ -1,23 +1,19 @@
 CAP LS
 PASS lolcat
-NICK jam
-USER edjavid edjavid localhost :Eric DJAVID
+NICK antton-t
+USER antton-t antton-t localhost :Antoine an TON THAT
 -----
 CAP END
 MODE edjavid: +i
-WHOIS jam
------
-PING localhost
------
-CAP LS
-PASS lolcat
-NICK jam
-USER edjavid edjavid localhost :Eric DJAVID
------
-CAP END
------
+WHOIS antton-t
 MODE edjavid: +i
-WHOIS jam
+WHOIS antton-t
 -----
 PING localhost
+-----
+JOIN #test
+-----
+PRIVMSG #test :sdf
+-----
+QUIT :leaving
 -----

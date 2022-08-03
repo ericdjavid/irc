@@ -2,16 +2,10 @@
 
 #include <string>
 #include <iostream>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <netdb.h>
+#include "channel.hpp"
+// #include "tools.hpp"
 
-class User
+typedef class User 
 {
 	private:
     	int			_id;
@@ -22,7 +16,7 @@ class User
 		std::string	_last_command;
 		std::string	_message_received;
 		std::string	_pass;
-//		Channel		*_current;
+		Channel		*_current;
 
 	public:
     	User(int id, std::string nick, std::string User)
@@ -35,7 +29,7 @@ class User
 			_pass = "";
 			_last_command = "";
 			_message_received = "";
-//			_current = NULL;
+			_current = NULL;
 	        std::cout << "new User created of id : " << _id << std::endl;
 		};
 
@@ -48,7 +42,7 @@ class User
 			_id = id;
 		};
 
-		int	get_id(void)
+		int		get_id(void)
 		{
 			return (_id);
 		}
@@ -74,9 +68,9 @@ class User
 		}
 
 		void	set_nick(std::string nick)
-		{
-			_nick = nick;
-		};
+    	{
+    		_nick = nick;
+    	};
 
 		std::string	get_nick(void)
 		{
@@ -92,16 +86,17 @@ class User
 		{
 			return (_username);
 		}
-		
-		void	set_pass(std::string pswd)
-		{
-			_pass = pswd;
-		};
+
+    	void	set_pass(std::string pswd)
+    	{
+    		_pass = pswd;
+    	};
 
 		std::string	get_pass(void)
 		{
 			return (_pass);
 		}
+
 		void	connect_to_channel(Channel *chann)
 		{
 			_current = chann;
@@ -112,4 +107,3 @@ class User
 			_current = NULL;
 		}
 } User;
-
