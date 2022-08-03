@@ -47,7 +47,7 @@ int check_vector_arr(std::vector<std::string> buff_arr, std::string target)
 		if (new_str.compare(target) == 0)
 		{
 			// int index = std::distance(buff_arr.begin(), it);
-			printf("ret = %d\n", i);
+			// printf("ret = %d\n", i);
 			return i;
 		}
 	}
@@ -112,20 +112,18 @@ void ft_deal_next(std::vector<std::string> buff_arr, the_serv *irc_serv, int sd)
 		client_printer(sd, "This localhost was created at [add hour]", "003", tmp_user);
 		if (ft_check_password(buff_arr, irc_serv, sd) == true)
 		{
-			// SET USER AS FINISHED
-			// ! ces lignes creent des bugs
-			// class User *tmp_user = create_new_user(sd, nick, user, &(irc_serv->the_users));
-			// irc_serv->the_users.push_back(*tmp_user);
-			// if (tmp_user == NULL)
-			// {
-			// 	perror("PBM with user allocation");
-			// }
-			//class User tmp(sd, nick, user);
-			//irc_serv->the_users.push_back(tmp);
-
-			std::cout << "||||||||||||| USERS |||||||||||||" << std::endl;
-			display_users(irc_serv->the_users);
-			std::cout <<  "||||||||||||| END |||||||||||||" << std::endl;
+			if (nick_already_in_use(nick, irc_serv->the_users) == 0)
+			{
+				class User tmp(sd, nick, user);
+				irc_serv->the_users.push_back(tmp);
+			}
+			else
+			{
+				perror("PBM with user allocation");
+			}
+			// std::cout << "||||||||||||| USERS |||||||||||||" << std::endl;
+			// display_users(irc_serv->the_users);
+			// std::cout <<  "||||||||||||| END |||||||||||||" << std::endl;
 		}
 	}
 }

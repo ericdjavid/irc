@@ -33,22 +33,18 @@ class Channel
         return (*ptr);
     }
 
-    Channel *create_new_channel(std::string name, std::vector<Channel> channels)
+    void    create_new_channel(std::string name, std::vector<Channel> *channels)
     {
-        if (verify_channel_name(name, channels) == 1)
-            return NULL;
-	else
-		creation_channel(name, channels);
-        return NULL;
+        const char  *reference;
+
+        reference = name.c_str();
+        if (verify_channel_name(name, *channels) == 1)
+            return ;
+        std::vector<User> users;
+        Channel *tmp = new Channel(name, users, reference[0]);
+        channels->push_back(*tmp);
     }
     
-    void creation_channel(std::string name, std::vector<Channel> channels)
-    {
-        std::vector<User> users;
-	class Channel new_channel(name, users, reference[0]);
-	channels.push_back(new_channel);
-    }
-
     int     verify_channel_name(std::string name, std::vector<Channel> channels)
     {
         const char  *reference;
@@ -63,7 +59,7 @@ class Channel
             return 1;
         if (syntax_channel_name(name))
             return 1;
-        return 0;
+        return 1;
     }
 
    char     compare_first_char(char c)
