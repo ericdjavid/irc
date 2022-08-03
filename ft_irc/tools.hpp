@@ -73,9 +73,9 @@ void client_printer(int sd, std::string str, std::string numeric, std::string us
     std::string beg(":localhost ");
     std::string the_print;
     if (numeric == "0")
-        the_print = str + "\n";
+        the_print = str + "\r\n";
     else
-        the_print = beg + numeric + " " + user + ": " + str + "\n";
+        the_print = beg + numeric + " " + user + ": " + str + "\r\n";
     // Allocate memory
     char *ccx = new char[the_print.length() + 1];
     // Copy contents
@@ -109,7 +109,7 @@ int nick_already_in_use(std::string nick, std::vector<User> vector)
         if (it->get_nick() == nick)
             return (1);
         it++;
-    }
+    } 
     if (vector.size() > 0 && it->get_nick() == nick)
         return (1);
     return (0);

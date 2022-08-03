@@ -1,5 +1,86 @@
 CAP LS
-PASS JOHN
-NICK jam
+PASS lolcat
+NICK JOHN
 USER edjavid edjavid localhost :Eric DJAVID
+-----
+CAP END
+MODE edjavid +i
+WHOIS JOHN
+-----
+PING localhost
+-----
+CAP LS
+PASS lolcat
+NICK LOLA
+USER edjavid edjavid localhost :Eric DJAVID
+-----
+CAP END
+MODE edjavid +i
+WHOIS LOLA
+-----
+PING localhost
+-----
+PRIVMSG JOHN :test
+-----
+PRIVMSG JOHN :test
+-----
+PRIVMSG LOLA :lol
+-----
+PRIVMSG LOLA :lol
+-----
+PRIVMSG JOHN :test
+-----
+PRIVMSG LOLA :lol
+-----
+PRIVMSG JOHN :hello I am lola
+-----
+PRIVMSG LOLA :hello I am John
+-----
+CAP LS
+PASS lolcat
+NICK JOHN
+USER edjavid edjavid localhost :Eric DJAVID
+-----
+CAP END
+MODE edjavid +i
+WHOIS JOHN
+-----
+CAP LS
+PASS lolcat
+NICK LOLA
+USER edjavid edjavid localhost :Eric DJAVID
+-----
+CAP END
+MODE edjavid +i
+WHOIS LOLA
+-----
+PING localhost
+-----
+PING localhost
+-----
+PING localhost
+-----
+PING localhost
+-----
+PRIVMSG LOLA :hello I am John
+-----
+PRIVMSG LOLA :hello I am John
+-----
+PRIVMSG JOHN :hello I am lola
+-----
+PRIVMSG LOLA :hello I am John
+-----
+PRIVMSG JOHN :hello I am lola
+-----
+PRIVMSG JOHN :hello I am lola
+-----
+PRIVMSG JOHN :hello I am lola
+-----
+PRIVMSG JOHN :hello I am lola
+-----
+PRIVMSG JOHN :hello I am lola
+-----
+PRIVMSG JOHN :hello I am lola
+-----
+PRIVMSG JOHN :hello I am lola
 -----

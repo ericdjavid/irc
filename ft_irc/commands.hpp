@@ -136,12 +136,10 @@ int ft_treat_commands(std::vector<std::string> buff_arr, the_serv *irc_serv, int
 	{
 		// TODO? CHECK OTHER COMMANDS LIKE JOIN
 		// std::cout << "The user with the same fd exists so let's not look for the connexion stuffs" << std::endl;
-		// class User *the_user = &irc_serv->the_users.at(ret -1);
-		// class User the_user = irc_serv->the_users.at((size_t)ret -1);
 		int index = 0;
 		if ((index = get_index(irc_serv->the_users, sd)) > 0)
 		{
-			std::cout << "index is " << index << std::endl;
+			// std::cout << "index is " << index << std::endl;
 		}
 
 		if (!ft_deal_with_commands(index, sd, irc_serv, buff_arr))
