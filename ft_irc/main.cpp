@@ -15,11 +15,7 @@
 #include "tools.hpp"
 #include "server.hpp"
 #include "commands.hpp"
-<<<<<<< HEAD
 #include "user_commands.hpp"
-=======
-#include "new_connection.cpp"
->>>>>>> 67e4b7b4d7337dfd13b608a41771d760a1e4d832
 
 #define TRUE 1
 #define FALSE 0
@@ -157,16 +153,12 @@ int main(int argc, char **argv)
                 max_sd = sd;
         }
 
-<<<<<<< HEAD
-        activity = select( max_sd + 1 , &readfds , NULL , NULL , NULL);
-=======
         //wait for an activity on one of the sockets , timeout is equal to 5 sec ,
         //so wait indefinitely
         // timeval tmp;
         // tmp.tv_sec = 5;
         // (void)tmp
         activity = select( max_sd + 1 , &readfds , NULL , NULL , NULL); //third argument of select equals NULL, so select can wait an infinite time. If 3rd value set to 5 sec, select will wait 5sec
->>>>>>> 67e4b7b4d7337dfd13b608a41771d760a1e4d832
 
         if ((activity < 0) && (errno!=EINTR))
         {
@@ -242,20 +234,12 @@ int main(int argc, char **argv)
                     std::vector<std::string> buff_arr (0);
                     tokenize(cpp_buf, '\n', buff_arr);
 
-<<<<<<< HEAD
                     int ret = 0;
                     if ((ret = ft_treat_commands(buff_arr, &irc_serv, sd)) == 1)
-=======
-                    // std::cout << "client: " << buffer; 
-                    
-                    // TODO GET PASSWORD, IF NOT, CANCELL CONNEXION
-                    if (strncmp(buffer, "PASS", 4) == 0)
->>>>>>> 67e4b7b4d7337dfd13b608a41771d760a1e4d832
                     {
                         // the socket has been treated, we continue
                         continue;
                     }
-<<<<<<< HEAD
                     else if (ret == 2)
                     {
                         // We close the connexion
@@ -269,15 +253,6 @@ int main(int argc, char **argv)
                         client_socket[i] = 0;
                     }
                     // FD_ZERO(&readfds);
-=======
-
-                    // FIRST CONNEXION
-                    if (strncmp(buffer, "CAP LS", 6) == 0)
-                       new_connection(sd);
-                    else
-                        ft_get_command(buffer, &irc_serv);
-                    FD_ZERO(&readfds);
->>>>>>> 67e4b7b4d7337dfd13b608a41771d760a1e4d832
                 }
             }
         }
