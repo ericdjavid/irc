@@ -35,10 +35,14 @@ class Channel
 
     Channel *create_new_channel(std::string name, std::vector<Channel> channels)
     {
+        const char  *reference;
+
+        reference = name.c_str();
         if (verify_channel_name(name, channels) == 1)
             return NULL;
-        //create channel
-        return NULL;
+        std::vector<User> users;
+        Channel *tmp = new Channel(name, users, reference[0]);
+        return tmp;
     }
 
     int     verify_channel_name(std::string name, std::vector<Channel> channels)
@@ -55,9 +59,6 @@ class Channel
             return 1;
         if (syntax_channel_name(name))
             return 1;
-        std::vector<User> users;
-        Channel *tmp = new Channel(name, users, reference[0]);
-        (void)tmp;
         return 1;
     }
 

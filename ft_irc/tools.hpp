@@ -84,8 +84,6 @@ int nick_already_in_use(std::string nick, std::vector<User> vector)
             return (1);
         it++;
     }
-    if (vector.size() > 0 && it->get_nick() == nick)
-        return (1);
     return (0);
 }
 
@@ -97,6 +95,7 @@ class User	*create_new_user(int id, std::string nick, std::string username, std:
         return NULL;
 	}
     class User *new_one = new User(id, nick, username);
+    
     return new_one;
 }
 
