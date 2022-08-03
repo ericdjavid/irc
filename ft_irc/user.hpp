@@ -16,6 +16,7 @@ class User
 	private:
     	int			_id;
 		bool		_is_operat;
+		bool		_is_in_creation;
 		std::string	_nick;
 		std::string	_username;
 		std::string	_last_command;
@@ -30,6 +31,7 @@ class User
 			_nick = nick;
 			_username = User;
        		_is_operat = false;
+       		_is_in_creation = true;
 			_pass = "";
 			_last_command = "";
 			_message_received = "";
@@ -100,7 +102,6 @@ class User
 		{
 			return (_pass);
 		}
-/*
 		void	connect_to_channel(Channel *chann)
 		{
 			_current = chann;
@@ -110,5 +111,5 @@ class User
 		{
 			_current = NULL;
 		}
-*/
-};
+} User;
+

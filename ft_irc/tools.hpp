@@ -6,7 +6,6 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
-#include <sstream>
 #include "user.hpp"
 
 template<typename T>
@@ -24,11 +23,12 @@ void error(std::string str)
     exit(EXIT_FAILURE);
 };
 
-void tokenize(std::string const &str, const char delim,
+void tokenize(std::string &str, const char delim,
             std::vector<std::string> &out)
 {
     size_t start;
     size_t end = 0;
+    str.erase(remove(str.begin(), str.end(), '\r'), str.end());
  
     while ((start = str.find_first_not_of(delim, end)) != std::string::npos)
     {
@@ -46,14 +46,10 @@ void get_buffer(char *buff)
     myfile.close();
 }
 
-void client_printer(int sd, char const *str, int numeric, std::string user)
+void client_printer(int sd, std::string str, std::string numeric, std::string user)
 {   
-    std::string the_str(str);
-    std::stringstream ss;
-    ss << numeric;
-    std::string num = ss.str();
-    std::string the_print = ":localhost " + num + " " + user + " :" + the_str + "\r\n";
-    std::cout << the_print << std::endl;
+    std::string beg(":localhost ");
+    std::string the_print = beg + numeric + " " + user + ": " + str + "\r\n";
     // Allocate memory
     char *ccx = new char[the_print.length() + 1];
     // Copy contents
@@ -111,7 +107,7 @@ void display_users(std::vector<User> the_users)
     it = the_users.begin();
     while (it != the_users.end())
     {
-        std::cout << "id : " << it->get_id() << "nick : " << it->get_nick() << "username : " << it->get_username() << std::endl;
+        std::cout << "id : " << it->get_id() << " | nick : " << it->get_nick() << " | username : " << it->get_username() << std::endl;
         it++;
     }
 }

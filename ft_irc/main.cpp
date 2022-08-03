@@ -41,7 +41,9 @@ int main(int argc, char **argv)
     fd_set readfds;
 
     the_serv irc_serv;
-    irc_serv.password = pswd + '\r';
+    irc_serv.password = pswd;
+    //class User test(1, "TEST USER", "TEST USER");
+    //irc_serv.the_users.push_back(test);
 
     //initialise all client_socket[] to 0 so not checked
     for (i = 0; i < max_clients; i++)
@@ -222,7 +224,7 @@ int main(int argc, char **argv)
                     get_buffer(buffer);
 
                     //SPLIT THE BUFFER
-                    std::string const cpp_buf(buffer);
+                    std::string cpp_buf(buffer);
                     std::vector<std::string> buff_arr (0);
                     tokenize(cpp_buf, '\n', buff_arr);
 

@@ -41,9 +41,10 @@ class Channel
         return NULL;
     }
     
-    Channel *creation_channel(std::string name, std::vector<Channel> channels)
+    void creation_channel(std::string name, std::vector<Channel> channels)
     {
-	
+	class Channel new_channel(name);
+	channels.push_back(new_channel);
     }
 
     int     verify_channel_name(std::string name, std::vector<Channel> channels)
