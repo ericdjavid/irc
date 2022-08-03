@@ -8,18 +8,22 @@ class Channel
 {
     private:
     std::vector<class User>   _users;
+    std::vector<class User>	_ban_users;
     std::string         _name;
     char                _properties;
 
     public:
+
+	int a = 10;
     ~Channel() {};
 
     Channel(std::string name) : _name(name) {}
 
-    Channel(std::string name, std::vector<User> users, char prop)
+    Channel(std::string name, std::vector<User> users, std::vector<User> ban_u, char prop)
     {
         _name = name;
         _users = users;
+	_ban_users = ban_u;
         _properties = prop;
     }
 
@@ -41,7 +45,8 @@ class Channel
         if (verify_channel_name(name, *channels) == 1)
             return ;
         std::vector<User> users;
-        Channel *tmp = new Channel(name, users, reference[0]);
+	std::vector<User> ban_u;
+        Channel *tmp = new Channel(name, users, ban_u, reference[0]);
         channels->push_back(*tmp);
     }
     

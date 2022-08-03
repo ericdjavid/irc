@@ -15,6 +15,7 @@
 #include "tools.hpp"
 #include "server.hpp"
 #include "commands.hpp"
+#include "user_commands.hpp"
 
 #define TRUE 1
 #define FALSE 0
@@ -42,8 +43,8 @@ int main(int argc, char **argv)
 
     the_serv irc_serv;
     irc_serv.password = pswd;
-    //class User test(1, "TEST USER", "TEST USER");
-    //irc_serv.the_users.push_back(test);
+    class User test(1, "TEST", "TEST");
+    irc_serv.the_users.push_back(test);
 
     //initialise all client_socket[] to 0 so not checked
     for (i = 0; i < max_clients; i++)
@@ -236,7 +237,7 @@ int main(int argc, char **argv)
                     }
                     else if (ret == 2)
                     {
-                        //Wrong password or no password, we close the connexion
+                        // We close the connexion
                         getpeername(sd , (struct sockaddr*)&address , \
                             (socklen_t*)&addrlen);
                         printf("Host disconnected , ip %s , port %d \n" ,

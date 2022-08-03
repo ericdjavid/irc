@@ -10,7 +10,6 @@ typedef class User
 	private:
     	int			_id;
 		bool		_is_operat;
-		bool		_is_in_creation;
 		std::string	_nick;
 		std::string	_username;
 		std::string	_last_command;
@@ -25,7 +24,6 @@ typedef class User
 			_nick = nick;
 			_username = User;
        		_is_operat = false;
-       		_is_in_creation = true;
 			_pass = "";
 			_last_command = "";
 			_message_received = "";
