@@ -28,6 +28,7 @@ void ft_join_channel(char* buff, the_serv *irc_serv)
 		buff++;
 	std::string name(buff); 
 	irc_serv->the_channel.push_back(Channel(buff));
+	print_channels(irc_serv->the_channel);
 }
 
 bool ft_check_password(std::vector<std::string> buff_arr, the_serv *irc_serv, int sd)

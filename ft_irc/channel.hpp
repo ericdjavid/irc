@@ -7,9 +7,9 @@
 class Channel
 {
     private:
-    std::vector<class User>   _users;
-    std::string         _name;
-    char                _properties;
+    std::vector<class User>     _users;
+    std::string                 _name;
+    char                        _properties;
 
     public:
     ~Channel() {};
@@ -33,12 +33,9 @@ class Channel
         return (*ptr);
     }
 
-    Channel *create_new_channel(std::string name, std::vector<Channel> channels)
+    void    add_user(User user)
     {
-        if (verify_channel_name(name, channels) == 1)
-            return NULL;
-        //create channel
-        return NULL;
+        _users.push_back(user);
     }
 
     int     verify_channel_name(std::string name, std::vector<Channel> channels)
@@ -55,10 +52,7 @@ class Channel
             return 1;
         if (syntax_channel_name(name))
             return 1;
-        std::vector<User> users;
-        Channel *tmp = new Channel(name, users, reference[0]);
-        (void)tmp;
-        return 1;
+        return 0;
     }
 
    char     compare_first_char(char c)
@@ -73,7 +67,7 @@ class Channel
         std::vector<Channel>::iterator it = channels.begin();
         while(it != channels.end())
         {
-            if ((it)->_name == name)
+            if (it->_name == name)
             {
                 std::cout << "name " << name << " is already used by another Channel. Please select another one." << std::endl;
                 return 1;
@@ -99,10 +93,22 @@ class Channel
         return 0;
     }
     
-    int     is_forbidden(char c)
+int     is_forbidden(char c)
     {
         if (c == ',' || c == ':' || c == ' ' || c == 7)
             return 1;
         return 0;
     }
 };
+
+void    print_channels(std::vector<Channel> channels)
+{
+    std::vector<Channel>::iterator it;
+
+    it = channels.begin();
+    while (it != channels.end())
+    {
+        std::cout << it->get_name() << std::endl;
+        it++;
+    }
+}

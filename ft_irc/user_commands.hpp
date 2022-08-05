@@ -5,7 +5,9 @@
 #include "server.hpp"
 #include "tools.hpp"
 #include "commands.hpp"
+#include "channel.hpp"
 #include <sys/socket.h> //send
+#include "channel.cpp"
 
 int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std::string> buff_arr)
 {
@@ -15,11 +17,36 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
 	    // TODO FIX PONG, not working
 	    // client_printer(sd, "PONG localhost", "371", "edj");
 	    send(sd, "PONG :localhost\r\n", 15, 0);
+        //send(sd, "PONG :localhost\r\n", 371, 0);
 	    return (0);
     }
     // ? JOIN
     if ((ret = check_vector_arr(buff_arr, "JOIN")) > 0)
     {
+        std::string     c_name = buff_arr[0];
+        std::string     chann_name = c_name.substr(5, c_name.length() - 5);
+        if (compare_to_existing_channels(chann_name, irc_serv->the_channel) == 0)
+        {
+            if (verify_channel_name(chann_name, irc_serv->the_channel) == 0)
+            {
+                const char    *reference;
+                std::vector<User> users;
+
+                reference = chann_name.c_str();
+                class Channel tmp(chann_name, users, reference[0]);
+                irc_serv->the_channel.push_back(tmp);
+            }
+            else{
+                //MSG ERREUR NOM DE CHANN
+                return (1);
+            }
+        }
+        int     i;
+        i = get_index(irc_serv->the_users, sd);
+        irc_serv->the_users[i].connect_to_channel(get_channel(chann_name, irc_serv->the_channel));
+        Channel *tmp2 = get_channel(chann_name, irc_serv->the_channel);
+        tmp2->add_user(irc_serv->the_users[i]);
+        //CONNECT TO CHANNEL
         std::cout << "JOIN called" << std::endl;
     }
 
