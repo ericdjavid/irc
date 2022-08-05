@@ -45,12 +45,26 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
             std::cout << "ID of " << target << " is " << target_id << std::endl;
             // TODO! LE PREMIER MSG NE S ENVOIE PAS, A FIX
             client_printer(target_id, endmsg, "371", target);
-            
-
         }
         else
-            std::cout << "the user don't exist =(" << std::endl;        
+            std::cout << "the user don't exist =(" << std::endl;
     }
+
+    // ? OPERATOR STAT
+    if ((ret = check_vector_arr(buff_arr, "OPER")) > 0)
+    {
+        // BECORME OPERATOR
+        std::cout << "OPERATOR called" << std::endl;
+        std::string buff = buff_arr.at(ret - 1).substr(5);
+        std::cout << "Buff is |" << buff << std::endl;
+        std::string target = buff.substr(0, buff.find(' '));
+        std::string msg = buff.substr(buff.find(' '));
+        std::cout << "target is " << target << std::endl;
+        std::cout << "msg is " << msg << std::endl;
+
+    }
+
+        
 
     return (0);
 
