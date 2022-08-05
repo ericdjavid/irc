@@ -12,11 +12,10 @@
 int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std::string> buff_arr)
 {
     int ret = 0;
+    // ? PONG
     if (check_vector_arr(buff_arr, "PING localhost") > 0)
     {
-	    // TODO FIX PONG, not working
         std::string PONG(":localhost PONG localhost :localhost");
-	    // client_printer(sd, PONG, "0", "no need");
 	    send(sd,":localhost PONG localhost :localhost", PONG.size(), 0);
 	    return (0);
     }
@@ -36,8 +35,8 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
                 class Channel tmp(chann_name, users, reference[0]);
                 irc_serv->the_channel.push_back(tmp);
             }
-            else{
-                //MSG ERREUR NOM DE CHANN
+            else
+            {
                 return (1);
             }
         }
@@ -84,15 +83,17 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
         std::cout << "OPERATOR called" << std::endl;
         std::string buff = buff_arr.at(ret - 1).substr(5);
         std::cout << "Buff is |" << buff << std::endl;
-        std::string target = buff.substr(0, buff.find(' '));
-        std::string msg = buff.substr(buff.find(' '));
-        std::cout << "target is " << target << std::endl;
-        std::cout << "msg is " << msg << std::endl;
-
+        std::string user = buff.substr(0, buff.find(' '));
+        std::string pswd = buff.substr(buff.find(' '));
+        std::cout << "user is " << user << std::endl;
+        std::cout << "pswd is " << pswd << std::endl;
+        std::string pass = "YEAH";
+        if (!pass.compare(pswd.substr(1,4)))
+        {
+            irc_serv->the_users.at(get_index(irc_serv->the_users, sd)).set_operat(true);
+            std::cout << "User " << user << " set as operator" << std::endl;
+        }
     }
-
-        
-
     return (0);
 
 

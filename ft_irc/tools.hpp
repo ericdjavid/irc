@@ -112,8 +112,6 @@ int nick_already_in_use(std::string nick, std::vector<User> vector)
             return (1);
         it++;
     } 
-    if (vector.size() > 0 && it->get_nick() == nick)
-        return (1);
     return (0);
 }
 

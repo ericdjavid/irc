@@ -7,6 +7,8 @@ CAP END
 MODE edjavid +i
 WHOIS jam
 -----
+OPER edjavid YEAH
+-----
 PING localhost
 -----
 CAP LS
@@ -14,14 +16,7 @@ PASS lolcat
 NICK jam
 USER edjavid edjavid localhost :Eric DJAVID
 -----
-CAP LS
-PASS lolcat
-NICK lola
-USER edjavid edjavid localhost :Eric DJAVID
+JOIN #lol
 -----
-CAP END
-MODE edjavid +i
-WHOIS lola
------
-PING localhost
+QUIT :leaving
 -----
