@@ -240,7 +240,7 @@ int main(int argc, char **argv)
                         // the socket has been treated, we continue
                         continue;
                     }
-                    else if (ret == 2)
+                    else if (ret == -2)
                     {
                         // We close the connexion
                         getpeername(sd , (struct sockaddr*)&address , \

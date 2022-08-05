@@ -33,11 +33,10 @@ int check_vector_arr(std::vector<std::string> buff_arr, std::string target)
 		if (new_str.compare(target) == 0)
 		{
 			// int index = std::distance(buff_arr.begin(), it);
-			printf("ret = %d\n", i);
 			return i;
 		}
 	}
-	return 0;
+	return -1;
 }
 
 void error(std::string str)
@@ -72,7 +71,11 @@ void get_buffer(char *buff)
 void client_printer(int sd, std::string str, std::string numeric, std::string user)
 {   
     std::string beg(":localhost ");
-    std::string the_print = beg + numeric + " " + user + ": " + str + "\r\n";
+    std::string the_print;
+    if (numeric == "0")
+        the_print = str + "\r\n";
+    else
+        the_print = beg + numeric + " " + user + ": " + str + "\r\n";
     // Allocate memory
     char *ccx = new char[the_print.length() + 1];
     // Copy contents
@@ -106,7 +109,7 @@ int nick_already_in_use(std::string nick, std::vector<User> vector)
         if (it->get_nick() == nick)
             return (1);
         it++;
-    }
+    } 
     if (vector.size() > 0 && it->get_nick() == nick)
         return (1);
     return (0);
