@@ -43,8 +43,8 @@ int main(int argc, char **argv)
 
     the_serv irc_serv;
     irc_serv.password = pswd;
-    class User test(1, "TEST", "TEST");
-    irc_serv.the_users.push_back(test);
+    // class User test(1, "TEST", "TEST");
+    // irc_serv.the_users.push_back(test);
 
     //initialise all client_socket[] to 0 so not checked
     for (i = 0; i < max_clients; i++)
@@ -153,7 +153,12 @@ int main(int argc, char **argv)
                 max_sd = sd;
         }
 
-        activity = select( max_sd + 1 , &readfds , NULL , NULL , NULL);
+        //wait for an activity on one of the sockets , timeout is equal to 5 sec ,
+        //so wait indefinitely
+        // timeval tmp;
+        // tmp.tv_sec = 5;
+        // (void)tmp
+        activity = select( max_sd + 1 , &readfds , NULL , NULL , NULL); //third argument of select equals NULL, so select can wait an infinite time. If 3rd value set to 5 sec, select will wait 5sec
 
         if ((activity < 0) && (errno!=EINTR))
         {
@@ -249,7 +254,6 @@ int main(int argc, char **argv)
                     }
                     FD_ZERO(&readfds);
                 }
-
             }
         }
     }
