@@ -33,9 +33,9 @@ class Channel
         return (*ptr);
     }
 
-    void    add_user(User user)
+    void    add_user(class User *utilisateur)
     {
-        _users.push_back(user);
+        _users.push_back(*utilisateur);
     }
 
     int     verify_channel_name(std::string name, std::vector<Channel> channels)
