@@ -15,9 +15,9 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
     if (check_vector_arr(buff_arr, "PING localhost") > 0)
     {
 	    // TODO FIX PONG, not working
-	    // client_printer(sd, "PONG localhost", "371", "edj");
-	    send(sd, "PONG :localhost\r\n", 15, 0);
-        //send(sd, "PONG :localhost\r\n", 371, 0);
+        std::string PONG(":localhost PONG localhost :localhost");
+	    // client_printer(sd, PONG, "0", "no need");
+	    send(sd,":localhost PONG localhost :localhost", PONG.size(), 0);
 	    return (0);
     }
     // ? JOIN

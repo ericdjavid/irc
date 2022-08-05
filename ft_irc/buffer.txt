@@ -1,0 +1,27 @@
+CAP LS
+PASS lolcat
+NICK jam
+USER edjavid edjavid localhost :Eric DJAVID
+-----
+CAP END
+MODE edjavid +i
+WHOIS jam
+-----
+PING localhost
+-----
+CAP LS
+PASS lolcat
+NICK jam
+USER edjavid edjavid localhost :Eric DJAVID
+-----
+CAP LS
+PASS lolcat
+NICK lola
+USER edjavid edjavid localhost :Eric DJAVID
+-----
+CAP END
+MODE edjavid +i
+WHOIS lola
+-----
+PING localhost
+-----

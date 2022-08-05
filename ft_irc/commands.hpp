@@ -90,9 +90,10 @@ int ft_deal_next(std::vector<std::string> buff_arr, the_serv *irc_serv, int sd)
 				class User tmp(sd, nick, user);
 				irc_serv->the_users.push_back(tmp);
 			}
-			else{
-				std::cout << "user not created, nick already in use" << std::endl;
-				//DISCONNECT CLIENT HERE
+			else
+			{
+				std::cout << "user not created, nick" << nick << " already in use" << std::endl;
+				return 1;
 			}
 			std::cout << "||||||||||||| USERS |||||||||||||" << std::endl;
 			display_users(irc_serv->the_users);
@@ -100,10 +101,7 @@ int ft_deal_next(std::vector<std::string> buff_arr, the_serv *irc_serv, int sd)
 			return 0;
 		}
 		else
-		{
-			std::cout << "Deal next returning 1\n";
 			return 1;
-		}
 	}
 	return 0;
 }
