@@ -12,12 +12,11 @@
 int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std::string> buff_arr)
 {
     int ret = 0;
+    // ? PONG
     if (check_vector_arr(buff_arr, "PING localhost") > 0)
     {
-	    // TODO FIX PONG, not working
-	    // client_printer(sd, "PONG localhost", "371", "edj");
-	    send(sd, "PONG :localhost\r\n", 15, 0);
-        //send(sd, "PONG :localhost\r\n", 371, 0);
+        std::string PONG(":localhost PONG localhost :localhost");
+	    send(sd,":localhost PONG localhost :localhost", PONG.size(), 0);
 	    return (0);
     }
     // ? JOIN
@@ -36,8 +35,8 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
                 class Channel tmp(chann_name, users, reference[0]);
                 irc_serv->the_channel.push_back(tmp);
             }
-            else{
-                //MSG ERREUR NOM DE CHANN
+            else
+            {
                 return (1);
             }
         }
@@ -72,13 +71,29 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
             std::cout << "ID of " << target << " is " << target_id << std::endl;
             // TODO! LE PREMIER MSG NE S ENVOIE PAS, A FIX
             client_printer(target_id, endmsg, "371", target);
-            
-
         }
         else
-            std::cout << "the user don't exist =(" << std::endl;        
+            std::cout << "the user don't exist =(" << std::endl;
     }
 
+    // ? OPERATOR STAT
+    if ((ret = check_vector_arr(buff_arr, "OPER")) > 0)
+    {
+        // BECORME OPERATOR
+        std::cout << "OPERATOR called" << std::endl;
+        std::string buff = buff_arr.at(ret - 1).substr(5);
+        std::cout << "Buff is |" << buff << std::endl;
+        std::string user = buff.substr(0, buff.find(' '));
+        std::string pswd = buff.substr(buff.find(' '));
+        std::cout << "user is " << user << std::endl;
+        std::cout << "pswd is " << pswd << std::endl;
+        std::string pass = "YEAH";
+        if (!pass.compare(pswd.substr(1,4)))
+        {
+            irc_serv->the_users.at(get_index(irc_serv->the_users, sd)).set_operat(true);
+            std::cout << "User " << user << " set as operator" << std::endl;
+        }
+    }
     return (0);
 
 
