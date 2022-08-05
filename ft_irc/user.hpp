@@ -103,5 +103,9 @@ typedef class User
 		{
 			_current = NULL;
 		}
+		void	set_operat(bool n)
+		{
+			_is_operat = n;
+		}
 } User;
 

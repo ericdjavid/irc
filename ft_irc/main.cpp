@@ -252,7 +252,7 @@ int main(int argc, char **argv)
                         close( sd );
                         client_socket[i] = 0;
                     }
-                    // FD_ZERO(&readfds);
+                    FD_ZERO(&readfds);
                 }
             }
         }
