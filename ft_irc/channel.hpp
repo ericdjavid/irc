@@ -28,6 +28,11 @@ class Channel
         return(_name);
     }
 
+    std::vector<User> get_users()
+    {
+        return _users;
+    }
+
     Channel &operator= (Channel *ptr)
     {
         return (*ptr);

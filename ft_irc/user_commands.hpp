@@ -41,6 +41,7 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
             }
             else
             {
+                std::cout << "Bad syntax for channel's name/Name already taken" << std::endl;
                 return (1);
             }
         }
@@ -54,9 +55,15 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
         std::cout << "JOIN called" << std::endl;
         print_channels(irc_serv->the_channel);
     }
-
     // ?BAN
 
+    // ?PART
+    if ((ret = check_vector_arr(buff_arr, "PART")) > 0)
+    {
+        std::cout << "PART called" << std::endl;
+        std::string command = buff_arr.at(ret -1).substr(6);
+        std::cout << command << std::endl;
+    }
     // ? PRIVMSG
     if ((ret = check_vector_arr(buff_arr, "PRIVMSG")) > 0)
     {
