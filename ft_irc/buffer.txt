@@ -6,9 +6,11 @@ USER ade-temm ade-temm localhost :Alexandre DE TEMMERMAN
 CAP END
 MODE ade-temm +i
 -----
-JOIN #yoyo
+JOIN #yoydewdewdew
+-----
+JOIN #yoydewdewd
 -----
 PING localhost
 -----
-JOIN #yoyoyoyo
+QUIT :leaving
 -----

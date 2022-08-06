@@ -24,6 +24,9 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
     {
         std::string     c_name = buff_arr[0];
         std::string     chann_name = c_name.substr(5, c_name.length() - 5);
+        int     i;
+
+        i = get_index(irc_serv->the_users, sd);
         if (compare_to_existing_channels(chann_name, irc_serv->the_channel) == 0)
         {
             if (verify_channel_name(chann_name, irc_serv->the_channel) == 0)
@@ -33,6 +36,7 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
 
                 reference = chann_name.c_str();
                 class Channel tmp(chann_name, users, reference[0]);
+                tmp.add_user(&(irc_serv->the_users[i]));
                 irc_serv->the_channel.push_back(tmp);
             }
             else
@@ -40,12 +44,12 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
                 return (1);
             }
         }
-        int     i;
-        i = get_index(irc_serv->the_users, sd);
+        else{
+            class Channel tmp2 = get_channel(chann_name, irc_serv->the_channel);
+            tmp2.add_user(&(irc_serv->the_users[i]));
+            irc_serv->the_channel.push_back(tmp2);
+        }
         //irc_serv->the_users[i].connect_to_channel(get_channel(chann_name, irc_serv->the_channel));
-        Channel tmp2 = get_channel(chann_name, irc_serv->the_channel);
-        tmp2.add_user(&(irc_serv->the_users[i]));
-        irc_serv->the_channel.push_back(tmp2);
         //CONNECT TO CHANNEL
         std::cout << "JOIN called" << std::endl;
         print_channels(irc_serv->the_channel);
