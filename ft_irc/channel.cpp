@@ -75,7 +75,7 @@ Channel *create_new_channel(std::string name, std::vector<Channel> channels)
     return chann;
 }
 
-Channel     *get_channel(std::string name, std::vector<Channel> channels)
+Channel     get_channel(std::string name, std::vector<Channel> channels)
 {
     std::vector<Channel>::iterator it;
 
@@ -84,5 +84,22 @@ Channel     *get_channel(std::string name, std::vector<Channel> channels)
     {
         it++;
     }
-    return (&(*it));
+    return (*it);
+}
+
+void        print_channels(std::vector<Channel> ptr)
+{
+    std::vector<Channel>::iterator it;
+
+    if (ptr.size() < 1)
+        return ;
+
+    it = ptr.begin();
+    std::cout << "|||  CHANNELS  |||" << std::endl;
+    while (it != ptr.end())
+    {
+        std::cout << it->get_name() << std::endl;
+        it++;
+    }
+    std::cout << "|||     END    |||" << std::endl;
 }

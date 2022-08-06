@@ -100,15 +100,3 @@ int     is_forbidden(char c)
         return 0;
     }
 };
-
-void    print_channels(std::vector<Channel> channels)
-{
-    std::vector<Channel>::iterator it;
-
-    it = channels.begin();
-    while (it != channels.end())
-    {
-        std::cout << it->get_name() << std::endl;
-        it++;
-    }
-}

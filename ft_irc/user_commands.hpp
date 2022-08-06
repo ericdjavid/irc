@@ -42,11 +42,13 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
         }
         int     i;
         i = get_index(irc_serv->the_users, sd);
-        irc_serv->the_users[i].connect_to_channel(get_channel(chann_name, irc_serv->the_channel));
-        Channel *tmp2 = get_channel(chann_name, irc_serv->the_channel);
-        tmp2->add_user(&(irc_serv->the_users[i]));
+        //irc_serv->the_users[i].connect_to_channel(get_channel(chann_name, irc_serv->the_channel));
+        Channel tmp2 = get_channel(chann_name, irc_serv->the_channel);
+        tmp2.add_user(&(irc_serv->the_users[i]));
+        irc_serv->the_channel.push_back(tmp2);
         //CONNECT TO CHANNEL
         std::cout << "JOIN called" << std::endl;
+        print_channels(irc_serv->the_channel);
     }
 
     // ?BAN
