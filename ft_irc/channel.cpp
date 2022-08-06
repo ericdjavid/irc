@@ -113,7 +113,7 @@ void        send_message_to_channel(std::string name, std::vector<Channel> chann
         std::vector<User>::iterator it = tmp.get_users().begin();
         while (it != tmp.get_users().end())
         {
-            client_printer(it->get_id(), message, 0, it->get_nick()); //NOT SURE ABOUT numeric VALUE (0), HAVE TO ASK ERIC
+            client_printer(it->get_id(), message, 0, it->get_nick()); // TODO! NOT SURE ABOUT numeric VALUE (0), HAVE TO ASK ERIC
             it++;
         }
     }
