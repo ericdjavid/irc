@@ -30,6 +30,7 @@ class Channel
     {
         return(_name);
     }
+<<<<<<< HEAD
 /*
 	int	get_user_needed(int sd)
 	{
@@ -45,6 +46,14 @@ class Channel
 		return (i);
 	}
 */
+=======
+
+    std::vector<User> get_users()
+    {
+        return _users;
+    }
+
+>>>>>>> 8b64656561287fc2f3b0fc7da0695d5855ed245a
     Channel &operator= (Channel *ptr)
     {
         return (*ptr);

@@ -42,6 +42,7 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
             }
             else
             {
+                std::cout << "Bad syntax for channel's name/Name already taken" << std::endl;
                 return (1);
             }
         }
@@ -55,7 +56,6 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
         std::cout << "JOIN called" << std::endl;
         print_channels(irc_serv->the_channel);
     }
-
     // ?BAN
     if ((ret = check_vector_arr(buff_arr, "BAN"))> 0)
     {
@@ -94,6 +94,26 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
 	std::cout << "You are being invited" << std::endl;
     }
 
+    // ?PART
+    if ((ret = check_vector_arr(buff_arr, "PART")) > 0)
+    {
+        std::cout << "PART called" << std::endl;
+        std::string command = buff_arr.at(ret -1).substr(6);
+        std::cout << command << std::endl;
+        /* 
+        DOC:
+            - https://dd.ircdocs.horse/refs/commands/part
+        INFOS:
+            - format de la commande : PART <channel>{,<channel>} [<reason>]
+            - codes erreur a retourner : ERR_NOSUCHCHANNEL (403) | ERR_NOTONCHANNEL (442)
+
+        A FAIRE:
+            - verifier le nombre de channels a quitter
+            - verifier que le(s) channel(s) existe(nt)
+            - retirer l'utilisateur de la liste des users du/des chann(s)
+            - envoyer un message aux channels indiquant que l'utilisateur a quitte le chann + reason
+        */
+    }
     // ? PRIVMSG
     if ((ret = check_vector_arr(buff_arr, "PRIVMSG")) > 0)
     {

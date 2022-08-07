@@ -1,4 +1,5 @@
 #include "channel.hpp"
+#include "tools.hpp"
 
 char     compare_first_char(char c)
 {
@@ -102,4 +103,23 @@ void        print_channels(std::vector<Channel> ptr)
         it++;
     }
     std::cout << "|||     END    |||" << std::endl;
+}
+
+void        send_message_to_channel(std::string name, std::vector<Channel> channels, std::string message)
+{
+    Channel tmp = get_channel(name, channels);
+    try
+    {
+        std::vector<User>::iterator it = tmp.get_users().begin();
+        while (it != tmp.get_users().end())
+        {
+            client_printer(it->get_id(), message, 0, it->get_nick()); // TODO! NOT SURE ABOUT numeric VALUE (0), HAVE TO ASK ERIC
+            it++;
+        }
+    }
+    catch (const std::bad_exception& e)
+    {
+        //SI TMP NE POINTE PAS SUR UN CHANNEL
+        std::cerr << "Caught " << e.what() << '\n';
+    }
 }
