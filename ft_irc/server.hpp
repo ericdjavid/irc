@@ -13,9 +13,11 @@ struct server
 } typedef the_serv;
 
 
-// FONCTION POUR PARCOURIR LA LISTE DES USERS, RENVOIE NULL SI PAS TROUVE, SINN INDEX DE L USER
+// FONCTION POUR PARCOURIR LA LISTE DES USERS, RENVOIE NULL SI PAS TROUVE, SINN ID DE L USER
 int 	check_if_user_exist(int sd, std::vector<class User> users)
 {
+    if (users.empty())
+        return -1;
     std::vector<class User>::iterator it = users.begin();
     while (it != users.end())
     {
@@ -29,18 +31,54 @@ int 	check_if_user_exist(int sd, std::vector<class User> users)
     return 0;
 }
 
-// FONCTION POUR PARCOURIR LA LISTE DES USERS, RENVOIE FALSE SI PAS TROUVE, SINN TRUE DE L USER
-bool 	check_if_user_exist_with_nick(std::string nick, std::vector<class User> users)
+// FONCTION POUR ROUVER INDEX USER
+int     get_index(std::vector<class User> user_list, int id)
 {
-    std::vector<class User>::iterator it = users.begin();
-    while (it != users.end())
+    if (user_list.empty() == true)
+        return -1;
+    int index = 0;
+    std::vector<class User>::iterator it = user_list.begin();
+    while(it != user_list.end())
+    {
+        if (id == it->get_id())
+            return index;
+        index++;
+        it++;
+    }
+    return 0;
+
+}
+
+// FONCTION POUR PARCOURIR LA LISTE DES USERS, RENVOIE 0 SI PAS TROUVE, SINN INDEX DE L USER
+int 	check_if_user_exist_with_nick(std::string nick, std::vector<class User> the_users)
+{
+    if (the_users.empty() == true)
+        return -1;
+    int index = 0;
+    std::vector<class User>::iterator it = the_users.begin();
+    while (it != the_users.end())
     {
         // std::cout << "Comparing " << sd << " with " << it->get_id() << std::endl;
         if (nick == it->get_nick())
         {
-            return (true);
+            return (index);
         }
         it++;
+        index++;
     }
-    return false;
+    return 0;
+}
+
+//Fonction pour voir si le channel existe
+int	check_if_channel_exist(std::string channel_name, std::vector<class Channel> the_channel)
+{
+	if (the_channel.empty() == true)
+		return (-1);
+	int i = 0;
+	for (std::vector<class Channel>::iterator it = the_channel.begin(); it != the_channel.end(); it++)
+	{
+		if (channel_name == it->get_name())
+			return (i);
+	}
+	return (-1);
 }

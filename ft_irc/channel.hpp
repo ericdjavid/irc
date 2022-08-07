@@ -14,7 +14,6 @@ class Channel
 
     public:
 
-	int a = 10;
     ~Channel() {};
 
     Channel(std::string name) : _name(name) {}
@@ -31,7 +30,21 @@ class Channel
     {
         return(_name);
     }
-
+/*
+	int	get_user_needed(int sd)
+	{
+		int i = 0;
+		std::vector<User>::iterator it = _users.begin();
+		while (it != _users.end())
+		{
+			//if (sd == it->get_id())
+				break;
+			i++;
+			it++;
+		}
+		return (i);
+	}
+*/
     Channel &operator= (Channel *ptr)
     {
         return (*ptr);

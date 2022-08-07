@@ -28,7 +28,6 @@ typedef class User
 			_last_command = "";
 			_message_received = "";
 			_current = NULL;
-	        std::cout << "new User created of id : " << _id << std::endl;
 		};
 
 		User() {};
