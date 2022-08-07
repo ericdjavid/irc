@@ -103,6 +103,7 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
         /* 
         DOC:
             - https://dd.ircdocs.horse/refs/commands/part
+
         INFOS:
             - format de la commande : PART <channel>{,<channel>} [<reason>]
             - codes erreur a retourner : ERR_NOSUCHCHANNEL (403) | ERR_NOTONCHANNEL (442)
