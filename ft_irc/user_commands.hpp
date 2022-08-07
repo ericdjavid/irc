@@ -71,10 +71,13 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
 		std::string test = buff_arr.at(ret - 1).substr(6);	
 		std::cout << "IT " << test << std::endl;
 		std::string channel = test.substr(0, test.find(' '));
-		std::cout << "channel _______ " << channel << std::endl;
+		std::cout << "channel _______" << channel << std::endl;
 		size_t pos = test.find_first_not_of("abcdefghijklmnopqrstuvwxyz0123456789");
 		std::string channel_kick = test.substr(pos);
 		channel_kick.resize(channel_kick.find(':'));
+		channel_kick.erase(0,1);
+		channel_kick = channel_kick.substr(0, channel_kick.size()-1);
+//		channel_kick.pop_back();
 		std::cout << "kick channel _______ " << channel_kick << "______" << std::endl;
 		std::string target = test.substr(test.find(':'));
 		target = target.substr(1);
@@ -84,8 +87,18 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
 			std::cout << "///////////////////error no channel///////////////////////\n";
 		else
 		{
-		//	if ((i = check_if_user_to_kick_exit())
-			std::cout << "channel exist yahou!!!!\n";
+			Channel channel_look = get_channel(channel_kick, irc_serv->the_channel);
+			if ((i = check_if_user_exist_with_nick(target, irc_serv->the_users)) == -1)
+			{
+				std::cout << "User exists !!!!!!!!!!!!!\n";
+// HEEEEEEEEEEEEEEEEEERRRRRRRRRRRREEEEEEEEEEe
+				if (( i = channel_look.check_if_user_exist_in_channel(target)) == -1 )
+					std::cout << "User is not in the channel\n";
+				else
+					std::cout << "User is in the channel\n";
+			}
+			else
+				std::cout << "No user!!!!\n" << i << std::endl;
 		}
 	}
 

@@ -18,6 +18,13 @@ class Channel
 
     Channel(std::string name) : _name(name) {}
 
+    Channel(std::string name, std::vector<User> users, char prop)
+    {
+        _name = name;
+        _users = users;
+        _properties = prop;
+    }
+
     Channel(std::string name, std::vector<User> users, std::vector<User> ban_u, char prop)
     {
         _name = name;
@@ -30,30 +37,12 @@ class Channel
     {
         return(_name);
     }
-<<<<<<< HEAD
-/*
-	int	get_user_needed(int sd)
-	{
-		int i = 0;
-		std::vector<User>::iterator it = _users.begin();
-		while (it != _users.end())
-		{
-			//if (sd == it->get_id())
-				break;
-			i++;
-			it++;
-		}
-		return (i);
-	}
-*/
-=======
 
     std::vector<User> get_users()
     {
         return _users;
     }
 
->>>>>>> 8b64656561287fc2f3b0fc7da0695d5855ed245a
     Channel &operator= (Channel *ptr)
     {
         return (*ptr);
@@ -76,7 +65,26 @@ class Channel
         Channel *tmp = new Channel(name, users, ban_u, reference[0]);
         channels->push_back(*tmp);
     }
-    
+
+//
+// HEEEEEEEEEEEEEEEEEEEEEREEEEEEEEEEEEEEEEEEe
+//
+
+    int		check_if_user_exist_in_channel(std::string target)
+	{
+		for(std::vector<User>::iterator it = _users.begin(); it != _users.end(); it++)
+		{
+			if (it->get_nick() == target)
+			{
+				std::cout << "User found in the channel \n";
+				return (1);
+			}
+			else
+				std::cout << "User not found in the channel \n";
+		}
+		return (-1);
+	}
+
     int     verify_channel_name(std::string name, std::vector<Channel> channels)
     {
         const char  *reference;
