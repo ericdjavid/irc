@@ -31,7 +31,7 @@ int 	check_if_user_exist(int sd, std::vector<class User> users)
     return 0;
 }
 
-// FONCTION POUR ROUVER INDEX USER
+// FONCTION POUR TROUVER INDEX USER
 int     get_index(std::vector<class User> user_list, int id)
 {
     if (user_list.empty() == true)

@@ -7,10 +7,10 @@
 class Channel
 {
     private:
-    std::vector<class User>   _users;
+    std::vector<class User>     _users;
     std::vector<class User>	_ban_users;
-    std::string         _name;
-    char                _properties;
+    std::string                 _name;
+    char                        _properties;
 
     public:
 
@@ -48,6 +48,11 @@ class Channel
     Channel &operator= (Channel *ptr)
     {
         return (*ptr);
+    }
+
+    void    add_user(class User *utilisateur)
+    {
+        _users.push_back(*utilisateur);
     }
 
     void    create_new_channel(std::string name, std::vector<Channel> *channels)
@@ -92,7 +97,7 @@ class Channel
         std::vector<Channel>::iterator it = channels.begin();
         while(it != channels.end())
         {
-            if ((it)->_name == name)
+            if (it->_name == name)
             {
                 std::cout << "name " << name << " is already used by another Channel. Please select another one." << std::endl;
                 return 1;
@@ -118,7 +123,7 @@ class Channel
         return 0;
     }
     
-    int     is_forbidden(char c)
+int     is_forbidden(char c)
     {
         if (c == ',' || c == ':' || c == ' ' || c == 7)
             return 1;
