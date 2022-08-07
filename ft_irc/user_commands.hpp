@@ -8,6 +8,7 @@
 #include "channel.hpp"
 #include <sys/socket.h> //send
 #include "channel.cpp"
+#include "part.cpp"
 
 int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std::string> buff_arr)
 {
@@ -60,9 +61,16 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
     // ?PART
     if ((ret = check_vector_arr(buff_arr, "PART")) > 0)
     {
+        t_part      test;
+
         std::cout << "PART called" << std::endl;
         std::string command = buff_arr.at(ret -1).substr(6);
         std::cout << command << std::endl;
+        
+        test = split_part_command(command.c_str());
+
+        std::cout << "nb chann a quitter :" << test.nb_chann << std::endl;
+        std::cout << "chan 1 a quitter :" << test.channels[0] << std::endl;
         /* 
         DOC:
             - https://dd.ircdocs.horse/refs/commands/part
