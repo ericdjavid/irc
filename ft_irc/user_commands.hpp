@@ -92,7 +92,7 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
 			if ((i = check_if_user_exist_with_nick(target, irc_serv->the_users)) == -1)
 			{
 				std::cout << "User exists !!!!!!!!!!!!!\n";
-				if (( i = check_if_user_exist_in_channel(target, channel_look._users)) == -1 )
+				if (( i = check_if_user_exist_in_channel(target, channel_look.get_users())) == -1 )
 					std::cout << "11111111111User is not in the channel\n";
 				else
 					std::cout << "11111111111User is in the channel\n";
@@ -120,7 +120,7 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
 
         std::cout << "nb chann a quitter :" << test.nb_chann << std::endl;
         std::cout << "chan 1 a quitter :" << test.channels[0] << std::endl;
-        std::cout << "chan 2 a quitter :" << test.channels[1] << std::endl;
+        //std::cout << "chan 2 a quitter :" << test.channels[1] << std::endl;
         /* 
         DOC:
             - https://dd.ircdocs.horse/refs/commands/part

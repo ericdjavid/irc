@@ -2,8 +2,8 @@
 
 #include <string>
 #include <iostream>
-//#include "channel.hpp"
-// #include "tools.hpp"
+
+#include "tools.hpp"
 
 typedef class User 
 {
@@ -15,7 +15,6 @@ typedef class User
 		std::string	_last_command;
 		std::string	_message_received;
 		std::string	_pass;
-	//	Channel		*_current;
 
 	public:
     	User(int id, std::string nick, std::string User)
@@ -27,7 +26,6 @@ typedef class User
 			_pass = "";
 			_last_command = "";
 			_message_received = "";
-	//		_current = NULL;
 		};
 
 		User() {};
@@ -42,6 +40,11 @@ typedef class User
 		int		get_id(void)
 		{
 			return (_id);
+		}
+
+		std::vector<User>	get_users(void)
+		{
+			return (_users);
 		}
 
 		void	set_last_command(std::string str)
@@ -93,17 +96,6 @@ typedef class User
 		{
 			return (_pass);
 		}
-/*
-		void	connect_to_channel(Channel *chann)
-		{
-			_current = chann;
-		}
-
-		void	disconnect_from_channel (void)
-		{
-			_current = NULL;
-		}
-*/
 		void	set_operat(bool n)
 		{
 			_is_operat = n;

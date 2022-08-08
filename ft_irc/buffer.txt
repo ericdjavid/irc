@@ -6,8 +6,11 @@ USER antton-t antton-t localhost :Antoine an TON THAT
 CAP END
 MODE antton-t +i
 -----
+JOIN #toto
+-----
 PING localhost
 -----
+<<<<<<< HEAD
 CAP LS
 PASS lolcat
 NICK qwe
@@ -18,6 +21,31 @@ MODE antton-t +i
 WHOIS qwe
 -----
 PING localhost
+=======
+PART #toto :toto, tmp
+-----
+PART #toto
+-----
+PART #toto :frfr
+-----
+PART #toto :frfr, frfr
+-----
+PART #toto :frfr, frfrfraf
+-----
+PART #toto :frfr, frfrfraf, fergerge
+-----
+PART #toto :frfr, frfrfraf, fergerge
+-----
+PART #toto :frfr
+-----
+PART #toto
+-----
+PART #toto :ol
+-----
+PART #toto :ol, lk
+-----
+PART #toto :ol, lk :reason
+>>>>>>> 1b5892a57f4981ad366d25cb94bc886f7acc084b
 -----
 JOIN #test
 -----
