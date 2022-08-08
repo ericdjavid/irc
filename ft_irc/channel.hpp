@@ -70,8 +70,10 @@ class Channel
 // HEEEEEEEEEEEEEEEEEEEEEREEEEEEEEEEEEEEEEEEe
 //
 
-    int		check_if_user_exist_in_channel(std::string target)
+    int		check_if_user_exist_in_channel(std::string target, std::vector<class User> _users)
 	{
+		if (_users.empty() == true)
+			return (-1);
 		for(std::vector<User>::iterator it = _users.begin(); it != _users.end(); it++)
 		{
 			if (it->get_nick() == target)

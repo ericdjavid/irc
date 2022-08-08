@@ -92,9 +92,9 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
 			{
 				std::cout << "User exists !!!!!!!!!!!!!\n";
 // HEEEEEEEEEEEEEEEEEERRRRRRRRRRRREEEEEEEEEEe
-				if (( i = channel_look.check_if_user_exist_in_channel(target)) == -1 )
+			//	if (( i = check_if_user_exist_in_channel(target, channel_look->_users)) == -1 )
 					std::cout << "User is not in the channel\n";
-				else
+			//	else
 					std::cout << "User is in the channel\n";
 			}
 			else
