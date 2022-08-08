@@ -65,13 +65,14 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
 
         std::cout << "PART called" << std::endl;
         std::string command = buff_arr.at(ret -1).substr(6);
-        std::cout << command << std::endl;
+        std::cout << "command : " << command << std::endl;
         
         test = split_part_command(command.c_str());
 
-        std::cout << "nb chann a quitter :" << test.nb_chann << std::endl;
-        std::cout << "chan 1 a quitter :" << test.channels[0] << std::endl;
-        //std::cout << "chan 2 a quitter :" << test.channels[1] << std::endl;
+        std::cout << "chann en cours : " << test.channel << std::endl;
+        std::cout << "nb chann a quitter : " << test.nb_chann << std::endl;
+        std::cout << "chan 1 a quitter : " << test.channels[0] << std::endl;
+        std::cout << "chan 2 a quitter : " << test.channels[1] << std::endl;
         /* 
         DOC:
             - https://dd.ircdocs.horse/refs/commands/part
