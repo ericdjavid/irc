@@ -8,8 +8,6 @@ MODE antton-t +i
 -----
 PING localhost
 -----
-JOIN #test
------
 CAP LS
 PASS lolcat
 NICK qwe
@@ -23,21 +21,7 @@ PING localhost
 -----
 JOIN #test
 -----
-KICK #test test :qwe
+JOIN #test
 -----
-KICK #test test :qwe
------
-KICK #test test :qwe
------
-KICK #test test :qwe
------
-KICK #test test :qwedsf
------
-KICK #test test :qwe
------
-PRIVMSG #test :exit
------
-QUIT :leaving
------
-QUIT :leaving
+KICK #test test :123
 -----

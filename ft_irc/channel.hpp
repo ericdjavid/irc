@@ -7,8 +7,8 @@
 class Channel
 {
     private:
-    std::vector<class User>     _users;
-    std::vector<class User>	_ban_users;
+    std::vector<User>     _users;
+    std::vector<User>	_ban_users;
     std::string                 _name;
     char                        _properties;
 
@@ -70,11 +70,11 @@ class Channel
 // HEEEEEEEEEEEEEEEEEEEEEREEEEEEEEEEEEEEEEEEe
 //
 
-    int		check_if_user_exist_in_channel(std::string target, std::vector<class User> _users)
+    int		check_if_user_exist_in_channel(std::string target, std::vector<class User> users_channel)
 	{
-		if (_users.empty() == true)
+		if (users_channel.empty() == true)
 			return (-1);
-		for(std::vector<User>::iterator it = _users.begin(); it != _users.end(); it++)
+		for(std::vector<User>::iterator it = users_channel.begin(); it != users_channel.end(); it++)
 		{
 			if (it->get_nick() == target)
 			{
