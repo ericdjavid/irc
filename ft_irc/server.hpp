@@ -58,7 +58,6 @@ int 	check_if_user_exist_with_nick(std::string nick, std::vector<class User> the
     std::vector<class User>::iterator it = the_users.begin();
     while (it != the_users.end())
     {
-        // std::cout << "Comparing " << sd << " with " << it->get_id() << std::endl;
         if (nick == it->get_nick())
         {
             return (index);
@@ -84,3 +83,4 @@ int	check_if_channel_exist(std::string channel_name, std::vector<class Channel> 
 	}
 	return (-1);
 }
+

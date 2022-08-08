@@ -80,12 +80,22 @@ Channel     get_channel(std::string name, std::vector<Channel> channels)
 {
     std::vector<Channel>::iterator it;
 
+/*
     it = channels.begin();
     while (it != channels.end() && it->get_name() != name)
     {
         it++;
     }
     return (*it);
+*/
+
+	for (it = channels.begin(); it != channels.end(); it++)
+	{
+std::cout <<  "NAME ==>" << it->get_name() << "My name" << name << std::endl;
+		if (it->get_name() == name)
+			return (*it);
+	}
+	return (*it);
 }
 
 void        print_channels(std::vector<Channel> ptr)

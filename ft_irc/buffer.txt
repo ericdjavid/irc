@@ -6,50 +6,46 @@ USER antton-t antton-t localhost :Antoine an TON THAT
 CAP END
 MODE antton-t +i
 -----
-JOIN #toto
------
-PING localhost
------
-<<<<<<< HEAD
 CAP LS
 PASS lolcat
-NICK qwe
+NICK 123
 USER antton-t antton-t localhost :Antoine an TON THAT
 -----
 CAP END
 MODE antton-t +i
-WHOIS qwe
+WHOIS 123
 -----
 PING localhost
-=======
-PART #toto :toto, tmp
 -----
-PART #toto
+CAP LS
+PASS lolcat
+NICK 789
+USER antton-t antton-t localhost :Antoine an TON THAT
 -----
-PART #toto :frfr
+CAP END
+MODE antton-t +i
+WHOIS 789
 -----
-PART #toto :frfr, frfr
------
-PART #toto :frfr, frfrfraf
------
-PART #toto :frfr, frfrfraf, fergerge
------
-PART #toto :frfr, frfrfraf, fergerge
------
-PART #toto :frfr
------
-PART #toto
------
-PART #toto :ol
------
-PART #toto :ol, lk
------
-PART #toto :ol, lk :reason
->>>>>>> 1b5892a57f4981ad366d25cb94bc886f7acc084b
+PING localhost
 -----
 JOIN #test
+-----
+JOIN #test
+-----
+PING localhost
 -----
 JOIN #test
 -----
 KICK #test test :123
+-----
+CAP LS
+PASS lolcat
+NICK antton-t
+USER antton-t antton-t localhost :Antoine an TON THAT
+-----
+QUIT :leaving
+-----
+QUIT :leaving
+-----
+QUIT :leaving
 -----

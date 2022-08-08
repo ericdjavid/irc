@@ -83,19 +83,18 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
 		std::string target = test.substr(test.find(':'));
 		target = target.substr(1);
 		std::cout << "target _______ " << target << std::endl;
-
 		if ((i = check_if_channel_exist(channel_kick, irc_serv->the_channel)) == -1)
 			std::cout << "///////////////////error no channel///////////////////////\n";
 		else
 		{
+			channel_kick = "#" + channel_kick;
 			Channel channel_look = get_channel(channel_kick, irc_serv->the_channel);
-			if ((i = check_if_user_exist_with_nick(target, irc_serv->the_users)) == -1)
+			if ((i = check_if_user_exist_with_nick(target, irc_serv->the_users)) != -1)
 			{
-				std::cout << "User exists !!!!!!!!!!!!!\n";
 				if (( i = check_if_user_exist_in_channel(target, channel_look.get_users())) == -1 )
 					std::cout << "11111111111User is not in the channel\n";
 				else
-					std::cout << "11111111111User is in the channel\n";
+					kick_user_out_from_channel(target, channel_look.get_users());
 			}
 			else
 				std::cout << "No user!!!!\n" << i << std::endl;

@@ -66,27 +66,6 @@ class Channel
         channels->push_back(*tmp);
     }
 
-//
-// HEEEEEEEEEEEEEEEEEEEEEREEEEEEEEEEEEEEEEEEe
-//
-
-    int		check_if_user_exist_in_channel(std::string target, std::vector<class User> users_channel)
-	{
-		if (users_channel.empty() == true)
-			return (-1);
-		for(std::vector<User>::iterator it = users_channel.begin(); it != users_channel.end(); it++)
-		{
-			if (it->get_nick() == target)
-			{
-				std::cout << "User found in the channel \n";
-				return (1);
-			}
-			else
-				std::cout << "User not found in the channel \n";
-		}
-		return (-1);
-	}
-
     int     verify_channel_name(std::string name, std::vector<Channel> channels)
     {
         const char  *reference;
@@ -149,3 +128,44 @@ int     is_forbidden(char c)
         return 0;
     }
 };
+
+	int		check_if_user_exist_in_channel(std::string target, std::vector<class User> users_channel)
+	{
+		if (users_channel.empty() == true)
+			return (-1);
+		for(std::vector<User>::iterator it = users_channel.begin(); it != users_channel.end(); it++)
+		{
+			std::cout << "user ==> " << it->get_nick() << std::endl;
+			if (it->get_nick() == target)
+			{
+				std::cout << "User found in the channel \n";
+				return (1);
+			}
+			else
+				std::cout << "User not found in the channel \n";
+		}
+		return (-1);
+	}
+
+
+//Fonction pour kick l'user
+	void	kick_user_out_from_channel(std::string target, std::vector<class User> users_channel)
+	{
+		int i = 0;
+		for(std::vector<User>::iterator it = users_channel.begin(); it != users_channel.end(); it++)
+		{
+			std::cout << "user ==> " << it->get_nick() << std::endl;
+			if (it->get_nick() == target)
+				break;
+			else
+				i++;
+		}
+		users_channel.erase(users_channel.begin() + i);
+
+	std::vector<User>::iterator ti = users_channel.begin();
+	while (ti != users_channel.end())
+	{
+		std::cout << "user ==> " << ti->get_nick() << std::endl;
+		ti++;
+	}
+	}
