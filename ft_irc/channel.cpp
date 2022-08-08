@@ -107,10 +107,11 @@ void        print_channels(std::vector<Channel> ptr)
 
 void        send_message_to_channel(std::string name, std::vector<Channel> channels, std::string message)
 {
-    Channel tmp = get_channel(name, channels);
     try
     {
-        std::vector<User>::iterator it = tmp.get_users().begin();
+        Channel tmp = get_channel(name, channels);
+        std::vector<User> tmp2 = tmp.get_users();
+        std::vector<User>::iterator it = tmp2.begin();
         while (it != tmp.get_users().end())
         {
             client_printer(it->get_id(), message, 0, it->get_nick()); // TODO! NOT SURE ABOUT numeric VALUE (0), HAVE TO ASK ERIC
