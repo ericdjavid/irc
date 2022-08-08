@@ -42,6 +42,11 @@ typedef class User
 			return (_id);
 		}
 
+		std::vector<User>	get_users(void)
+		{
+			return (_users);
+		}
+
 		void	set_last_command(std::string str)
 		{
 			_last_command = str;
