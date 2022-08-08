@@ -71,7 +71,7 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
 
         std::cout << "nb chann a quitter :" << test.nb_chann << std::endl;
         std::cout << "chan 1 a quitter :" << test.channels[0] << std::endl;
-        std::cout << "chan 2 a quitter :" << test.channels[1] << std::endl;
+        //std::cout << "chan 2 a quitter :" << test.channels[1] << std::endl;
         /* 
         DOC:
             - https://dd.ircdocs.horse/refs/commands/part
