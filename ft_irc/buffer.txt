@@ -1,34 +1,38 @@
 CAP LS
 PASS lolcat
-NICK erick
+NICK JOHN
 USER edjavid edjavid localhost :Eric DJAVID
 -----
 CAP END
 MODE edjavid +i
-WHOIS erick
------
-PING localhost
+WHOIS JOHN
 -----
 CAP LS
 PASS lolcat
-NICK erick2
+NICK JENNY
 USER edjavid edjavid localhost :Eric DJAVID
 -----
 CAP END
 MODE edjavid +i
-WHOIS erick2
+WHOIS JENNY
 -----
 PING localhost
 -----
-JOIN #YES
------
-JOIN #YES
------
-PRIVMSG #YES :lol
+JOIN #lol
 -----
 PING localhost
 -----
-PRIVMSG #YES :lol
+JOIN #lol
+-----
+PRIVMSG #lol :lol
+-----
+PRIVMSG #lol :ll
+-----
+PRIVMSG #lol :lol
+-----
+PRIVMSG #lol :slkg
+-----
+PRIVMSG #lol :lsgna;lekgm
 -----
 PING localhost
 -----
