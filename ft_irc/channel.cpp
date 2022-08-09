@@ -77,7 +77,7 @@ Channel *create_new_channel(std::string name, std::vector<Channel> channels)
     return chann;
 }
 
-// RETURN INDEX IF IT EXISTS, ELSE RETURN 0
+// RETURN INDEX IF IT EXISTS, ELSE RETURN -1
 int     get_channel(std::string name, std::vector<Channel> channels)
 {
     std::vector<Channel>::iterator it;
@@ -111,25 +111,15 @@ void        print_channels(std::vector<Channel> ptr)
     std::cout << "|||     END    |||" << std::endl;
 }
 
-void        send_message_to_channel(std::string name, std::vector<Channel> channels, std::string message)
-{
-    try
+void        send_message_to_channel(class Channel chan, std::string message)
+{ 
+    std::cout << "we re inside send message to channel function, user list is " << std::endl;
+    std::vector<User> user_list = chan.get_users();
+    display_users(user_list);
+    std::vector<User>::iterator it = user_list.begin();
+    while (it != user_list.end())
     {
-        (void)name;
-        (void)channels;
-        (void)message;
-        // Channel tmp = get_channel(name, channels);
-        // std::vector<User> tmp2 = tmp.get_users();
-        // std::vector<User>::iterator it = tmp2.begin();
-        // while (it != tmp.get_users().end())
-        // {
-        //     client_printer(it->get_id(), message, 0, it->get_nick()); // TODO! NOT SURE ABOUT numeric VALUE (0), HAVE TO ASK ERIC
-        //     it++;
-        // }
-    }
-    catch (const std::bad_exception& e)
-    {
-        //SI TMP NE POINTE PAS SUR UN CHANNEL
-        std::cerr << "Caught " << e.what() << '\n';
+        client_printer(it->get_id(), message, "371", it->get_nick());
+        it++;
     }
 }

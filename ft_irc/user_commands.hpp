@@ -94,17 +94,19 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
         std::cout << "Buff is " << buff << std::endl;
         std::string target = buff.substr(0, buff.find(' '));
         std::string msg = buff.substr(buff.find(':'));
-        // std::cout << "target is " << target << std::endl;
+        std::cout << "target is |" << target << "|" << std::endl;
         // std::cout << "msg is " << msg << std::endl;
         if (buff[0] == '#')
         {
             std::cout << "Someone is trying to write inside a channel" << std::endl;
             // CHECK IF CHANNEL EXIST
-
-            if (get_channel(target, irc_serv->the_channel) >= 0)
+            if (int chan = get_channel(target, irc_serv->the_channel) >= 0)
             {
                 std::cout << "channel found, sending the msg to others" << std::endl;
-
+                // SEND THE MSG TO ALL THE USER LIST OF THE CHANNEL
+                std::cout << "Chan is " << chan << std::endl;
+                
+                send_message_to_channel(irc_serv->the_channel[chan -1], msg);
 
             }
             else
@@ -112,9 +114,6 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
                 std::cout << "Channel not found" << std::endl;
                 return 0;
             }
-
-            // IF YES SEND MSG TO ALL USERS
-
 
             return 1;
         }
