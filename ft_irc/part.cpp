@@ -76,3 +76,18 @@ t_part		split_part_command(const char *command)
 	}
 	return (result);
 }
+
+void	show_data_parsed_part(t_part var)
+{
+	int         i;
+    int         j = 0;
+
+	 i = var.nb_chann;
+	std::cout << "chann en cours : " << var.channel << std::endl;
+    std::cout << "nb chann a quitter : " << var.nb_chann << std::endl;
+	while (j < i)
+    {
+    	std::cout << "chan "<< j << " a quitter : " << var.channels[j] << std::endl;
+        j++;
+    }
+}

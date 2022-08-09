@@ -8,7 +8,7 @@ MODE ade-temm +i
 -----
 JOIN #lolilol
 -----
-PART #lolilol :lol, lolilol
+PART #lolilol :lol, lolilol, fenrfnierf, gerger
 -----
 PING localhost
 -----
