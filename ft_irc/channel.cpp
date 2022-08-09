@@ -76,16 +76,20 @@ Channel *create_new_channel(std::string name, std::vector<Channel> channels)
     return chann;
 }
 
-Channel     get_channel(std::string name, std::vector<Channel> channels)
+int     get_channel(std::string name, std::vector<Channel> channels)
 {
     std::vector<Channel>::iterator it;
 
     it = channels.begin();
-    while (it != channels.end() && it->get_name() != name)
+    int i = 0;
+    while (it != channels.end())
     {
+        if (it->get_name() == name)
+            return (i);
         it++;
+        i++;
     }
-    return (*it);
+    return (-1);
 }
 
 void        print_channels(std::vector<Channel> ptr)
@@ -109,14 +113,17 @@ void        send_message_to_channel(std::string name, std::vector<Channel> chann
 {
     try
     {
-        Channel tmp = get_channel(name, channels);
-        std::vector<User> tmp2 = tmp.get_users();
-        std::vector<User>::iterator it = tmp2.begin();
-        while (it != tmp.get_users().end())
-        {
-            client_printer(it->get_id(), message, 0, it->get_nick()); // TODO! NOT SURE ABOUT numeric VALUE (0), HAVE TO ASK ERIC
-            it++;
-        }
+        (void)name;
+        (void)channels;
+        (void)message;
+        // Channel tmp = get_channel(name, channels);
+        // std::vector<User> tmp2 = tmp.get_users();
+        // std::vector<User>::iterator it = tmp2.begin();
+        // while (it != tmp.get_users().end())
+        // {
+        //     client_printer(it->get_id(), message, 0, it->get_nick()); // TODO! NOT SURE ABOUT numeric VALUE (0), HAVE TO ASK ERIC
+        //     it++;
+        // }
     }
     catch (const std::bad_exception& e)
     {

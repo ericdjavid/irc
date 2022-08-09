@@ -95,9 +95,9 @@ int ft_deal_next(std::vector<std::string> buff_arr, the_serv *irc_serv, int sd)
 				std::cout << "user not created, nick" << nick << " already in use" << std::endl;
 				return 1;
 			}
-			std::cout << "||||||||||||| USERS |||||||||||||" << std::endl;
-			display_users(irc_serv->the_users);
-			std::cout <<  "||||||||||||| END |||||||||||||" << std::endl;
+			// std::cout << "||||||||||||| USERS |||||||||||||" << std::endl;
+			// display_users(irc_serv->the_users);
+			// std::cout <<  "||||||||||||| END |||||||||||||" << std::endl;
 			return 0;
 		}
 		else
