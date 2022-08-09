@@ -61,6 +61,38 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
     if ((ret = check_vector_arr(buff_arr, "BAN"))> 0)
     {
 	std::cout << "You are being ban" << std::endl;
+		int i;
+	std::cout << "You are being kick" << std::endl;
+	std::string test = buff_arr.at(ret - 1).substr(6);	
+	std::cout << "IT " << test << std::endl;
+	std::string channel = test.substr(0, test.find(' '));
+	std::cout << "channel _______" << channel << std::endl;
+	size_t pos = test.find_first_not_of("abcdefghijklmnopqrstuvwxyz0123456789");
+	std::string channel_ban = test.substr(pos);
+	channel_ban.resize(channel_ban.find(':'));
+	channel_ban.erase(0,1);
+	channel_ban = channel_ban.substr(0, channel_ban.size()-1);
+//		channel_kick.pop_back();
+	std::cout << "kick channel _______ " << channel_ban << "______" << std::endl;
+	std::string target = test.substr(test.find(':'));
+	target = target.substr(1);
+	std::cout << "target _______ " << target << std::endl;
+	if ((i = check_if_channel_exist(channel_ban, irc_serv->the_channel)) == -1)
+		std::cout << "///////////////////error no channel///////////////////////\n";
+	else
+	{
+		channel_ban = "#" + channel_ban;
+		Channel channel_look = get_channel(channel_ban, irc_serv->the_channel);
+		if ((i = check_if_user_exist_with_nick(target, irc_serv->the_users)) != -1)
+		{
+			if (( i = check_if_user_exist_in_channel(target, channel_look.get_users())) == -1 )
+				std::cout << "11111111111User is not in the channel\n";
+			else
+				ban_user_out_from_channel(target, channel_look.get_users(), channel_look.get_ban_users());
+		}
+		else
+			std::cout << "No user!!!!\n" << i << std::endl;
+	}
     }
 	//Kick
 	if ((ret = check_vector_arr(buff_arr, "KICK")) > 0)
