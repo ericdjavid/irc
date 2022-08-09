@@ -67,7 +67,7 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
         t_part      test;
 
         std::cout << "PART called" << std::endl;
-        std::string command = buff_arr.at(ret -1).substr(6);
+        std::string command = buff_arr.at(ret -1).substr(6) + '\0';
         test = split_part_command(command.c_str());
 
         show_data_parsed_part(test);
