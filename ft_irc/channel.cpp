@@ -31,6 +31,7 @@ int     syntax_channel_name(std::string name)
     return 0;
 }
 
+// IF ALREADY TAKEN RETURN 1, ELSE 0
 int     compare_to_existing_channels(std::string name, std::vector<Channel> channels)
 {
     std::vector<Channel>::iterator it = channels.begin();
@@ -76,6 +77,7 @@ Channel *create_new_channel(std::string name, std::vector<Channel> channels)
     return chann;
 }
 
+// RETURN INDEX IF IT EXISTS, ELSE RETURN 0
 int     get_channel(std::string name, std::vector<Channel> channels)
 {
     std::vector<Channel>::iterator it;

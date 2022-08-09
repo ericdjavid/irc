@@ -7,6 +7,8 @@ CAP END
 MODE edjavid +i
 WHOIS Alex
 -----
+PING localhost
+-----
 CAP LS
 PASS lolcat
 NICK Eric
@@ -16,13 +18,23 @@ CAP END
 MODE edjavid +i
 WHOIS Eric
 -----
-JOIN #lolcat
+JOIN #lol
+-----
+JOIN #lol
 -----
 PING localhost
 -----
-JOIN #lolcat
+PRIVMSG #lol :lol
 -----
-PING localhost
+PRIVMSG #lol :hello
 -----
-JOIN #lolcat2
+CAP LS
+PASS lolcat
+NICK Alex
+USER edjavid edjavid localhost :Eric DJAVID
+-----
+CAP LS
+PASS lolcat
+NICK Eric
+USER edjavid edjavid localhost :Eric DJAVID
 -----
