@@ -1,4 +1,5 @@
 #include <string>
+#include <iostream>
 
 typedef struct 		s_part
 {
@@ -68,7 +69,9 @@ t_part		split_part_command(const char *command)
 			k++;
 		}
 		result.channels[index] = buffer;
-		j == 0 ? i++ : i += j + 1;
+		j == 0 ? i++ : i += j;
+		if (command[start + i] == ',' || command[start + i] == ':')
+			i++;
 		index++;
 	}
 	return (result);
