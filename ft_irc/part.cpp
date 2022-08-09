@@ -68,7 +68,12 @@ t_part		split_part_command(const char *command)
 			buffer[k] = command[start + i + k];
 			k++;
 		}
-		result.channels[index] = buffer;
+		if (index < result.nb_chann)
+			result.channels[index] = buffer;
+		else{
+			result.reason = buffer;
+		}
+
 		j == 0 ? i++ : i += j;
 		if (command[start + i] == ',' || command[start + i] == ':')
 			i++;
@@ -82,12 +87,13 @@ void	show_data_parsed_part(t_part var)
 	int         i;
     int         j = 0;
 
-	 i = var.nb_chann;
+	i = var.nb_chann;
 	std::cout << "chann en cours : " << var.channel << std::endl;
     std::cout << "nb chann a quitter : " << var.nb_chann << std::endl;
 	while (j < i)
     {
-    	std::cout << "chan "<< j << " a quitter : " << var.channels[j] << std::endl;
+    	std::cout << "chan " << j << " a quitter : " << var.channels[j] << std::endl;
         j++;
     }
+	std::cout << "reason : " << var.reason << std::endl;
 }

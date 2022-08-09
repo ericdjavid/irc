@@ -6,9 +6,9 @@ USER ade-temm ade-temm localhost :Alexandre DE TEMMERMAN
 CAP END
 MODE ade-temm +i
 -----
-JOIN #lolilol
+JOIN #youpi
 -----
-PART #lolilol :lol, lolilol, fenrfnierf, gerger
+PART #youpi :youpi :i'm bored
 -----
 PING localhost
 -----
