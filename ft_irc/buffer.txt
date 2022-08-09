@@ -8,7 +8,12 @@ MODE ade-temm +i
 -----
 JOIN #youpi
 -----
-PART #youpi :youpi :i'm bored
+PART #youpi :youpi, lololol :parce que
+-----
+CAP LS
+PASS lolcat
+NICK ade-temm
+USER ade-temm ade-temm localhost :Alexandre DE TEMMERMAN
 -----
 PING localhost
 -----

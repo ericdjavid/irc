@@ -67,7 +67,7 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
         test = split_part_command(command.c_str());
 
         show_data_parsed_part(test);
-        
+        free_t_part(test);
         /*
         DOC:
             - https://dd.ircdocs.horse/refs/commands/part

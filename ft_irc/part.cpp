@@ -97,3 +97,16 @@ void	show_data_parsed_part(t_part var)
     }
 	std::cout << "reason : " << var.reason << std::endl;
 }
+
+void		free_t_part(t_part var)
+{
+	int		i = 0;
+
+	free(var.channel);
+	while(i < var.nb_chann)
+	{
+		free(var.channels[i]);
+		i++;
+	}
+	std::cout << "Free is done" << std::endl;
+}
