@@ -37,6 +37,7 @@ t_part	armonize_names(t_part var)
 			if (var.channels[j][0] != '#')
 			{
 				tmp = set_up_buffer(strlen(var.channels[j]) + 1);
+				tmp[0] = '#';
 				k++;
 			}
 			else{
@@ -48,6 +49,8 @@ t_part	armonize_names(t_part var)
 				k++;
 				l++;
 			}
+			free(var.channels[j]);
+			var.channels[j] = tmp;
 			j++;
 		}
 	}
