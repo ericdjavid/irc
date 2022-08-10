@@ -9,28 +9,6 @@
 #include "tools.hpp"
 #include "user_commands.hpp"
 
-void ft_join_channel(char* buff, the_serv *irc_serv)
-{
-	if (!(irc_serv->the_channel.empty()))
-	{
-		// Check if chan exists
-		std::vector<Channel>::iterator channs = irc_serv->the_channel.begin();
-		std::string     channel_name(buff);
-		while (channs->get_name() != channel_name && channs != irc_serv->the_channel.end())
-		{
-			channs++;
-		}
-	}
-
-	// if not, add the channel
-	std::cout << "Server: channel does not exist, creating it\n";
-	for (int i = 0; i < 4; i++)
-		buff++;
-	std::string name(buff); 
-	irc_serv->the_channel.push_back(Channel(buff));
-	print_channels(irc_serv->the_channel);
-}
-
 bool ft_check_password(std::vector<std::string> buff_arr, the_serv *irc_serv, int sd)
 {
 	int ret = 0;
@@ -95,9 +73,9 @@ int ft_deal_next(std::vector<std::string> buff_arr, the_serv *irc_serv, int sd)
 				std::cout << "user not created, nick" << nick << " already in use" << std::endl;
 				return 1;
 			}
-			std::cout << "||||||||||||| USERS |||||||||||||" << std::endl;
-			display_users(irc_serv->the_users);
-			std::cout <<  "||||||||||||| END |||||||||||||" << std::endl;
+			// std::cout << "||||||||||||| USERS |||||||||||||" << std::endl;
+			// display_users(irc_serv->the_users);
+			// std::cout <<  "||||||||||||| END |||||||||||||" << std::endl;
 			return 0;
 		}
 		else

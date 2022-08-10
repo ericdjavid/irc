@@ -28,10 +28,15 @@ class Channel
     Channel(std::string name, std::vector<User> users, std::vector<User> ban_u, char prop)
     {
         _name = name;
-        _users = users;
+	_users = users;
 	_ban_users = ban_u;
         _properties = prop;
     }
+
+	User get_a_user(int i)
+	{
+		return (_users.at(i));
+	}
 
     std::string get_name()
     {
@@ -53,9 +58,9 @@ class Channel
         return (*ptr);
     }
 
-    void    add_user(class User *utilisateur)
+    void    add_user(class User utilisateur)
     {
-        _users.push_back(*utilisateur);
+        _users.push_back(utilisateur);
     }
 
     void    create_new_channel(std::string name, std::vector<Channel> *channels)
@@ -140,15 +145,13 @@ int     is_forbidden(char c)
 			return (-1);
 		for(std::vector<User>::iterator it = users_channel.begin(); it != users_channel.end(); it++)
 		{
-			std::cout << "user ==> " << it->get_nick() << std::endl;
+std::cout << "user ==>" << it->get_nick() << "target ==>" << target << "----" << std::endl;
 			if (it->get_nick() == target)
-			{
-				std::cout << "User found in the channel \n";
 				return (1);
-			}
 			else
-				std::cout << "User not found in the channel \n";
+				;
 		}
+		std::cout << "User not found in the channel \n";
 		return (-1);
 	}
 
@@ -174,17 +177,16 @@ int     is_forbidden(char c)
 	void	ban_user_out_from_channel(std::string target, std::vector<class User> users_channel, std::vector<class User> ban_users)
 	{
 		int i = 0;
-	//	std::vector<User> tmp;
+		User tmp;
 		for(std::vector<User>::iterator it = users_channel.begin(); it != users_channel.end(); it++)
 		{
 			std::cout << "user ==> " << it->get_nick() << std::endl;
 			if (it->get_nick() == target)
-				
 				break;
 			else
 				i++;
 		}
-	//	tmp = users_channel
+		tmp = users_channel.at(i);
 		users_channel.erase(users_channel.begin() + i);
 		for(std::vector<User>::iterator it = users_channel.begin(); it != users_channel.end(); it++)
 			std::cout << "user ==> " << it->get_nick() << std::endl;

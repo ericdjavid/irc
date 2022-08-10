@@ -7,6 +7,12 @@ CAP END
 MODE antton-t +i
 WHOIS 123
 -----
+PING localhost
+-----
+CAP LS
+NICK antton-t
+USER antton-t antton-t localhost :Antoine an TON THAT
+-----
 CAP LS
 PASS lolcat
 NICK antton-t
@@ -17,45 +23,9 @@ MODE antton-t +i
 -----
 PING localhost
 -----
-PING localhost
------
 JOIN #test
 -----
 JOIN #test
------
-KICK #test test :123
------
-KICK #test test :123
------
-KICK #test test :123
------
-KICK #test test :123
------
-KICK #test test :123
------
-KICK #test test :123
------
-KICK #test test :123
------
-KICK #test test :123
------
-KICK #test test :123
------
-KICK #test test :antton-t
------
-KICK #test test :antton-t
------
-KICK #test test :antton-t
------
-KICK #test test :antton-t
------
-KICK #test test :antton-t
------
-KICK #test test :antton-t
------
-KICK #test test :antton-t
------
-KICK #test test :antton-t
 -----
 QUIT :leaving
 -----
