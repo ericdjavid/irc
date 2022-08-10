@@ -17,11 +17,11 @@ struct server
 int 	check_if_user_exist(int sd, std::vector<class User> users)
 {
     if (users.empty())
-        return -1;
+        return 0;
     std::vector<class User>::iterator it = users.begin();
     while (it != users.end())
     {
-        // std::cout << "Comparing " << sd << " with " << it->get_id() << std::endl;
+        std::cout << "Comparing " << sd << " with " << it->get_id() << std::endl;
         if (sd == it->get_id())
         {
             return (sd);
@@ -34,7 +34,7 @@ int 	check_if_user_exist(int sd, std::vector<class User> users)
 // FONCTION POUR TROUVER INDEX USER
 int     get_index(std::vector<class User> user_list, int id)
 {
-    if (user_list.empty() == true)
+    if (user_list.empty())
         return -1;
     int index = 0;
     std::vector<class User>::iterator it = user_list.begin();
@@ -67,4 +67,16 @@ int 	check_if_user_exist_with_nick(std::string nick, std::vector<class User> the
         index++;
     }
     return 0;
+}
+
+void delete_from_list(the_serv *irc_serv, int sd)
+{
+        std::cout << "Deleting sd from list if exists" << std::endl;
+        int ind = get_index(irc_serv->the_users, sd);
+        if (ind >= 0)
+        {
+            std::vector<class User>::iterator it = irc_serv->the_users.begin();
+            irc_serv->the_users.erase(it + ind);
+        }
+	    return;
 }
