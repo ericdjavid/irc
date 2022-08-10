@@ -2,7 +2,6 @@
 
 #include <string>
 #include <iostream>
-
 #include "tools.hpp"
 
 typedef class User 
@@ -14,7 +13,7 @@ typedef class User
 		std::string	_username;
 		std::string	_last_command;
 		std::string	_message_received;
-		std::string	_pass;
+		bool		_set_nick;
 
 	public:
     	User(int id, std::string nick, std::string User)
@@ -23,9 +22,15 @@ typedef class User
 			_nick = nick;
 			_username = User;
        		_is_operat = false;
-			_pass = "";
-			_last_command = "";
-			_message_received = "";
+			_set_nick = true;
+		};
+    	User(int id)
+    	{
+			_id = id;
+			_nick = "none";
+			_username = "none";
+       		_is_operat = false;
+			_set_nick = false;
 		};
 
 		User() {};
@@ -42,27 +47,7 @@ typedef class User
 			return (_id);
 		}
 
-		void	set_last_command(std::string str)
-		{
-			_last_command = str;
-		};
-
-		std::string	get_last_command(void)
-		{
-			return (_last_command);
-		}
-
-		void	set_message_received(std::string str)
-		{
-			_message_received = str;
-		};
-
-		std::string		get_message_received(void)
-		{
-			return (_message_received);
-		}
-
-		void	set_nick(std::string nick)
+		void	set_the_nick(std::string nick)
     	{
     		_nick = nick;
     	};
@@ -82,18 +67,19 @@ typedef class User
 			return (_username);
 		}
 
-    	void	set_pass(std::string pswd)
-    	{
-    		_pass = pswd;
-    	};
-
-		std::string	get_pass(void)
-		{
-			return (_pass);
-		}
 		void	set_operat(bool n)
 		{
 			_is_operat = n;
 		}
 
+		void	set_nick(bool n)
+		{
+			_set_nick = n;
+		}
+
+		void	set_operat(bool n)
+		{
+			return (_set_nick);
+		}
 } User;
+
