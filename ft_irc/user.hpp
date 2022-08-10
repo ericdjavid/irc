@@ -98,3 +98,26 @@ typedef class User
 		}
 } User;
 
+User							get_user_to_delete(int id, std::vector<User> tab)
+{
+	std::vector<User>::iterator	it = tab.begin();
+	while(it != tab.end())
+	{
+		if(it->get_id() == id)
+			return (*it);
+		it++;
+	}
+	return (*it);
+}
+
+std::vector<User>::iterator		get_user_position(int id, std::vector<User> tab)
+{
+	std::vector<User>::iterator	it = tab.begin();
+	while(it != tab.end())
+	{
+		if(it->get_id() == id)
+			return (it);
+		it++;
+	}
+	return (it);
+}

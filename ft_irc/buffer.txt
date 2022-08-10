@@ -1,28 +1,39 @@
 CAP LS
 PASS lolcat
-NICK Alex
-USER edjavid edjavid localhost :Eric DJAVID
+NICK ade-temm
+USER ade-temm ade-temm localhost :Alexandre DE TEMMERMAN
 -----
 CAP END
-MODE edjavid +i
-WHOIS Alex
+MODE ade-temm +i
+-----
+JOIN #lolilol32
+-----
+PING localhost
+-----
+PART #lolilol32 :lolilol32, lolilol, yoho :because
+-----
+PART #lolilol32 :lolilol32
+-----
+PART #lolilol32 :lolilol32
+-----
+PART #lolilol32 :lolilol32, lolilol, yoho :because
+-----
+PART #lolilol32 :lolilol32, lolilol, yoho :because
 -----
 CAP LS
 PASS lolcat
-NICK Eric
-USER edjavid edjavid localhost :Eric DJAVID
+NICK ade-temm
+USER ade-temm ade-temm localhost :Alexandre DE TEMMERMAN
 -----
-CAP END
-MODE edjavid +i
-WHOIS Eric
+PART #lolilol32 :lolilol32, lolilol, yoho :because
 -----
-JOIN #lolcat
+PART #lolilol32 :lolilol32, lolilol, yoho :because
 -----
-PING localhost
+PART #lolilol32 :lolilol32, lolilol, yoho :because
 -----
-JOIN #lolcat
+PART #lolilol32 :lolilol32, lolilol, yoho :because
 -----
-PING localhost
+PART #lolilol32 :lolilol32, lolilol, yoho :because
 -----
-JOIN #lolcat2
+PART #lolilol32 :lolilol32, lolilol, yoho :because
 -----

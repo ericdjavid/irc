@@ -69,7 +69,19 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
         std::cout << "PART called" << std::endl;
         std::string command = buff_arr.at(ret -1).substr(6) + '\0';
         test = split_part_command(command.c_str());
+        if (test.nb_chann == 0)
+        {
+            int     channel_to_target = get_channel(test.channel, irc_serv->the_channel);
+            User    user_to_delete =get_user_to_delete(sd, irc_serv->the_channel.at(channel_to_target).get_users());
 
+            irc_serv->the_channel.at(channel_to_target).get_users().erase(get_user_position(sd, irc_serv->the_channel.at(channel_to_target).get_users()));
+            std::string response = ":" + user_to_delete.get_nick() + "!~" + user_to_delete.get_username() + "@localhost PART :" + irc_serv->the_channel.at(channel_to_target).get_name();
+            send(sd, response.c_str(), response.size(), 0);
+            //DISCONNECT CURRENT USER FROM test.channel
+        }
+        else{
+            //DISCONNECT CURRENT USER FROM test.channels[all]
+        }
         show_data_parsed_part(test);
         free_t_part(test);
         /*

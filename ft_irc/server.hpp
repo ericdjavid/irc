@@ -31,6 +31,22 @@ int 	check_if_user_exist(int sd, std::vector<class User> users)
     return 0;
 }
 
+std::vector<User>::iterator     get_iterator(std::vector<class User> user_list, int id)
+{
+    std::vector<User>::iterator ret = user_list.end();
+    if (user_list.empty() == true)
+        return ret;
+    std::vector<class User>::iterator it = user_list.begin();
+    while(it != user_list.end())
+    {
+        if (id == it->get_id())
+            return it;
+        it++;
+    }
+    return ret;
+
+}
+
 // FONCTION POUR TROUVER INDEX USER
 int     get_index(std::vector<class User> user_list, int id)
 {

@@ -1,4 +1,5 @@
 #include <string>
+#include <string.h>
 #include <iostream>
 
 typedef struct 		s_part
@@ -19,6 +20,52 @@ char		*set_up_buffer(int i)
 	while(++j <= i)
 		result[j] = '\0';
 	return (result);
+}
+
+t_part	armonize_names(t_part var)
+{
+	if (var.nb_chann != 0)
+	{
+		int		j = 0;
+		int		k;
+		int		l;
+		char	*tmp;
+		while (j < var.nb_chann)
+		{
+			k = 0;
+			l = 0;
+			if (var.channels[j][0] != '#')
+			{
+				tmp = set_up_buffer(strlen(var.channels[j]) + 1);
+				k++;
+			}
+			else{
+				tmp = set_up_buffer(strlen(var.channels[j]));
+			}
+			while(var.channels[j][l])
+			{
+				tmp[k] = var.channels[j][l];
+				k++;
+				l++;
+			}
+			j++;
+		}
+	}
+	if (var.channel[0] != '#')
+		{
+			char	*channel = set_up_buffer(strlen(var.channel) + 1);
+			int		i = 0;
+
+			channel[0] = '#';
+			while(var.channel[i])
+			{
+				channel[i + 1] = var.channel[i];
+				i++;
+			}
+			free(var.channel);
+			var.channel	= channel;
+		}
+	return (var);
 }
 
 t_part		split_part_command(const char *command)
@@ -42,6 +89,12 @@ t_part		split_part_command(const char *command)
 	{
 		result.channel[i] = command[i];
 		i++;
+	}
+	if (command[start] == '\0')
+	{
+		result.nb_chann = 0;
+		result = armonize_names(result);
+		return (result);
 	}
 	i = 0;
 	start++;
@@ -79,6 +132,7 @@ t_part		split_part_command(const char *command)
 			i++;
 		index++;
 	}
+	result = armonize_names(result);
 	return (result);
 }
 
