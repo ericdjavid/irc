@@ -65,3 +65,31 @@ int 	check_if_user_exist_with_nick(std::string nick, std::vector<class User> the
     }
     return 0;
 }
+
+//Fonction pour voir si le channel existe
+int	check_if_channel_exist(std::string channel_name, std::vector<class Channel> the_channel)
+{
+	if (the_channel.empty() == true)
+		return (-1);
+	int i = 0;
+	for (std::vector<class Channel>::iterator it = the_channel.begin(); it != the_channel.end(); it++)
+	{
+std::cout << "Channel name ==>" << channel_name << "---chanel is ==>" << it->get_name() << "----\n";
+		if (channel_name == it->get_name())
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
+void delete_from_list(the_serv *irc_serv, int sd)
+{
+        std::cout << "Deleting sd from list if exists" << std::endl;
+        int ind = get_index(irc_serv->the_users, sd);
+        if (ind >= 0)
+        {
+            std::vector<class User>::iterator it = irc_serv->the_users.begin();
+            irc_serv->the_users.erase(it + ind);
+        }
+	    return;
+}

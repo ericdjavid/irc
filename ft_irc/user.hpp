@@ -77,9 +77,10 @@ typedef class User
 			_set_nick = n;
 		}
 
-		void	set_operat(bool n)
+		bool	get_set_nick(void)
 		{
 			return (_set_nick);
 		}
 } User;
+
 

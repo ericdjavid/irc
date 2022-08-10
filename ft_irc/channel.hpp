@@ -148,8 +148,6 @@ int     is_forbidden(char c)
 std::cout << "user ==>" << it->get_nick() << "target ==>" << target << "----" << std::endl;
 			if (it->get_nick() == target)
 				return (1);
-			else
-				;
 		}
 		std::cout << "User not found in the channel \n";
 		return (-1);
