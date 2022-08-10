@@ -12,6 +12,16 @@
 int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std::string> buff_arr)
 {
     int ret = 0;
+    // ? QUIT
+    
+    if (check_vector_arr(buff_arr, "QUIT") > 0)
+    {
+        delete_from_list(irc_serv, sd);
+	    return (1);
+    }
+
+
+
     // ? PONG
     if (check_vector_arr(buff_arr, "PING localhost") > 0)
     {
@@ -93,6 +103,10 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
         std::string buff = buff_arr.at(ret - 1).substr(8);
         std::cout << "Buff is " << buff << std::endl;
         std::string target = buff.substr(0, buff.find(' '));
+        if (buff.find(':') == std::string::npos)
+        {
+            error("PRIVMSG command error");
+        }
         std::string msg = buff.substr(buff.find(':'));
         std::cout << "target is |" << target << "|" << std::endl;
         // std::cout << "msg is " << msg << std::endl;

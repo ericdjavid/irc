@@ -214,6 +214,7 @@ int main(int argc, char **argv)
                         (socklen_t*)&addrlen);
                     printf("Host disconnected , ip %s , port %d \n" ,
                           inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
+                    delete_from_list(&irc_serv, sd);
 
                     //Close the socket and mark as 0 in list for reuse
                     close( sd );
@@ -244,6 +245,7 @@ int main(int argc, char **argv)
                             (socklen_t*)&addrlen);
                         printf("Host disconnected , ip %s , port %d \n" ,
                             inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
+                        delete_from_list(&irc_serv, sd);
 
                         //Close the socket and mark as 0 in list for reuse
                         close( sd );
