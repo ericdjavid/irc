@@ -110,13 +110,28 @@ std::vector<User>::iterator		get_user_position(int id, std::vector<User> tab)
 std::string						get_user_name(int id, std::vector<User> tab)
 {
 	std::vector<User>::iterator	it = tab.begin();
-	int			i = 0;
 	while(it != tab.end())
 	{
 		if(it->get_id() == id)
 			return (it->get_nick());
 		it++;
-		i++;
 	}
 	return ("/*,\\not_in_channel");
+}
+
+std::string						get_response_1(int	id, std::vector<User> tab, std::string command_name)
+{
+	std::vector<User>::iterator	it = tab.begin();
+	std::string					response;
+	while(it != tab.end())
+	{
+		if(it->get_id() == id)
+		{
+			std::cout << "GET RESPONSE : |" << it->get_nick() << "| |" << it->get_username() << "|" << std::endl;
+			response = ":" + it->get_nick() + "!~" + it->get_username() + "@localhost " + command_name;
+			break ;
+		}
+		it++;
+	}
+	return (response);
 }

@@ -154,6 +154,7 @@ std::cout << "reason _______ " << reason << std::endl;
         std::string user_to_delete;
         int         channel_to_target;
         std::string command = buff_arr.at(ret -1).substr(6);
+        std::string response;
         int         count = 0;
 
         test = split_part_command(command);
@@ -174,9 +175,9 @@ std::cout << "reason _______ " << reason << std::endl;
             else if (channel_to_target != -1 && user_to_delete != "/*,\\not_in_channel")
             {
                 kick_user_out_from_channel(user_to_delete, irc_serv->the_channel.at(channel_to_target).get_users_ptr());
-                // TODO ADD SENDFUNCTION
-                // client_printer(sd, "Kicked", , )
-
+                response = get_response_1(sd, irc_serv->the_users, buff_arr.at(ret -1) + " :");
+                std::cout << "RESPONSE : |" << response << "|" << std::endl;
+                send(sd, response.c_str(), response.length(), 0);
             }
             //DISCONNECT CURRENT USER FROM test.channel
             count++;
@@ -224,7 +225,7 @@ std::cout << "reason _______ " << reason << std::endl;
                 std::cout << "channel found, sending the msg to others" << std::endl;
                 // SEND THE MSG TO ALL THE USER LIST OF THE CHANNEL
                 std::cout << "Chan is " << chan << std::endl;
-                
+
                 send_message_to_channel(irc_serv->the_channel[chan -1], msg);
 
             }
