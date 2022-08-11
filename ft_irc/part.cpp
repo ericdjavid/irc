@@ -44,6 +44,8 @@ t_part2		split_part_command(std::string command)
 		if (command.find(',') != std::string::npos)
 		{
 			tmp = command.substr(0, command.find(','));
+			if (tmp[0] != '#')
+				tmp = '#' + tmp;
 			result->channels.push_back(tmp);
 			command = command.substr(command.find(',') + 1);
 		}
