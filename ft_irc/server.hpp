@@ -21,7 +21,7 @@ int 	check_if_user_exist(int sd, std::vector<class User> users)
     std::vector<class User>::iterator it = users.begin();
     while (it != users.end())
     {
-        std::cout << "Comparing " << sd << " with " << it->get_id() << std::endl;
+        // std::cout << "Comparing " << sd << " with " << it->get_id() << std::endl;
         if (sd == it->get_id())
         {
             return (sd);

@@ -13,7 +13,7 @@
 int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std::string> buff_arr)
 {
     int ret = 0;
-    display_users(irc_serv->the_users);
+    // display_users(irc_serv->the_users);
     // ? QUIT
     if (check_vector_arr(buff_arr, "QUIT") > 0)
     {
@@ -202,7 +202,7 @@ std::cout << "reason _______ " << reason << std::endl;
     if ((ret = check_vector_arr(buff_arr, "PRIVMSG")) > 0)
     {
         std::cout << "PRIVMSG called" << std::endl;
-        display_users(irc_serv->the_users);
+        // display_users(irc_serv->the_users);
         std::string buff = buff_arr.at(ret - 1).substr(8);
         std::cout << "Buff is " << buff << std::endl;
         std::string target = buff.substr(0, buff.find(' '));

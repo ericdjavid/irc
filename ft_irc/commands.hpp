@@ -57,7 +57,9 @@ int ft_deal_next(std::vector<std::string> buff_arr, the_serv *irc_serv, int sd)
 			user = "Lambda User";
 		std::cout << "user is " << user << std::endl;
 		std::string msg = nick + user;
+		std::string username =  user.substr(0, user.find(" "));
 		client_printer(sd, msg, "001", user);
+		std::cout << "username = " << username;
 		std::string the_str("Your host is localhost, running version 1");
 		client_printer(sd, the_str, "002", user);
 		client_printer(sd, "This localhost was created at [add hour]", "003", user);
@@ -65,7 +67,7 @@ int ft_deal_next(std::vector<std::string> buff_arr, the_serv *irc_serv, int sd)
 		{
 			if (nick_already_in_use(nick, irc_serv->the_users) == 0)
 			{
-				class User tmp(sd, nick, user);
+				class User tmp(sd, nick, username);
 				irc_serv->the_users.push_back(tmp);
 			}
 			else
@@ -103,7 +105,7 @@ int ft_deal_next(std::vector<std::string> buff_arr, the_serv *irc_serv, int sd)
 		}
 		else
 		{
-			std::cout << "User exists" << std::endl;
+			std::cout << "User sd exists" << std::endl;
 			if ((ret = check_vector_arr(buff_arr, "NICK")) > 0 )
 			{
 				nick = buff_arr.at(0).substr(5);
