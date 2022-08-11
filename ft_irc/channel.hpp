@@ -139,19 +139,19 @@ int     is_forbidden(char c)
     }
 };
 
-	int		check_if_user_exist_in_channel(std::string target, std::vector<class User> users_channel)
-	{
-		if (users_channel.empty() == true)
-			return (-1);
-		for(std::vector<User>::iterator it = users_channel.begin(); it != users_channel.end(); it++)
-		{
-std::cout << "user ==>" << it->get_nick() << "target ==>" << target << "----" << std::endl;
-			if (it->get_nick() == target)
-				return (1);
-		}
-		std::cout << "User not found in the channel \n";
+int		check_if_user_exist_in_channel(std::string target, std::vector<class User> users_channel)
+{
+	if (users_channel.empty() == true)
 		return (-1);
+	for(std::vector<User>::iterator it = users_channel.begin(); it != users_channel.end(); it++)
+	{
+std::cout << "user ==>" << it->get_nick() << "target ==>" << target << "----" << std::endl;
+		if (it->get_nick() == target)
+			return (1);
 	}
+	std::cout << "User not found in the channel \n";
+	return (-1);
+}
 
 
 //Fonction pour kick l'user
@@ -161,6 +161,7 @@ std::cout << "user ==>" << it->get_nick() << "target ==>" << target << "----" <<
 		for(std::vector<User>::iterator it = users_channel.begin(); it != users_channel.end(); it++)
 		{
 			std::cout << "user ==> " << it->get_nick() << std::endl;
+			std::cout << "target ==> " << target << std::endl;
 			if (it->get_nick() == target)
 				break;
 			else

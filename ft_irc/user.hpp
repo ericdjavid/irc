@@ -7,7 +7,7 @@
 typedef class User 
 {
 	private:
-    	int			_id;
+		int			_id;
 		bool		_is_operat;
 		std::string	_nick;
 		std::string	_username;

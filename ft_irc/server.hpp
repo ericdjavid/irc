@@ -63,7 +63,7 @@ int 	check_if_user_exist_with_nick(std::string nick, std::vector<class User> the
         it++;
         index++;
     }
-    return 0;
+    return -1;
 }
 
 //Fonction pour voir si le channel existe

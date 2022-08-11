@@ -1,0 +1,281 @@
+CAP LS
+PASS lolcat
+NICK antton-t
+USER antton-t antton-t localhost :Antoine an TON THAT
+-----
+CAP END
+MODE antton-t +i
+-----
+PING localhost
+-----
+JOIN #test
+-----
+INVITE qwe #test
+-----
+INVITE qwe #test
+-----
+INVITE #sdffds #test
+-----
+CAP LS
+PASS lolcat
+NICK antton-t
+USER antton-t antton-t localhost :Antoine an TON THAT
+-----
+CAP LS
+PASS lolcat
+NICK antton-t
+USER antton-t antton-t localhost :Antoine an TON THAT
+-----
+CAP END
+MODE antton-t +i
+-----
+PING localhost
+-----
+CAP LS
+PASS lolcat
+NICK antton-t
+USER antton-t antton-t localhost :Antoine an TON THAT
+-----
+CAP LS
+PASS lolcat
+NICK antton-t
+USER antton-t antton-t localhost :Antoine an TON THAT
+-----
+CAP END
+MODE antton-t +i
+JOIN #test
+-----
+PING localhost
+-----
+CAP LS
+PASS lolcat
+NICK antton-t
+USER antton-t antton-t localhost :Antoine an TON THAT
+-----
+CAP LS
+PASS lolcat
+NICK antton-t
+USER antton-t antton-t localhost :Antoine an TON THAT
+-----
+CAP END
+MODE antton-t +i
+-----
+PING localhost
+-----
+CAP LS
+PASS lolcat
+NICK antton-t
+USER antton-t antton-t localhost :Antoine an TON THAT
+-----
+CAP LS
+PASS lolcat
+NICK antton-t
+USER antton-t antton-t localhost :Antoine an TON THAT
+-----
+CAP END
+MODE antton-t +i
+JOIN #test
+-----
+PING localhost
+-----
+CAP LS
+PASS lolcat
+NICK antton-t
+USER antton-t antton-t localhost :Antoine an TON THAT
+-----
+CAP LS
+PASS lolcat
+NICK antton-t
+USER antton-t antton-t localhost :Antoine an TON THAT
+-----
+CAP END
+MODE antton-t +i
+-----
+PING localhost
+-----
+CAP LS
+PASS lolcat
+NICK antton-t
+USER antton-t antton-t localhost :Antoine an TON THAT
+-----
+CAP LS
+PASS lolcat
+NICK antton-t
+USER antton-t antton-t localhost :Antoine an TON THAT
+-----
+CAP END
+MODE antton-t +i
+JOIN #test
+-----
+PING localhost
+-----
+CAP LS
+PASS lolcat
+NICK antton-t
+USER antton-t antton-t localhost :Antoine an TON THAT
+-----
+CAP LS
+PASS lolcat
+NICK antton-t
+USER antton-t antton-t localhost :Antoine an TON THAT
+-----
+CAP END
+MODE antton-t +i
+-----
+PING localhost
+-----
+CAP LS
+PASS lolcat
+NICK antton-t
+USER antton-t antton-t localhost :Antoine an TON THAT
+-----
+CAP LS
+PASS lolcat
+NICK antton-t
+USER antton-t antton-t localhost :Antoine an TON THAT
+-----
+CAP END
+MODE antton-t +i
+JOIN #test
+-----
+PING localhost
+-----
+CAP LS
+PASS lolcat
+NICK antton-t
+USER antton-t antton-t localhost :Antoine an TON THAT
+-----
+CAP LS
+PASS lolcat
+NICK antton-t
+USER antton-t antton-t localhost :Antoine an TON THAT
+-----
+CAP END
+MODE antton-t +i
+-----
+PING localhost
+-----
+CAP LS
+PASS lolcat
+NICK antton-t
+USER antton-t antton-t localhost :Antoine an TON THAT
+-----
+CAP LS
+PASS lolcat
+NICK antton-t
+USER antton-t antton-t localhost :Antoine an TON THAT
+-----
+CAP END
+MODE antton-t +i
+JOIN #test
+-----
+PING localhost
+-----
+CAP LS
+PASS lolcat
+NICK antton-t
+USER antton-t antton-t localhost :Antoine an TON THAT
+-----
+CAP LS
+PASS lolcat
+NICK antton-t
+USER antton-t antton-t localhost :Antoine an TON THAT
+-----
+CAP END
+MODE antton-t +i
+-----
+PING localhost
+-----
+CAP LS
+PASS lolcat
+NICK antton-t
+USER antton-t antton-t localhost :Antoine an TON THAT
+-----
+CAP LS
+PASS lolcat
+NICK antton-t
+USER antton-t antton-t localhost :Antoine an TON THAT
+-----
+CAP END
+MODE antton-t +i
+JOIN #test
+-----
+PING localhost
+-----
+CAP LS
+PASS lolcat
+NICK antton-t
+USER antton-t antton-t localhost :Antoine an TON THAT
+-----
+CAP LS
+PASS lolcat
+NICK antton-t
+USER antton-t antton-t localhost :Antoine an TON THAT
+-----
+CAP END
+MODE antton-t +i
+-----
+PING localhost
+-----
+CAP LS
+PASS lolcat
+NICK antton-t
+USER antton-t antton-t localhost :Antoine an TON THAT
+-----
+CAP LS
+PASS lolcat
+NICK antton-t
+USER antton-t antton-t localhost :Antoine an TON THAT
+-----
+CAP END
+MODE antton-t +i
+JOIN #test
+-----
+PING localhost
+-----
+CAP LS
+PASS lolcat
+NICK antton-t
+USER antton-t antton-t localhost :Antoine an TON THAT
+-----
+CAP LS
+PASS lolcat
+NICK antton-t
+USER antton-t antton-t localhost :Antoine an TON THAT
+-----
+CAP END
+MODE antton-t +i
+-----
+PING localhost
+-----
+CAP LS
+PASS lolcat
+NICK antton-t
+USER antton-t antton-t localhost :Antoine an TON THAT
+-----
+CAP LS
+PASS lolcat
+NICK antton-t
+USER antton-t antton-t localhost :Antoine an TON THAT
+-----
+CAP END
+MODE antton-t +i
+JOIN #test
+-----
+PING localhost
+-----
+CAP LS
+PASS lolcat
+NICK antton-t
+USER antton-t antton-t localhost :Antoine an TON THAT
+-----
+CAP LS
+PASS lolcat
+NICK antton-t
+USER antton-t antton-t localhost :Antoine an TON THAT
+-----
+CAP END
+MODE antton-t +i
+-----
+PING localhost
+-----

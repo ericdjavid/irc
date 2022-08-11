@@ -72,23 +72,23 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
     // ?BAN
     if ((ret = check_vector_arr(buff_arr, "BAN"))> 0)
     {
-	std::cout << "You are being ban" << std::endl;
-	int i;
-	std::string test = buff_arr.at(ret - 1).substr(6);	
-	std::cout << "IT " << test << std::endl;
-	std::string channel_ban = test.substr(0, test.find(' '));
-	std::cout << "channel _______" << channel_ban << std::endl;
-	size_t pos = test.find_first_not_of("abcdefghijklmnopqrstuvwxyz0123456789");
-	std::string target = test.substr(pos);
-	target.resize(target.find(':'));
-	target.erase(0,1);
-	target = target.substr(0, target.size()-1);
-//	channel_kick.pop_back();
-	std::cout << "target _______ " << target << "______" << std::endl;
-	std::string reason = test.substr(test.find(':'));
-	reason = reason.substr(1);
-	std::cout << "reason _______ " << reason << std::endl;
-	channel_ban = "#" + channel_ban;
+		std::cout << "You are being ban" << std::endl;
+		int i;
+		std::string test = buff_arr.at(ret - 1).substr(6);	
+		std::cout << "IT " << test << std::endl;
+		std::string channel_ban = test.substr(0, test.find(' '));
+		std::cout << "channel _______" << channel_ban << std::endl;
+		size_t pos = test.find_first_not_of("abcdefghijklmnopqrstuvwxyz0123456789");
+		std::string target = test.substr(pos);
+		target.resize(target.find(':'));
+		target.erase(0,1);
+		target = target.substr(0, target.size()-1);
+	//	channel_kick.pop_back();
+		std::cout << "target _______ " << target << "______" << std::endl;
+		std::string reason = test.substr(test.find(':'));
+		reason = reason.substr(1);
+		std::cout << "reason _______ " << reason << std::endl;
+		channel_ban = "#" + channel_ban;
 
 	if ((i = check_if_channel_exist(channel_ban, irc_serv->the_channel)) == -1)
 		std::cout << "///////////////////error no channel///////////////////////\n";
@@ -142,10 +142,41 @@ std::cout << "reason _______ " << reason << std::endl;
 		}
 	}
 
+	// ? Invite
     if ((ret = check_vector_arr(buff_arr, "INVITE")) > 0)
     {
-	std::cout << "You are being invited" << std::endl;
-    }
+		int i;
+		std::cout << "You are being invited" << std::endl;
+		std::string test = buff_arr.at(ret - 1).substr(7);
+		std::string buff = test;
+std::cout << test << std::endl;
+		std::string	target = test.substr(0, test.find(' '));
+std::cout << target << "--------" << std::endl;
+		size_t target_len = target.size();
+		std::string channel_invite = buff.erase(0, target_len);
+		channel_invite.erase(0, 1);
+std::cout << channel_invite << "-------- channel_invite" << std::endl;
+		if (channel_invite.empty() == true)
+			client_printer(sd, ":Not enough parameters", "461", "Invite");
+		if ((i = check_if_channel_exist(channel_invite, irc_serv->the_channel)) == -1)
+			client_printer(sd, ":No such nick/channel", "401", buff_arr.at(index));
+		else
+		{
+			if ((i = check_if_user_exist_with_nick(target, irc_serv->the_users)) != -1)
+			{
+				std::cout << channel_invite << " " <<target << std::endl;
+			}
+			else
+				client_printer(sd, ":No such nick/channel", "401", buff_arr.at(index));
+    	}
+	}
+
+	// ? Notice
+	if ((ret =  check_vector_arr(buff_arr, "NOTICE)) > 0)
+	{
+		std::cout << "NOTICE" << std::endl;
+		
+	}
 
     // ?PART
     if ((ret = check_vector_arr(buff_arr, "PART")) > 0)
@@ -222,6 +253,8 @@ std::cout << "reason _______ " << reason << std::endl;
         else
             std::cout << "the user don't exist =(" << std::endl;
     }
+
+	
 
     // ? OPERATOR STAT
     if ((ret = check_vector_arr(buff_arr, "OPER")) > 0)
