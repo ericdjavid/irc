@@ -170,7 +170,7 @@ std::cout << channel_invite << "-------- channel_invite" << std::endl;
 	}
 
 	// ? Notice
-	if ((ret =  check_vector_arr(buff_arr, "NOTICE)) > 0)
+	if ((ret =  check_vector_arr(buff_arr, "NOTICE")) > 0)
 	{
 		std::cout << "NOTICE" << std::endl;
 		
