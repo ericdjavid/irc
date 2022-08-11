@@ -9,17 +9,22 @@
 #include <sys/socket.h> //send
 #include "channel.cpp"
 #include "part.hpp"
+#include "./commands/nick.hpp"
 
 int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std::string> buff_arr)
 {
     int ret = 0;
-    // display_users(irc_serv->the_users);
     // ? QUIT
     if (check_vector_arr(buff_arr, "QUIT") > 0)
     {
         delete_from_list(irc_serv, sd);
 	    return (1);
     }
+    // ? NICK
+    if ((ret = check_vector_arr(buff_arr, "NICK")) > 0)
+        nick_command(buff_arr.at(ret - 1).substr(5), index, irc_serv);
+    if ((ret = check_vector_arr(buff_arr, "USERNAME")) > 0)
+        username_command(buff_arr.at(ret - 1).substr(9), index, irc_serv);
 
     // ? PONG
     if (check_vector_arr(buff_arr, "PING localhost") > 0)
