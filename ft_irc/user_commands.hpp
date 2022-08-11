@@ -172,7 +172,14 @@ std::cout << channel_invite << "-------- channel_invite" << std::endl;
 	// ? Notice
 	if ((ret =  check_vector_arr(buff_arr, "NOTICE")) > 0)
 	{
-		std::cout << "NOTICE" << std::endl;
+		std::cout << "NOTICE called" << std::endl;
+		std::string buff = buff_arr.at(ret - 1).substr(7); 
+std::cout << "buff-" << buff << "----" << std::endl;
+		std::string target = buff.substr(0, buff.find(' '));
+std::cout << "Target --" << target << "------" << std::endl;
+		std::string message = buff.substr(target.size());
+		message = message.substr(2);
+std::cout << "Massage--" << message << "---" << std::endl;
 		
 	}
 
