@@ -175,7 +175,7 @@ std::cout << "reason _______ " << reason << std::endl;
             {
                 kick_user_out_from_channel(user_to_delete, irc_serv->the_channel.at(channel_to_target).get_users_ptr());
                 // TODO ADD SENDFUNCTION
-                client_printer(sd, "Kicked", , )
+                // client_printer(sd, "Kicked", , )
 
             }
             //DISCONNECT CURRENT USER FROM test.channel
