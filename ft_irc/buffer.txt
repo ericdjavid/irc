@@ -6,9 +6,9 @@ USER ade-temm ade-temm localhost :Alexandre DE TEMMERMAN
 CAP END
 MODE ade-temm +i
 -----
-JOIN #lolilol32
------
-PART #lolilol32 :lolilol32
+JOIN #trololo
 -----
 PING localhost
+-----
+PART #trololo :trololo, yolo
 -----

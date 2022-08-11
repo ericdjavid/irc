@@ -64,26 +64,27 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
     // ?PART
     if ((ret = check_vector_arr(buff_arr, "PART")) > 0)
     {
-        t_part      test;
+        t_part2      test;
 
         std::cout << "PART called" << std::endl;
         std::string command = buff_arr.at(ret -1).substr(6) + '\0';
-        test = split_part_command(command.c_str());
-        if (test.nb_chann == 0)
-        {
-            int     channel_to_target = get_channel(test.channel, irc_serv->the_channel);
-            User    user_to_delete =get_user_to_delete(sd, irc_serv->the_channel.at(channel_to_target).get_users());
+        test = split_part_command(command);
+//        if (test.nb_chann == 0)
+//        {
+            // int     channel_to_target = get_channel(test.channel, irc_serv->the_channel);
+            // User    user_to_delete = get_user_to_delete(sd, irc_serv->the_channel.at(channel_to_target).get_users());
 
-            irc_serv->the_channel.at(channel_to_target).get_users().erase(get_user_position(sd, irc_serv->the_channel.at(channel_to_target).get_users()));
-            std::string response = ":" + user_to_delete.get_nick() + "!~" + user_to_delete.get_username() + "@localhost PART :" + irc_serv->the_channel.at(channel_to_target).get_name();
-            send(sd, response.c_str(), response.size(), 0);
+            // irc_serv->the_channel.at(channel_to_target).get_users().erase(get_user_position(sd, irc_serv->the_channel.at(channel_to_target).get_users()));
+            // std::string response = ":" + user_to_delete.get_nick() + "!" + user_to_delete.get_username() + "@localhost PART :" + irc_serv->the_channel.at(channel_to_target).get_name() +" :" + test.reason;
+            // int     check = send(sd, response.c_str(), response.length(), 0);
+            // std::cout << "CHECK VALUE : " << check << std::endl;
             //DISCONNECT CURRENT USER FROM test.channel
-        }
-        else{
+//        }
+//        else{
             //DISCONNECT CURRENT USER FROM test.channels[all]
-        }
+//        }
         show_data_parsed_part(test);
-        free_t_part(test);
+        // free_t_part(test);
         /*
         DOC:
             - https://dd.ircdocs.horse/refs/commands/part
