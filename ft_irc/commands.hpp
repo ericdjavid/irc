@@ -117,6 +117,8 @@ int ft_deal_next(std::vector<std::string> buff_arr, the_serv *irc_serv, int sd)
 					{
 						irc_serv->the_users.at(ind).set_the_nick(nick);
 						irc_serv->the_users.at(ind).set_nick(true);
+						irc_serv->the_users.at(ind).set_username("lol");
+						display_users(irc_serv->the_users);
 					}
 				}
 				else
