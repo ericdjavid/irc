@@ -13,15 +13,13 @@
 int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std::string> buff_arr)
 {
     int ret = 0;
+    display_users(irc_serv->the_users);
     // ? QUIT
-    
     if (check_vector_arr(buff_arr, "QUIT") > 0)
     {
         delete_from_list(irc_serv, sd);
 	    return (1);
     }
-
-
 
     // ? PONG
     if (check_vector_arr(buff_arr, "PING localhost") > 0)
@@ -202,12 +200,15 @@ std::cout << "reason _______ " << reason << std::endl;
     if ((ret = check_vector_arr(buff_arr, "PRIVMSG")) > 0)
     {
         std::cout << "PRIVMSG called" << std::endl;
+        display_users(irc_serv->the_users);
         std::string buff = buff_arr.at(ret - 1).substr(8);
         std::cout << "Buff is " << buff << std::endl;
         std::string target = buff.substr(0, buff.find(' '));
         if (buff.find(':') == std::string::npos)
         {
-            error("PRIVMSG command error");
+            std::cout << "error in command" << std::endl;
+            return 1;
+            // error("PRIVMSG command error");
         }
         std::string msg = buff.substr(buff.find(':'));
         std::cout << "target is |" << target << "|" << std::endl;
@@ -234,7 +235,7 @@ std::cout << "reason _______ " << reason << std::endl;
             return 1;
         }
         // CHECK IF TARGET EXISTS
-        if (check_if_user_exist_with_nick(target, irc_serv->the_users) > 0)
+        if (check_if_user_exist_with_nick(target, irc_serv->the_users) >= 0)
         {
             std::cout << "the user " << target << " exists =) , sending msg" << std::endl;
             std::string endmsg = irc_serv->the_users.at(index).get_nick() + " PRVMSG " + target + msg;

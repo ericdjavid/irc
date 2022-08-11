@@ -229,7 +229,7 @@ int main(int argc, char **argv)
 
                     //SPLIT THE BUFFER
                     std::string cpp_buf(buffer);
-                    std::vector<std::string> buff_arr (0);
+                    std::vector<std::string> buff_arr(0);
                     tokenize(cpp_buf, '\n', buff_arr);
 
                     int ret = 0;
