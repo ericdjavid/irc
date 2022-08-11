@@ -135,7 +135,7 @@ std::cout << "reason _______ " << reason << std::endl;
 				if (( i = check_if_user_exist_in_channel(target, irc_serv->the_channel.at(channel_id).get_users())) == -1 )
 					std::cout << "11111111111User is not in the channel\n";
 				else
-					kick_user_out_from_channel(target, irc_serv->the_channel.at(channel_id).get_users());
+					kick_user_out_from_channel(target, irc_serv->the_channel.at(channel_id).get_users_ptr());
 			}
 			else
 				std::cout << "No user!!!!\n" << i << std::endl;
@@ -153,22 +153,34 @@ std::cout << "reason _______ " << reason << std::endl;
         t_part2      test;
 
         std::cout << "PART called" << std::endl;
-        std::string command = buff_arr.at(ret -1).substr(6) + '\0';
-        test = split_part_command(command);
-//        if (test.nb_chann == 0)
-//        {
-            // int     channel_to_target = get_channel(test.channel, irc_serv->the_channel);
-            // User    user_to_delete = get_user_to_delete(sd, irc_serv->the_channel.at(channel_to_target).get_users());
+        std::string user_to_delete;
+        int         channel_to_target;
+        std::string command = buff_arr.at(ret -1).substr(6);
+        int         count = 0;
 
-            // irc_serv->the_channel.at(channel_to_target).get_users().erase(get_user_position(sd, irc_serv->the_channel.at(channel_to_target).get_users()));
-            // std::string response = ":" + user_to_delete.get_nick() + "!" + user_to_delete.get_username() + "@localhost PART :" + irc_serv->the_channel.at(channel_to_target).get_name() +" :" + test.reason;
-            // int     check = send(sd, response.c_str(), response.length(), 0);
-            // std::cout << "CHECK VALUE : " << check << std::endl;
+        test = split_part_command(command);
+        while (count < test.nb_chann)
+        {
+            channel_to_target = get_channel(test.channels.at(count), irc_serv->the_channel);
+            if (channel_to_target == -1)
+            {
+                std::cout << "ERR_NOSUCHCHANNEL (403)" << std::endl;
+            }
+            else {
+                user_to_delete = get_user_name(sd, irc_serv->the_channel.at(channel_to_target).get_users());
+            }
+            if (user_to_delete == "/*,\\not_in_channel")
+            {
+                std::cout << "ERR_NOTONCHANNEL (442)" << std::endl;
+            }
+            else if (channel_to_target != -1 && user_to_delete != "/*,\\not_in_channel")
+            {
+                kick_user_out_from_channel(user_to_delete, irc_serv->the_channel.at(channel_to_target).get_users_ptr());
+
+            }
             //DISCONNECT CURRENT USER FROM test.channel
-//        }
-//        else{
-            //DISCONNECT CURRENT USER FROM test.channels[all]
-//        }
+            count++;
+        }
         show_data_parsed_part(test);
         // free_t_part(test);
         /*

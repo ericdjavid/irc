@@ -106,3 +106,17 @@ std::vector<User>::iterator		get_user_position(int id, std::vector<User> tab)
 	}
 	return (it);
 }
+
+std::string						get_user_name(int id, std::vector<User> tab)
+{
+	std::vector<User>::iterator	it = tab.begin();
+	int			i = 0;
+	while(it != tab.end())
+	{
+		if(it->get_id() == id)
+			return (it->get_nick());
+		it++;
+		i++;
+	}
+	return ("/*,\\not_in_channel");
+}

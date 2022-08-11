@@ -44,10 +44,18 @@ t_part2		split_part_command(std::string command)
 		if (command.find(',') != std::string::npos)
 		{
 			tmp = command.substr(0, command.find(','));
+			command = command.substr(command.find(',') + 1);
 			if (tmp[0] != '#')
 				tmp = '#' + tmp;
+			if(tmp.find(' ') != std::string::npos)
+			{
+				tmp = tmp.substr(0, tmp.find(' ') - 1);
+			}
+			if (command.find(' ') != std::string::npos)
+			{
+				command = command.substr(command.find(' ') + 1);
+			}
 			result->channels.push_back(tmp);
-			command = command.substr(command.find(',') + 1);
 		}
 		else if(command.find(':') != std::string::npos)
 		{
@@ -59,11 +67,17 @@ t_part2		split_part_command(std::string command)
 	}
 	if (command[0] != '\0')
 	{
+		if (command[0] == ' ')
+			command = command.substr(1);
+		if (command[0] != '#')
+			command = '#' + command;
+		if(command.find(' ') != std::string::npos)
+		{
+			command[command.find(' ')] = '\0';
+		}
 		result->channels.push_back(command);
 	}
 	result->nb_chann = result->channels.size();
-	std::cout << "END OF PARSING, VALUE OF COMMAND : " << command << " | SIZE OF COMMAND : " << command.length() << std::endl;
-	//TANT QU'IL RESTE DES , OU DES : -> Je boucle et recupere nom de chann/reason
 	return(*result);
 }
 
