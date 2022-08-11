@@ -8,7 +8,7 @@
 #include "channel.hpp"
 #include <sys/socket.h> //send
 #include "channel.cpp"
-#include "part.cpp"
+#include "part.hpp"
 
 int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std::string> buff_arr)
 {
@@ -174,6 +174,8 @@ std::cout << "reason _______ " << reason << std::endl;
             else if (channel_to_target != -1 && user_to_delete != "/*,\\not_in_channel")
             {
                 kick_user_out_from_channel(user_to_delete, irc_serv->the_channel.at(channel_to_target).get_users_ptr());
+                // TODO ADD SENDFUNCTION
+                client_printer(sd, "Kicked", , )
 
             }
             //DISCONNECT CURRENT USER FROM test.channel
