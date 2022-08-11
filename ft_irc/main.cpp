@@ -11,7 +11,6 @@
 #include <sys/time.h>       //FD_SET, FD_ISSET, FD_ZERO macros
 #include <stdio.h>
 #include <string.h>
-
 #include "tools.hpp"
 #include "server.hpp"
 #include "commands.hpp"
@@ -43,8 +42,6 @@ int main(int argc, char **argv)
 
     the_serv irc_serv;
     irc_serv.password = pswd;
-    // class User test(1, "TEST", "TEST");
-    // irc_serv.the_users.push_back(test);
 
     //initialise all client_socket[] to 0 so not checked
     for (i = 0; i < max_clients; i++)
@@ -217,6 +214,7 @@ int main(int argc, char **argv)
                         (socklen_t*)&addrlen);
                     printf("Host disconnected , ip %s , port %d \n" ,
                           inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
+                    delete_from_list(&irc_serv, sd);
 
                     //Close the socket and mark as 0 in list for reuse
                     close( sd );
@@ -247,6 +245,7 @@ int main(int argc, char **argv)
                             (socklen_t*)&addrlen);
                         printf("Host disconnected , ip %s , port %d \n" ,
                             inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
+                        delete_from_list(&irc_serv, sd);
 
                         //Close the socket and mark as 0 in list for reuse
                         close( sd );

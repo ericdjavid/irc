@@ -75,7 +75,26 @@ void client_printer(int sd, std::string str, std::string numeric, std::string us
     if (numeric == "0")
         the_print = str + "\r\n";
     else
-        the_print = beg + numeric + " " + user + ": " + str + "\r\n";
+        the_print = beg + numeric + " " + user + " :" + str + "\r\n";
+    // Allocate memory
+    char *ccx = new char[the_print.length() + 1];
+    // Copy contents
+    std::copy(the_print.begin(), the_print.end(), ccx);
+    if (send(sd , ccx, the_print.size() , 0 ) != (ssize_t)the_print.size())
+    {
+        perror("send");
+    }
+    delete[] ccx;
+    return ;
+}
+
+void client_printer_channel(int sd, std::string str, std::string numeric, std::string user)
+{   
+    // TODO : try with :
+    // :irc.example.org 332 borja #cmsc23300 :A channel for CMSC 23300 students
+    std::string beg(":localhost ");
+    std::string the_print;
+    the_print = beg + numeric + " " + user + "#lol :" + str + "\r\n";
     // Allocate memory
     char *ccx = new char[the_print.length() + 1];
     // Copy contents
@@ -115,6 +134,22 @@ int nick_already_in_use(std::string nick, std::vector<User> vector)
     return (0);
 }
 
+int id_already_in_use(int id, std::vector<User> vector)
+{
+    std::vector<User>::iterator it;
+
+    if (vector.empty())
+        return (0);
+    it = vector.begin();
+    while (it != vector.end())
+    {
+        if (it->get_id() == id)
+            return (1);
+        it++;
+    } 
+    return (0);
+}
+
 class User	*create_new_user(int id, std::string nick, std::string username, std::vector<User> *tab)
 {
 	if (nick_already_in_use(nick, *tab))
@@ -123,6 +158,7 @@ class User	*create_new_user(int id, std::string nick, std::string username, std:
         return NULL;
 	}
     class User *new_one = new User(id, nick, username);
+    
     return new_one;
 }
 
@@ -137,3 +173,4 @@ void display_users(std::vector<User> the_users)
         it++;
     }
 }
+

@@ -9,28 +9,6 @@
 #include "tools.hpp"
 #include "user_commands.hpp"
 
-void ft_join_channel(char* buff, the_serv *irc_serv)
-{
-	if (!(irc_serv->the_channel.empty()))
-	{
-		// Check if chan exists
-		std::vector<Channel>::iterator channs = irc_serv->the_channel.begin();
-		std::string     channel_name(buff);
-		while (channs->get_name() != channel_name && channs != irc_serv->the_channel.end())
-		{
-			channs++;
-		}
-	}
-
-	// if not, add the channel
-	std::cout << "Server: channel does not exist, creating it\n";
-	for (int i = 0; i < 4; i++)
-		buff++;
-	std::string name(buff); 
-	irc_serv->the_channel.push_back(Channel(buff));
-	print_channels(irc_serv->the_channel);
-}
-
 bool ft_check_password(std::vector<std::string> buff_arr, the_serv *irc_serv, int sd)
 {
 	int ret = 0;
@@ -63,11 +41,12 @@ bool ft_check_password(std::vector<std::string> buff_arr, the_serv *irc_serv, in
 
 int ft_deal_next(std::vector<std::string> buff_arr, the_serv *irc_serv, int sd)
 {
-
 	std::string nick;
 	std::string user;
 	int ret = 0;
-	if ((ret = check_vector_arr(buff_arr, "NICK")) > 0)
+
+	// IRSSI NORMAL PROCEDURE
+	if ((ret = check_vector_arr(buff_arr, "NICK")) > 0 && buff_arr.size() > 1)
 	{
 		nick = buff_arr.at(ret - 1).substr(5);
 		std::cout << "nick is " << nick << std::endl;
@@ -86,7 +65,6 @@ int ft_deal_next(std::vector<std::string> buff_arr, the_serv *irc_serv, int sd)
 		{
 			if (nick_already_in_use(nick, irc_serv->the_users) == 0)
 			{
-				std::cout << "creating user..." << std::endl; 
 				class User tmp(sd, nick, user);
 				irc_serv->the_users.push_back(tmp);
 			}
@@ -95,13 +73,71 @@ int ft_deal_next(std::vector<std::string> buff_arr, the_serv *irc_serv, int sd)
 				std::cout << "user not created, nick" << nick << " already in use" << std::endl;
 				return 1;
 			}
-			// std::cout << "||||||||||||| USERS |||||||||||||" << std::endl;
-			// display_users(irc_serv->the_users);
-			// std::cout <<  "||||||||||||| END |||||||||||||" << std::endl;
+			std::cout << "||||||||||||| USERS |||||||||||||" << std::endl;
+			display_users(irc_serv->the_users);
+			std::cout <<  "||||||||||||| END |||||||||||||" << std::endl;
 			return 0;
 		}
 		else
+		{
+			std::cout << "no password set by user" << std::endl;
 			return 1;
+		}
+	}
+	else
+	{
+		// NC PROCESS
+		std::cout << "NC process" << std::endl;
+		std::cout << "Please set password" << std::endl;
+		if (check_if_user_exist(sd, irc_serv->the_users) == 0)
+		{
+			if (ft_check_password(buff_arr, irc_serv, sd) == true)
+			{
+				std::cout << "Please set nick" << std::endl;
+				class User tmp(sd);
+				irc_serv->the_users.push_back(tmp);
+				return 0;
+			}
+			else
+			{
+				std::cout << "Wrong password" << std::endl;
+				return 1;
+			}
+
+		}
+		else
+		{
+			std::cout << "User exists" << std::endl;
+			if ((ret = check_vector_arr(buff_arr, "NICK")) > 0 )
+			{
+				if (nick_already_in_use(nick, irc_serv->the_users) == 0)
+				{
+					int ind = get_index(irc_serv->the_users, sd);
+					std::cout << "Index is " << ind << std::endl;
+					nick = buff_arr.at(0).substr(5);
+					if (ind >= 0)
+					{
+						irc_serv->the_users.at(ind).set_the_nick(nick);
+						irc_serv->the_users.at(ind).set_nick(true);
+					}
+				}
+				else
+				{
+					std::cout << "Nick already in use, set another nick";
+					return 0;
+				}
+			}
+			else
+			{
+				std::cout << "Please set a nick..." << std::endl;
+			}
+
+		}
+		std::cout << "||||||||||||| USERS |||||||||||||" << std::endl;
+		display_users(irc_serv->the_users);
+		std::cout <<  "||||||||||||| END |||||||||||||" << std::endl;
+		return 0;
+
 	}
 	return 0;
 }
@@ -130,7 +166,8 @@ int ft_treat_commands(std::vector<std::string> buff_arr, the_serv *irc_serv, int
 	
 	// CHECK IF SD IS IN THE LIST OF USER
 	// std::cout << "sd = " << sd << std::endl;
-	if ((ret = check_if_user_exist(sd, irc_serv->the_users)) > 0)
+	ret = -1;
+	if (((ret = check_if_user_exist(sd, irc_serv->the_users)) > 0) && ret >= 0 && irc_serv->the_users.at(get_index(irc_serv->the_users, ret)).get_set_nick() == true)
 	{
 		// TODO? CHECK OTHER COMMANDS LIKE JOIN
 		// std::cout << "The user with the same fd exists so let's not look for the connexion stuffs" << std::endl;
@@ -147,7 +184,7 @@ int ft_treat_commands(std::vector<std::string> buff_arr, the_serv *irc_serv, int
 	}
 	else
 	{
-		std::cout << "user don't exist, let's start the connexion process!" << std::endl;
+		std::cout << "User nick don't exist in DB, starting the connexion process!" << std::endl;
 		if(ft_deal_next(buff_arr, irc_serv, sd) == 1)
 			return -2;
 	}
