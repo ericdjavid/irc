@@ -48,6 +48,11 @@ class Channel
         return _users;
     }
 
+    std::vector<User> *get_users_ptr()
+    {
+        return &_users;
+    }
+
 	std::vector<User> get_ban_users()
 	{
 		return (_ban_users);
@@ -155,10 +160,10 @@ std::cout << "user ==>" << it->get_nick() << "target ==>" << target << "----" <<
 
 
 //Fonction pour kick l'user
-	void	kick_user_out_from_channel(std::string target, std::vector<class User> users_channel)
+	void	kick_user_out_from_channel(std::string target, std::vector<class User> *users_channel)
 	{
 		int i = 0;
-		for(std::vector<User>::iterator it = users_channel.begin(); it != users_channel.end(); it++)
+		for(std::vector<User>::iterator it = users_channel->begin(); it != users_channel->end(); it++)
 		{
 			std::cout << "user ==> " << it->get_nick() << std::endl;
 			std::cout << "target ==> " << target << std::endl;
@@ -167,8 +172,8 @@ std::cout << "user ==>" << it->get_nick() << "target ==>" << target << "----" <<
 			else
 				i++;
 		}
-		users_channel.erase(users_channel.begin() + i);
-		for(std::vector<User>::iterator it = users_channel.begin(); it != users_channel.end(); it++)
+		users_channel->erase(users_channel->begin() + i);
+		for(std::vector<User>::iterator it = users_channel->begin(); it != users_channel->end(); it++)
 			std::cout << "user ==> " << it->get_nick() << std::endl;
 	}
 

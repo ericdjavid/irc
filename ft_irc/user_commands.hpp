@@ -8,20 +8,18 @@
 #include "channel.hpp"
 #include <sys/socket.h> //send
 #include "channel.cpp"
-#include "part.cpp"
+#include "part.hpp"
 
 int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std::string> buff_arr)
 {
     int ret = 0;
+    // display_users(irc_serv->the_users);
     // ? QUIT
-    
     if (check_vector_arr(buff_arr, "QUIT") > 0)
     {
         delete_from_list(irc_serv, sd);
 	    return (1);
     }
-
-
 
     // ? PONG
     if (check_vector_arr(buff_arr, "PING localhost") > 0)
@@ -135,7 +133,7 @@ std::cout << "reason _______ " << reason << std::endl;
 				if (( i = check_if_user_exist_in_channel(target, irc_serv->the_channel.at(channel_id).get_users())) == -1 )
 					std::cout << "11111111111User is not in the channel\n";
 				else
-					kick_user_out_from_channel(target, irc_serv->the_channel.at(channel_id).get_users());
+					kick_user_out_from_channel(target, irc_serv->the_channel.at(channel_id).get_users_ptr());
 			}
 			else
 				std::cout << "No user!!!!\n" << i << std::endl;
@@ -181,14 +179,42 @@ std::cout << channel_invite << "-------- channel_invite" << std::endl;
     // ?PART
     if ((ret = check_vector_arr(buff_arr, "PART")) > 0)
     {
-        t_part      test;
+        t_part2      test;
 
         std::cout << "PART called" << std::endl;
+        std::string user_to_delete;
+        int         channel_to_target;
         std::string command = buff_arr.at(ret -1).substr(6);
-        test = split_part_command(command.c_str());
+        std::string response;
+        int         count = 0;
 
+        test = split_part_command(command);
+        while (count < test.nb_chann)
+        {
+            channel_to_target = get_channel(test.channels.at(count), irc_serv->the_channel);
+            if (channel_to_target == -1)
+            {
+                std::cout << "ERR_NOSUCHCHANNEL (403)" << std::endl;
+            }
+            else {
+                user_to_delete = get_user_name(sd, irc_serv->the_channel.at(channel_to_target).get_users());
+            }
+            if (user_to_delete == "/*,\\not_in_channel")
+            {
+                std::cout << "ERR_NOTONCHANNEL (442)" << std::endl;
+            }
+            else if (channel_to_target != -1 && user_to_delete != "/*,\\not_in_channel")
+            {
+                kick_user_out_from_channel(user_to_delete, irc_serv->the_channel.at(channel_to_target).get_users_ptr());
+                response = get_response_1(sd, irc_serv->the_users, buff_arr.at(ret -1) + " :");
+                std::cout << "RESPONSE : |" << response << "|" << std::endl;
+                send(sd, response.c_str(), response.length(), 0);
+            }
+            //DISCONNECT CURRENT USER FROM test.channel
+            count++;
+        }
         show_data_parsed_part(test);
-        free_t_part(test);
+        // free_t_part(test);
         /*
         DOC:
             - https://dd.ircdocs.horse/refs/commands/part
@@ -208,12 +234,15 @@ std::cout << channel_invite << "-------- channel_invite" << std::endl;
     if ((ret = check_vector_arr(buff_arr, "PRIVMSG")) > 0)
     {
         std::cout << "PRIVMSG called" << std::endl;
+        // display_users(irc_serv->the_users);
         std::string buff = buff_arr.at(ret - 1).substr(8);
         std::cout << "Buff is " << buff << std::endl;
         std::string target = buff.substr(0, buff.find(' '));
         if (buff.find(':') == std::string::npos)
         {
-            error("PRIVMSG command error");
+            std::cout << "error in command" << std::endl;
+            return 1;
+            // error("PRIVMSG command error");
         }
         std::string msg = buff.substr(buff.find(':'));
         std::cout << "target is |" << target << "|" << std::endl;
@@ -227,7 +256,7 @@ std::cout << channel_invite << "-------- channel_invite" << std::endl;
                 std::cout << "channel found, sending the msg to others" << std::endl;
                 // SEND THE MSG TO ALL THE USER LIST OF THE CHANNEL
                 std::cout << "Chan is " << chan << std::endl;
-                
+
                 send_message_to_channel(irc_serv->the_channel[chan -1], msg);
 
             }
@@ -240,7 +269,7 @@ std::cout << channel_invite << "-------- channel_invite" << std::endl;
             return 1;
         }
         // CHECK IF TARGET EXISTS
-        if (check_if_user_exist_with_nick(target, irc_serv->the_users) > 0)
+        if (check_if_user_exist_with_nick(target, irc_serv->the_users) >= 0)
         {
             std::cout << "the user " << target << " exists =) , sending msg" << std::endl;
             std::string endmsg = irc_serv->the_users.at(index).get_nick() + " PRVMSG " + target + msg;

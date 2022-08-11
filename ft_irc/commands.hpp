@@ -57,7 +57,9 @@ int ft_deal_next(std::vector<std::string> buff_arr, the_serv *irc_serv, int sd)
 			user = "Lambda User";
 		std::cout << "user is " << user << std::endl;
 		std::string msg = nick + user;
+		std::string username =  user.substr(0, user.find(" "));
 		client_printer(sd, msg, "001", user);
+		std::cout << "username = " << username;
 		std::string the_str("Your host is localhost, running version 1");
 		client_printer(sd, the_str, "002", user);
 		client_printer(sd, "This localhost was created at [add hour]", "003", user);
@@ -65,7 +67,7 @@ int ft_deal_next(std::vector<std::string> buff_arr, the_serv *irc_serv, int sd)
 		{
 			if (nick_already_in_use(nick, irc_serv->the_users) == 0)
 			{
-				class User tmp(sd, nick, user);
+				class User tmp(sd, nick, username);
 				irc_serv->the_users.push_back(tmp);
 			}
 			else
@@ -73,9 +75,6 @@ int ft_deal_next(std::vector<std::string> buff_arr, the_serv *irc_serv, int sd)
 				std::cout << "user not created, nick" << nick << " already in use" << std::endl;
 				return 1;
 			}
-			std::cout << "||||||||||||| USERS |||||||||||||" << std::endl;
-			display_users(irc_serv->the_users);
-			std::cout <<  "||||||||||||| END |||||||||||||" << std::endl;
 			return 0;
 		}
 		else
@@ -88,9 +87,9 @@ int ft_deal_next(std::vector<std::string> buff_arr, the_serv *irc_serv, int sd)
 	{
 		// NC PROCESS
 		std::cout << "NC process" << std::endl;
-		std::cout << "Please set password" << std::endl;
 		if (check_if_user_exist(sd, irc_serv->the_users) == 0)
 		{
+			std::cout << "Please set password" << std::endl;
 			if (ft_check_password(buff_arr, irc_serv, sd) == true)
 			{
 				std::cout << "Please set nick" << std::endl;
@@ -103,18 +102,17 @@ int ft_deal_next(std::vector<std::string> buff_arr, the_serv *irc_serv, int sd)
 				std::cout << "Wrong password" << std::endl;
 				return 1;
 			}
-
 		}
 		else
 		{
-			std::cout << "User exists" << std::endl;
+			std::cout << "User sd exists" << std::endl;
 			if ((ret = check_vector_arr(buff_arr, "NICK")) > 0 )
 			{
+				nick = buff_arr.at(0).substr(5);
 				if (nick_already_in_use(nick, irc_serv->the_users) == 0)
 				{
 					int ind = get_index(irc_serv->the_users, sd);
 					std::cout << "Index is " << ind << std::endl;
-					nick = buff_arr.at(0).substr(5);
 					if (ind >= 0)
 					{
 						irc_serv->the_users.at(ind).set_the_nick(nick);
@@ -133,9 +131,6 @@ int ft_deal_next(std::vector<std::string> buff_arr, the_serv *irc_serv, int sd)
 			}
 
 		}
-		std::cout << "||||||||||||| USERS |||||||||||||" << std::endl;
-		display_users(irc_serv->the_users);
-		std::cout <<  "||||||||||||| END |||||||||||||" << std::endl;
 		return 0;
 
 	}
@@ -161,6 +156,8 @@ int ft_treat_commands(std::vector<std::string> buff_arr, the_serv *irc_serv, int
 			// DEAL NEXT
 			if (ft_deal_next(buff_arr, irc_serv, sd) == 1)
 				return -2;
+			else
+				display_users(irc_serv->the_users);
 		}
 	}
 	
