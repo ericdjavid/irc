@@ -184,7 +184,7 @@ std::cout << "buff-" << buff << "----" << std::endl;
 std::cout << "Target --" << target << "------" << std::endl;
 		std::string message = buff.substr(target.size());
 		message = message.substr(2);
-std::cout << "Massage--" << message << "---" << std::endl;
+std::cout << "Massage--" << message << "---" << std::endl; //MESSAGE
 		
 	}
 
@@ -218,7 +218,7 @@ std::cout << "Massage--" << message << "---" << std::endl;
             else if (channel_to_target != -1 && user_to_delete != "/*,\\not_in_channel")
             {
                 kick_user_out_from_channel(user_to_delete, irc_serv->the_channel.at(channel_to_target).get_users_ptr());
-                response = get_response_1(sd, irc_serv->the_users, buff_arr.at(ret -1) + " :");
+                response = get_response_1(sd, irc_serv->the_users, buff_arr.at(ret -1));
                 std::cout << "RESPONSE : |" << response << "|" << std::endl;
                 send(sd, response.c_str(), response.length(), 0);
             }
