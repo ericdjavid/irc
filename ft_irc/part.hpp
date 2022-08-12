@@ -27,6 +27,20 @@ void	show_data_parsed_part(t_part2 var)
 	std::cout << "reason : " << var.reason << std::endl;
 }
 
+std::vector<std::string>		armonize_names(std::vector<std::string> tab)
+{
+	std::vector<std::string>::iterator it = tab.begin();
+
+	while (it != tab.end())
+	{
+		if ((*it)[0] != '#')
+			*it = '#' + *it;
+		*it = it->substr(0, it->find(' '));
+		it++;
+	}
+	return (tab);
+}
+
 t_part2		split_part_command(std::string command)
 {
 	t_part2		*result = new t_part2;
@@ -60,8 +74,10 @@ t_part2		split_part_command(std::string command)
 		else if(command.find(':') != std::string::npos)
 		{
 			tmp =  command.substr(0, command.find(':'));
-			result->reason = tmp;
+			result->channels.push_back(tmp);
 			command = command.substr(command.find(':') + 1);
+			result->reason = command;
+			command = '\0';
 		}
 		i++;
 	}
@@ -78,6 +94,7 @@ t_part2		split_part_command(std::string command)
 		result->channels.push_back(command);
 	}
 	result->nb_chann = result->channels.size();
+	result->channels = armonize_names(result->channels);
 	return(*result);
 }
 

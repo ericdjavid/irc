@@ -218,9 +218,10 @@ std::cout << "Massage--" << message << "---" << std::endl; //MESSAGE
             else if (channel_to_target != -1 && user_to_delete != "/*,\\not_in_channel")
             {
                 kick_user_out_from_channel(user_to_delete, irc_serv->the_channel.at(channel_to_target).get_users_ptr());
-                response = get_response_1(sd, irc_serv->the_users, buff_arr.at(ret -1));
+                response = get_response_1(sd, irc_serv->the_users, buff_arr.at(ret -1) + " :");// + test.reason;
                 std::cout << "RESPONSE : |" << response << "|" << std::endl;
                 send(sd, response.c_str(), response.length(), 0);
+                //:Eric_!~Eric@62.210.32.149 PART #mychan :
             }
             //DISCONNECT CURRENT USER FROM test.channel
             count++;
