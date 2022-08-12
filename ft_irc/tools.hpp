@@ -203,3 +203,37 @@ void display_users(std::vector<User> the_users)
 		std::cout <<  "||||||||||||| END |||||||||||||" << std::endl;
 }
 
+int	check_if_many_user(std::string target)
+{
+	int i = 0;
+	for (size_t size = 0; size < target.size(); size++)
+		if (target[size] == ';' || target[size] == '|') i++;
+	return (i + 1);
+}
+
+std::vector<std::string>	get_everyone(std::string target, int i)
+{
+	std::vector<std::string> targets;
+	std::string test;
+	std::string needle ("|");
+	std::string needle1(";");
+	size_t found1;
+	size_t found2;
+
+std::cout << target << std::endl;
+	size_t start = 0;
+	while (i > 0)
+	{
+		found1 = target.find(needle);
+		found2 = target.find(needle1);
+		if (found1 > found2)
+			test = target.substr(0, found2);
+		else
+			test = target.substr(0, found1);
+		start = test.size();
+		target = target.erase(0, start + 1);
+		targets.push_back(test);
+		i--;
+	}
+	return (targets);
+}

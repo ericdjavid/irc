@@ -134,19 +134,33 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
 std::cout << "reason _______ " << reason << std::endl;
 		channel_kick = "#" + channel_kick;
 		if ((i = check_if_channel_exist(channel_kick, irc_serv->the_channel)) == -1)
-			std::cout << "///////////////////error no channel///////////////////////\n";
+			std::cout << "ERR_NOSUCHCHANNEL || 403\n";
 		else
 		{
 			int channel_id = get_channel(channel_kick, irc_serv->the_channel);
 			if ((i = check_if_user_exist_with_nick(target, irc_serv->the_users)) != -1)
 			{
 				if (( i = check_if_user_exist_in_channel(target, irc_serv->the_channel.at(channel_id).get_users())) == -1 )
-					std::cout << "11111111111User is not in the channel\n";
+					std::cout << "ERR_USERNOTINCHANNEL || 441\n";
 				else
-					kick_user_out_from_channel(target, irc_serv->the_channel.at(channel_id).get_users_ptr());
+				{
+					std::string kicker = get_user_name(sd, irc_serv->the_channel.at(channel_id).get_users());
+					if (( i = check_if_user_exist_in_channel(kicker, irc_serv->the_channel.at(channel_id).get_users())) == -1 )
+						std::cout << " ERR_USERNOTINCHANNEL || 441" << std::endl;
+					else
+					{
+						std::string endmsg;
+						if (reason.empty() == false)
+            				endmsg = irc_serv->the_users.at(index).get_nick() + " KICK " + target + reason;
+						else
+            				endmsg = irc_serv->the_users.at(index).get_nick() + " KICK " + target;
+						client_printer2(sd, &irc_serv->the_users.at(get_index(irc_serv->the_users, sd)), endmsg, 0, target);
+						kick_user_out_from_channel(target, irc_serv->the_channel.at(channel_id).get_users_ptr());
+					}
+				}
 			}
 			else
-				std::cout << "No user!!!!\n" << i << std::endl;
+				std::cout << "ERR_USERNOTINCHANNEL || 441\n";
 		}
 	}
 
@@ -182,6 +196,7 @@ std::cout << channel_invite << "-------- channel_invite" << std::endl;
 	// ? Notice
 	if ((ret =  check_vector_arr(buff_arr, "NOTICE")) > 0)
 	{
+		int i;
 		std::cout << "NOTICE called" << std::endl;
 		std::string buff = buff_arr.at(ret - 1).substr(7); 
 std::cout << "buff-" << buff << "----" << std::endl;
@@ -189,8 +204,39 @@ std::cout << "buff-" << buff << "----" << std::endl;
 std::cout << "Target --" << target << "------" << std::endl;
 		std::string message = buff.substr(target.size());
 		message = message.substr(2);
-std::cout << "Massage--" << message << "---" << std::endl;
-		
+std::cout << "Message--" << message << "---" << std::endl;
+		if ((i = check_if_many_user(target)) == 1)
+		{
+std::cout << "one user" << i << "----"<<  std::endl;	
+			if ((i = check_if_user_exist_with_nick(target, irc_serv->the_users)) >= 0)
+			{
+std::cout << "the user " << target << " exists =) , sending msg" << std::endl;
+				std::string endmsg = irc_serv->the_users.at(index).get_nick() + " NOTICE " + target + message;
+				// client_printer(irc_serv->the_users.at(check_if_user_exist_with_nick(target, irc_serv->the_users)).get_id(), endmsg, 0, target );
+				int target_id = irc_serv->the_users.at(check_if_user_exist_with_nick(target, irc_serv->the_users)).get_id();
+std::cout << "ID of " << target << " is " << target_id << std::endl;
+				// TODO! LE PREMIER MSG NE S ENVOIE PAS, A FIX
+				client_printer(target_id, endmsg, "371", target);
+			}
+		}
+		else
+		{
+			std::vector<std::string> targets;
+			targets = get_everyone(target, i);
+std::cout << "many users" << i << "----" << std::endl;
+//for (size_t it = 0; it != targets.size(); it++)
+//	std::cout << targets.at(it) << std::endl;
+			for (size_t it = 0; it != targets.size(); it++)
+			{
+std::cout << targets.at(it) << std::endl;
+        		if (check_if_user_exist_with_nick(target, irc_serv->the_users) >= 0)
+				{
+					std::string sev_msg = irc_serv->the_users.at(index).get_nick() + " NOTICE " + targets.at(it) + message;
+					int target_sev = irc_serv->the_users.at(check_if_user_exist_with_nick(targets.at(it), irc_serv->the_users)).get_id();
+					client_printer(target_sev, sev_msg, "371", targets.at(it));
+				}
+			}
+		}
 	}
 
     // ?PART
