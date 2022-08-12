@@ -33,7 +33,7 @@ bool ft_check_password(std::vector<std::string> buff_arr, the_serv *irc_serv, in
 	}
 	else
 	{
-		client_printer(sd, "No password set up, please connect with password", "471", "EDJAV");
+		client_printer(sd, "No password set up, please connect with password", "471", tmp_user);
 		return false;
 	}
 	return false;

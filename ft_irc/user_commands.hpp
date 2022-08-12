@@ -30,7 +30,11 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
     if (check_vector_arr(buff_arr, "PING localhost") > 0)
     {
         std::string PONG(":localhost PONG localhost :localhost");
-	    send(sd,":localhost PONG localhost :localhost", PONG.size(), 0);
+	    if (send(sd,PONG.c_str(), PONG.length(), 0) == -1)
+        {
+            std::cout << "Problem with PONG send" << std::endl;
+        }
+        // Response: :ircnet.clue.be PONG ircnet.clue.be :ircnet.clue.be
 	    return (0);
     }
     // ? JOIN
@@ -290,7 +294,9 @@ std::cout << "Massage--" << message << "---" << std::endl; //MESSAGE
             int target_id = irc_serv->the_users.at(check_if_user_exist_with_nick(target, irc_serv->the_users)).get_id();
             std::cout << "ID of " << target << " is " << target_id << std::endl;
             // TODO! LE PREMIER MSG NE S ENVOIE PAS, A FIX
-            client_printer(target_id, endmsg, "371", target);
+            // TODO GERER LES ERREURS
+            // client_printer(target_id, endmsg, "371", target);
+            client_printer2(target_id, &irc_serv->the_users.at(get_index(irc_serv->the_users, sd)), endmsg, "0", target);
         }
         else
             std::cout << "the user don't exist =(" << std::endl;
