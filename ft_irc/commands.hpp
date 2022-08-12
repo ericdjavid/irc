@@ -33,7 +33,7 @@ bool ft_check_password(std::vector<std::string> buff_arr, the_serv *irc_serv, in
 	}
 	else
 	{
-		client_printer(sd, "No password set up, please connect with password", "471", "EDJAV");
+		client_printer(sd, "No password set up, please connect with password", "471", tmp_user);
 		return false;
 	}
 	return false;
@@ -159,7 +159,11 @@ int ft_treat_commands(std::vector<std::string> buff_arr, the_serv *irc_serv, int
 			if (ft_deal_next(buff_arr, irc_serv, sd) == 1)
 				return -2;
 			else
+			{
 				display_users(irc_serv->the_users);
+				return 1;
+			}
+
 		}
 	}
 	

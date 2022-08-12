@@ -235,6 +235,13 @@ int main(int argc, char **argv)
                     int ret = 0;
                     if ((ret = ft_treat_commands(buff_arr, &irc_serv, sd)) == 1)
                     {
+                        // ? PONG
+                            std::string PING("PING localhost\n\r");
+	                        if (send(sd,PING.c_str(), PING.length(), 0) == -1)
+                            {
+                                std::cout << "Problem with PING send" << std::endl;
+                            }
+                            // Response: :ircnet.clue.be PING ircnet.clue.be :ircnet.clue.be
                         // the socket has been treated, we continue
                         continue;
                     }
