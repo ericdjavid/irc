@@ -177,6 +177,7 @@ std::cout << channel_invite << "-------- channel_invite" << std::endl;
 	// ? Notice
 	if ((ret =  check_vector_arr(buff_arr, "NOTICE")) > 0)
 	{
+		int i;
 		std::cout << "NOTICE called" << std::endl;
 		std::string buff = buff_arr.at(ret - 1).substr(7); 
 std::cout << "buff-" << buff << "----" << std::endl;
@@ -185,7 +186,38 @@ std::cout << "Target --" << target << "------" << std::endl;
 		std::string message = buff.substr(target.size());
 		message = message.substr(2);
 std::cout << "Massage--" << message << "---" << std::endl;
-		
+		if ((i = check_if_many_user(target)) == 1)
+		{
+std::cout << "one user" << i << "----"<<  std::endl;	
+			if ((i = check_if_user_exist_with_nick(target, irc_serv->the_users)) >= 0)
+			{
+std::cout << "the user " << target << " exists =) , sending msg" << std::endl;
+				std::string endmsg = irc_serv->the_users.at(index).get_nick() + " NOTICE " + target + message;
+				// client_printer(irc_serv->the_users.at(check_if_user_exist_with_nick(target, irc_serv->the_users)).get_id(), endmsg, 0, target );
+				int target_id = irc_serv->the_users.at(check_if_user_exist_with_nick(target, irc_serv->the_users)).get_id();
+				std::cout << "ID of " << target << " is " << target_id << std::endl;
+				// TODO! LE PREMIER MSG NE S ENVOIE PAS, A FIX
+				client_printer(target_id, endmsg, "371", target);
+			}
+		}
+		else
+		{
+			std::vector<std::string> targets;
+			targets = get_everyone(target, i);
+std::cout << "many users" << i << "----" << std::endl;
+//for (size_t it = 0; it != targets.size(); it++)
+//	std::cout << targets.at(it) << std::endl;
+			for (size_t it = 0; it != targets.size(); it++)
+			{
+std::cout << targets.at(it) << std::endl;
+        		if (check_if_user_exist_with_nick(target, irc_serv->the_users) >= 0)
+				{
+					std::string sev_msg = irc_serv->the_users.at(index).get_nick() + " NOTICE " + targets.at(it) + message;
+					int target_sev = irc_serv->the_users.at(check_if_user_exist_with_nick(targets.at(it), irc_serv->the_users)).get_id();
+					client_printer(target_sev, sev_msg, "371", targets.at(it));
+				}
+			}
+		}
 	}
 
     // ?PART
