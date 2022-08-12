@@ -227,20 +227,10 @@ std::cout << target << std::endl;
 			test = target.substr(0, found2);
 		else
 			test = target.substr(0, found1);
-std::cout << "TEST split ==>" << test << std::endl;
 		start = test.size();
 		target = target.erase(0, start + 1);
-std::cout << "str reste de string a decoupe==>" << target << std::endl;
 		targets.push_back(test);
 		i--;
 	}
-start = 0;
-for (std::vector<std::string>::iterator it = targets.begin(); it != targets.end(); it++)
-{
-	std::cout << targets.at(start) << std::endl;
-	start++;
-}
-
-
 	return (targets);
 }
