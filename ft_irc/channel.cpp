@@ -127,7 +127,7 @@ void        send_message_to_channel(class Channel chan, std::string message)
         std::cout << "id is " << it->get_id() << std::endl;
         // ! NOT WORKING, TRY TO SEND MSG TO ALL OUTSIDE THIS FUNCTION, IN THE MAIN FUNCTION
         // client_printer(it->get_id(), message, "332", "user");
-        client_printer_channel(it->get_id(), message, "332", it->get_nick());
+        client_printer_channel(it->get_id(), message, "332", it->get_nick(), chan.get_name());
 
         it++;
     }

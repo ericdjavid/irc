@@ -113,13 +113,15 @@ void client_printer2(int fd, class User *us, std::string str, std::string numeri
     return ;
 }
 
-void client_printer_channel(int sd, std::string str, std::string numeric, std::string user)
+void client_printer_channel(int sd, std::string str, std::string numeric, std::string user,std::string channel_name)
 {   
     // TODO : try with :
+    (void)numeric;
+    (void)user;
     // :irc.example.org 332 borja #cmsc23300 :A channel for CMSC 23300 students
-    std::string beg(":localhost ");
+    std::string beg("jam!~edjavid@localhost");
     std::string the_print;
-    the_print = beg + numeric + " " + user + "#lol :" + str + "\r\n";
+    the_print = beg + " PRIVMSG " + channel_name + " " + str + "\r\n";
     std::cout << "Printing: |" << the_print << "|" << std::endl;
     // Allocate memory
     char *ccx = new char[the_print.length() + 1];
