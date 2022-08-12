@@ -159,7 +159,11 @@ int ft_treat_commands(std::vector<std::string> buff_arr, the_serv *irc_serv, int
 			if (ft_deal_next(buff_arr, irc_serv, sd) == 1)
 				return -2;
 			else
+			{
 				display_users(irc_serv->the_users);
+				return 1;
+			}
+
 		}
 	}
 	

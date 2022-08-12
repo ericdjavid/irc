@@ -21,15 +21,15 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
 	    return (1);
     }
     // ? NICK
-    if ((ret = check_vector_arr(buff_arr, "NICK")) > 0)
-        nick_command(buff_arr.at(ret - 1).substr(5), index, irc_serv);
-    if ((ret = check_vector_arr(buff_arr, "USERNAME")) > 0)
-        username_command(buff_arr.at(ret - 1).substr(9), index, irc_serv);
+    // if ((ret = check_vector_arr(buff_arr, "NICK")) > 0)
+    //     nick_command(buff_arr.at(ret - 1).substr(5), index, irc_serv);
+    // if ((ret = check_vector_arr(buff_arr, "USERNAME")) > 0)
+    //     username_command(buff_arr.at(ret - 1).substr(9), index, irc_serv);
 
     // ? PONG
     if (check_vector_arr(buff_arr, "PING localhost") > 0)
     {
-        std::string PONG(":localhost PONG localhost :localhost");
+        std::string PONG(":localhost PONG localhost :localhost\r\n");
 	    if (send(sd,PONG.c_str(), PONG.length(), 0) == -1)
         {
             std::cout << "Problem with PONG send" << std::endl;
