@@ -23,8 +23,8 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
     // ? NICK
     // if ((ret = check_vector_arr(buff_arr, "NICK")) > 0)
     //     nick_command(buff_arr.at(ret - 1).substr(5), index, irc_serv);
-    if ((ret = check_vector_arr(buff_arr, "USERNAME")) > 0)
-        username_command(buff_arr.at(ret - 1).substr(9), index, irc_serv);
+    // if ((ret = check_vector_arr(buff_arr, "USERNAME")) > 0)
+    //     username_command(buff_arr.at(ret - 1).substr(9), index, irc_serv);
 
     // ? PONG
     if (check_vector_arr(buff_arr, "PING localhost") > 0)
@@ -229,6 +229,7 @@ std::cout << "Massage--" << message << "---" << std::endl; //MESSAGE
                 std::cout << "RESPONSE : |" << response << "|" << std::endl;
                 check_response = send(sd, response.c_str(), response.length(), 0);
                 std::cout << "RESPONSE VALUE : " << check_response << "| LENGTH RESPONSE = " << response.length() << std::endl;
+                //IF CHANNEL EMPTY
                 irc_serv->the_channel.erase(get_channel_2(test.channels.at(count), irc_serv->the_channel));
             }
             //DISCONNECT CURRENT USER FROM test.channel
