@@ -235,13 +235,6 @@ int main(int argc, char **argv)
                     int ret = 0;
                     if ((ret = ft_treat_commands(buff_arr, &irc_serv, sd)) == 1)
                     {
-                        // ? PONG
-                            std::string PING("PING localhost\n\r");
-	                        if (send(sd,PING.c_str(), PING.length(), 0) == -1)
-                            {
-                                std::cout << "Problem with PING send" << std::endl;
-                            }
-                            // Response: :ircnet.clue.be PING ircnet.clue.be :ircnet.clue.be
                         // the socket has been treated, we continue
                         continue;
                     }
@@ -252,6 +245,13 @@ int main(int argc, char **argv)
                             (socklen_t*)&addrlen);
                         printf("Host disconnected , ip %s , port %d \n" ,
                             inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
+                        
+                        char const* QUIT = 
+                        "QUIT\n";
+                        if( send(new_socket, QUIT, strlen(QUIT), 0) != (ssize_t)strlen(QUIT) )
+                        {
+                            perror("QUIT");
+                        }
                         delete_from_list(&irc_serv, sd);
 
                         //Close the socket and mark as 0 in list for reuse

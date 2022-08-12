@@ -96,10 +96,11 @@ void client_printer2(int fd, class User *us, std::string str, std::string numeri
     if (numeric == "0")
     {
         std::cout << "Numeric is 0" << std::endl;
-        the_print = str + "\r\n";
+        the_print = beg + str + "\r\n";
     }
     else
         the_print = beg + numeric + " " + target + " :" + str + "\r\n";
+    std::cout << "Message sent to client is: |" << the_print << "|" << std::endl;
     // Allocate memory
     char *ccx = new char[the_print.length() + 1];
     // Copy contents
@@ -119,6 +120,7 @@ void client_printer_channel(int sd, std::string str, std::string numeric, std::s
     std::string beg(":localhost ");
     std::string the_print;
     the_print = beg + numeric + " " + user + "#lol :" + str + "\r\n";
+    std::cout << "Printing: |" << the_print << "|" << std::endl;
     // Allocate memory
     char *ccx = new char[the_print.length() + 1];
     // Copy contents
@@ -142,6 +144,7 @@ void print_vector(std::vector<std::string> buff_arr)
     }
 }
 
+// RETURN 1 IF YES AND 0 IF NO
 int nick_already_in_use(std::string nick, std::vector<User> vector)
 {
     std::vector<User>::iterator it;
