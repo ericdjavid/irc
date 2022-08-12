@@ -132,3 +132,20 @@ void        send_message_to_channel(class Channel chan, std::string message, int
         return;
     }
 }
+
+std::string	get_response_1(int	id, std::vector<User> tab, std::string command_name, the_serv *serv, Channel *chan)
+{
+	std::vector<User>::iterator	it = tab.begin();
+	std::string					response;
+	while(it != tab.end())
+	{
+		if(it->get_id() == id)
+		{
+			std::cout << "GET RESPONSE : |" << it->get_nick() << "| |" << it->get_username() << "|" << std::endl;
+			response = ":" + it->get_nick() + "!~" + it->get_username() + "@" + serv->port + command_name + chan->get_name() + "\r\n";
+			break ;
+		}
+		it++;
+	}
+	return (response);
+}

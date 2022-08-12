@@ -120,7 +120,7 @@ std::string						get_user_name(int id, std::vector<User> tab)
 	return ("/*,\\not_in_channel");
 }
 
-std::string						get_response_1(int	id, std::vector<User> tab, std::string command_name)
+std::string	get_response_1(int	id, std::vector<User> tab, std::string command_name, the_serv *serv, Channel *chan)
 {
 	std::vector<User>::iterator	it = tab.begin();
 	std::string					response;
@@ -129,7 +129,7 @@ std::string						get_response_1(int	id, std::vector<User> tab, std::string comma
 		if(it->get_id() == id)
 		{
 			std::cout << "GET RESPONSE : |" << it->get_nick() << "| |" << it->get_username() << "|" << std::endl;
-			response = ":" + it->get_nick() + "!~" + it->get_username() + "@localhost " + command_name;
+			response = ":" + it->get_nick() + "!~" + it->get_username() + "@" + serv->port + command_name + chan->get_name() + "\r\n";
 			break ;
 		}
 		it++;
