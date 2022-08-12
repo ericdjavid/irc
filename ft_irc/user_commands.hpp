@@ -21,20 +21,21 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
 	    return (1);
     }
     // ? NICK
-    // if ((ret = check_vector_arr(buff_arr, "NICK")) > 0)
-    //     nick_command(buff_arr.at(ret - 1).substr(5), index, irc_serv);
-    // if ((ret = check_vector_arr(buff_arr, "USERNAME")) > 0)
-    //     username_command(buff_arr.at(ret - 1).substr(9), index, irc_serv);
+    if ((ret = check_vector_arr(buff_arr, "NICK")) > 0)
+        nick_command(buff_arr.at(ret - 1).substr(5), index, irc_serv);
+    if ((ret = check_vector_arr(buff_arr, "USERNAME")) > 0)
+        username_command(buff_arr.at(ret - 1).substr(9), index, irc_serv);
 
     // ? PONG
-    if (check_vector_arr(buff_arr, "PING localhost") > 0)
+    if (check_vector_arr(buff_arr, "PONG localhost") > 0)
     {
-        std::string PONG(":localhost PONG localhost :localhost\r\n");
-	    if (send(sd,PONG.c_str(), PONG.length(), 0) == -1)
+        // ? PING
+        sleep(3);
+        std::string PING("PING localhost\r\n");
+	    if (send(sd,PING.c_str(), PING.length(), 0) == -1)
         {
-            std::cout << "Problem with PONG send" << std::endl;
+            std::cout << "Problem with PING send" << std::endl;
         }
-        // Response: :ircnet.clue.be PONG ircnet.clue.be :ircnet.clue.be
 	    return (0);
     }
     // ? JOIN
@@ -330,7 +331,7 @@ std::cout << targets.at(it) << std::endl;
         if (check_if_user_exist_with_nick(target, irc_serv->the_users) >= 0)
         {
             std::cout << "the user " << target << " exists =) , sending msg" << std::endl;
-            std::string endmsg = irc_serv->the_users.at(index).get_nick() + " PRVMSG " + target + msg;
+            std::string endmsg = "PRVMSG " + target + msg;
             // client_printer(irc_serv->the_users.at(check_if_user_exist_with_nick(target, irc_serv->the_users)).get_id(), endmsg, 0, target );
             int target_id = irc_serv->the_users.at(check_if_user_exist_with_nick(target, irc_serv->the_users)).get_id();
             std::cout << "ID of " << target << " is " << target_id << std::endl;
@@ -342,8 +343,6 @@ std::cout << targets.at(it) << std::endl;
         else
             std::cout << "the user don't exist =(" << std::endl;
     }
-
-	
 
     // ? OPERATOR STAT
     if ((ret = check_vector_arr(buff_arr, "OPER")) > 0)

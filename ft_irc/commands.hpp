@@ -50,32 +50,43 @@ int ft_deal_next(std::vector<std::string> buff_arr, the_serv *irc_serv, int sd)
 	{
 		nick = buff_arr.at(ret - 1).substr(5);
 		std::cout << "nick is " << nick << std::endl;
+		if (nick_already_in_use(nick, irc_serv->the_users))
+		{
+			std::cout << "Nick already used !" << std::endl;
+			return 1;
+		}
 		ret = check_vector_arr(buff_arr, "USER");
 		if (ret >= 0)
 			user = buff_arr.at(ret - 1).substr(5);
 		else
 			user = "Lambda User";
 		std::cout << "user is " << user << std::endl;
-		std::string msg = nick + user;
+		std::string msg = nick + user + "\r\n";
 		std::string username =  user.substr(0, user.find(" "));
 		client_printer(sd, msg, "001", user);
 		std::cout << "username = " << username;
-		std::string the_str("Your host is localhost, running version 1");
+		std::string the_str("Your host is localhost, running version 1\r\n");
 		client_printer(sd, the_str, "002", user);
-		client_printer(sd, "This localhost was created at [add hour]", "003", user);
+		client_printer(sd, "This localhost was created at [add hour]\r\n", "003", user);
 		if (ft_check_password(buff_arr, irc_serv, sd) == true)
 		{
 			if (nick_already_in_use(nick, irc_serv->the_users) == 0)
 			{
 				class User tmp(sd, nick, username);
 				irc_serv->the_users.push_back(tmp);
+				
+        		std::string PING(":localhost PING localhost :localhost\r\n");
+	            if (send(sd,PING.c_str(), PING.length(), 0) == -1)
+                {
+                    std::cout << "Problem with PING send" << std::endl;
+					return 0;
+                }
 			}
 			else
 			{
 				std::cout << "user not created, nick" << nick << " already in use" << std::endl;
 				return 1;
 			}
-			return 0;
 		}
 		else
 		{
@@ -145,7 +156,7 @@ int ft_treat_commands(std::vector<std::string> buff_arr, the_serv *irc_serv, int
 	int ret = 0;
 	if ((ret = check_vector_arr(buff_arr, "CAP LS")) > 0)
 	{
-		char const *cap_ls = "CAP * LS :\r\n";
+		char const *cap_ls = "CAP * LS :multi-prefix extended-join sasl\r\n";
 		send(sd , cap_ls , strlen(cap_ls) , 0 );
 		std::cout << "Buff arr size is " << buff_arr.size() << std::endl;
 		if (buff_arr.size() == 1)
