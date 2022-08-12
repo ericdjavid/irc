@@ -21,15 +21,15 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
 	    return (1);
     }
     // ? NICK
-    if ((ret = check_vector_arr(buff_arr, "NICK")) > 0)
-        nick_command(buff_arr.at(ret - 1).substr(5), index, irc_serv);
+    // if ((ret = check_vector_arr(buff_arr, "NICK")) > 0)
+    //     nick_command(buff_arr.at(ret - 1).substr(5), index, irc_serv);
     if ((ret = check_vector_arr(buff_arr, "USERNAME")) > 0)
         username_command(buff_arr.at(ret - 1).substr(9), index, irc_serv);
 
     // ? PONG
     if (check_vector_arr(buff_arr, "PING localhost") > 0)
     {
-        std::string PONG(":localhost PONG localhost :localhost");
+        std::string PONG(":localhost PONG localhost :localhost\r\n");
 	    if (send(sd,PONG.c_str(), PONG.length(), 0) == -1)
         {
             std::cout << "Problem with PONG send" << std::endl;
@@ -210,6 +210,7 @@ std::cout << "Massage--" << message << "---" << std::endl; //MESSAGE
             channel_to_target = get_channel(test.channels.at(count), irc_serv->the_channel);
             if (channel_to_target == -1)
             {
+                send(sd, "ERR_NOSUCHCHANNEL (403)\r\n", 25, 0);
                 std::cout << "ERR_NOSUCHCHANNEL (403)" << std::endl;
             }
             else {
@@ -217,15 +218,18 @@ std::cout << "Massage--" << message << "---" << std::endl; //MESSAGE
             }
             if (user_to_delete == "/*,\\not_in_channel")
             {
+                send(sd, "ERR_NOTONCHANNEL (442)\r\n", 24, 0);
                 std::cout << "ERR_NOTONCHANNEL (442)" << std::endl;
             }
             else if (channel_to_target != -1 && user_to_delete != "/*,\\not_in_channel")
             {
+                int     check_response;
                 kick_user_out_from_channel(user_to_delete, irc_serv->the_channel.at(channel_to_target).get_users_ptr());
-                response = get_response_1(sd, irc_serv->the_users, buff_arr.at(ret -1) + " :");// + test.reason;
+                response = get_response_1(sd, irc_serv->the_users, buff_arr.at(ret -1)) + "PART " + irc_serv->the_channel.at(channel_to_target).get_name() +  " :" + test.reason +"\r\n";// + test.reason;
                 std::cout << "RESPONSE : |" << response << "|" << std::endl;
-                send(sd, response.c_str(), response.length(), 0);
-                //:Eric_!~Eric@62.210.32.149 PART #mychan :
+                check_response = send(sd, response.c_str(), response.length(), 0);
+                std::cout << "RESPONSE VALUE : " << check_response << "| LENGTH RESPONSE = " << response.length() << std::endl;
+                irc_serv->the_channel.erase(get_channel_2(test.channels.at(count), irc_serv->the_channel));
             }
             //DISCONNECT CURRENT USER FROM test.channel
             count++;

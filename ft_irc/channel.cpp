@@ -89,13 +89,32 @@ int     get_channel(std::string name, std::vector<Channel> channels)
         std::cout << "CHANNEL NAME : |" << name  << "| SIZE : " << name.size() << " | GET_NAME : |" << it->get_name() << "| SIZE : " << it->get_name().size() << std::endl;
         if (it->get_name() == name)
         {
-//            std::cout << "VALEUR DE RETOUR : " << i << std::endl;
             return (i);
         }
         it++;
         i++;
     }
     return (-1);
+}
+
+std::vector<Channel>::iterator     get_channel_2(std::string name, std::vector<Channel> channels)
+{
+    std::vector<Channel>::iterator it;
+
+    it = channels.begin();
+    int i = 0;
+    while (it != channels.end())
+    {
+        std::cout << "CHANNEL NAME : |" << name  << "| SIZE : " << name.size() << " | GET_NAME : |" << it->get_name() << "| SIZE : " << it->get_name().size() << std::endl;
+        if (it->get_name() == name)
+        {
+            std::cout << "FOUND !" << std::endl;
+            return (it);
+        }
+        it++;
+        i++;
+    }
+    return (it);
 }
 
 void        print_channels(std::vector<Channel> ptr)

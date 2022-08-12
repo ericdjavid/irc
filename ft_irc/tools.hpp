@@ -194,7 +194,7 @@ void display_users(std::vector<User> the_users)
 		std::cout << "||||||||||||| USERS |||||||||||||" << std::endl;
     while (it != the_users.end())
     {
-        std::cout << "id : " << it->get_id() << " | nick : " << it->get_nick() << " | username : " << it->get_username() << std::endl;
+        std::cout << "id : " << it->get_id() << " | nick : |" << it->get_nick() << "| | username : |" << it->get_username() << "|" << std::endl;
         it++;
     }
 		std::cout <<  "||||||||||||| END |||||||||||||" << std::endl;

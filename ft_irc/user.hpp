@@ -128,7 +128,8 @@ std::string						get_response_1(int	id, std::vector<User> tab, std::string comma
 		if(it->get_id() == id)
 		{
 			std::cout << "GET RESPONSE : |" << it->get_nick() << "| |" << it->get_username() << "|" << std::endl;
-			response = ":" + it->get_nick() + "!~" + it->get_username() + "@localhost " + command_name;
+			std::cout << "COMMAND NAME : |" << command_name << "|" << std::endl;
+			response = ":" + it->get_nick() + "!~" + it->get_username() + "@localhost ";
 			break ;
 		}
 		it++;
