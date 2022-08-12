@@ -149,9 +149,13 @@ std::cout << "reason _______ " << reason << std::endl;
 						std::cout << " ERR_USERNOTINCHANNEL || 441" << std::endl;
 					else
 					{
-						kick_user_out_from_channel(target, irc_serv->the_channel.at(channel_id).get_users_ptr());
-            			std::string endmsg = irc_serv->the_users.at(index).get_nick() + " KICK " + target + reason;
+						std::string endmsg;
+						if (reason.empty() == false)
+            				endmsg = irc_serv->the_users.at(index).get_nick() + " KICK " + target + reason;
+						else
+            				endmsg = irc_serv->the_users.at(index).get_nick() + " KICK " + target;
 						client_printer2(sd, &irc_serv->the_users.at(get_index(irc_serv->the_users, sd)), endmsg, 0, target);
+						kick_user_out_from_channel(target, irc_serv->the_channel.at(channel_id).get_users_ptr());
 					}
 				}
 			}
