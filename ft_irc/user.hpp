@@ -16,6 +16,7 @@ typedef class User
 		bool		_set_nick;
 
 	public:
+		std::string tmp;
     	User(int id, std::string nick, std::string User)
     	{
 			_id = id;

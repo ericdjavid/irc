@@ -9,6 +9,7 @@ struct server
     std::vector<Channel> the_channel;
     std::vector<User> the_users;
     std::string password;
+    std::string port;
 
 } typedef the_serv;
 

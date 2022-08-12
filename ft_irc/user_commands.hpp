@@ -32,12 +32,55 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
         // ? PING
         sleep(3);
         std::string PING("PING localhost\r\n");
-	    if (send(sd,PING.c_str(), PING.length(), 0) == -1)
+	    if (send(sd,PING.c_str(), PING.size(), 0) == -1)
         {
             std::cout << "Problem with PING send" << std::endl;
         }
 	    return (0);
     }
+    // ?MODE
+
+    std::string mod1 = "MODE " + irc_serv->the_users.at(get_index(irc_serv->the_users, sd)).tmp;
+    if ((ret = check_vector_arr(buff_arr, mod1)) > 0)
+    {
+        std::cout << "MODE1" << std::endl;
+        std::string resp = ":localhost 324 " + irc_serv->the_users.at(index).get_nick() + " " + irc_serv->the_users.at(get_index(irc_serv->the_users, sd)).tmp + " +\r\n";
+        std::cout << resp << std::endl;
+	    if (send(sd,resp.c_str(), resp.length(), 0) == -1)
+        {
+            std::cout << "Problem with join send" << std::endl;
+        }
+    }
+
+    std::string mod2 = "MODE " + irc_serv->the_users.at(get_index(irc_serv->the_users, sd)).tmp + " b";
+    if ((ret = check_vector_arr(buff_arr, mod2)) > 0)
+    {
+        std::cout << "MODE2" << std::endl;
+        std::string resp = ":localhost 368" + irc_serv->the_users.at(index).get_nick() + " " + irc_serv->the_users.at(get_index(irc_serv->the_users, sd)).tmp + " End of Channel Ban List\r\n";
+        std::cout << resp << std::endl;
+	    if (send(sd,resp.c_str(), resp.length(), 0) == -1)
+        {
+            std::cout << "Problem with join send" << std::endl;
+        }
+    }
+
+    if ((ret = check_vector_arr(buff_arr, "WHO")) > 0)
+    {
+        std::string resp2 = ":localhost 352 " + irc_serv->the_users.at(index).get_nick() + " " + irc_serv->the_users.at(get_index(irc_serv->the_users, sd)).tmp + " ~" + irc_serv->the_users.at(index).get_nick() + " " + irc_serv->port + " localhost " + irc_serv->the_users.at(index).get_nick() + " H@ :0 0PNC username\r\n";
+        std::cout << resp2 << std::endl;
+	    if (send(sd,resp2.c_str(), resp2.length(), 0) == -1)
+        {
+            std::cout << "Problem with join send" << std::endl;
+        }
+        std::string resp3 = ":localhost 315 " + irc_serv->the_users.at(index).get_nick() + " " + irc_serv->the_users.at(get_index(irc_serv->the_users, sd)).tmp + " :End of WHO list.\r\n"; 
+        std::cout << resp3 << std::endl;
+	    if (send(sd,resp3.c_str(), resp3.length(), 0) == -1)
+        {
+            std::cout << "Problem with join send" << std::endl;
+        }
+    }
+
+
     // ? JOIN
     if ((ret = check_vector_arr(buff_arr, "JOIN")) > 0)
     {
@@ -58,6 +101,27 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
                 tmp.add_user(irc_serv->the_users[index]);
                 irc_serv->the_channel.push_back(tmp);
                 irc_serv->the_users.at(index).set_operat(true);
+                std::string beg = irc_serv->the_users.at(index).get_nick() + "!~" + irc_serv->the_users.at(index).get_username() + "@localhost";
+                std::string join = beg + " JOIN :" + chann_name + "\r\n";
+                std::cout << "text is " << join << std::endl;
+	            if (send(sd,join.c_str(), join.length(), 0) == -1)
+                {
+                    std::cout << "Problem with join send" << std::endl;
+                }
+                std::string join2 = ":localhost 353 " + irc_serv->the_users.at(index).get_nick() + " = " + chann_name + " :@" + irc_serv->the_users.at(index).get_nick() + "\r\n";
+                std::cout << "text is " << join2 << std::endl;
+	            if (send(sd,join2.c_str(), join2.length(), 0) == -1)
+                {
+                    std::cout << "Problem with join send" << std::endl;
+                }
+                std::string join3 = ":localhost 366 " + irc_serv->the_users.at(index).get_nick() + " " + chann_name + " :End of NAMES list.\r\n";
+	            if (send(sd,join3.c_str(), join3.length(), 0) == -1)
+                {
+                    std::cout << "Problem with join send" << std::endl;
+                }
+                std::cout << "text is " << join3 << std::endl;
+                irc_serv->the_users.at(index).tmp = chann_name;
+                return 0;
             }
             else
             {
@@ -320,7 +384,7 @@ std::cout << targets.at(it) << std::endl;
                 // SEND THE MSG TO ALL THE USER LIST OF THE CHANNEL
                 std::cout << "Chan is " << chan << std::endl;
 
-                send_message_to_channel(irc_serv->the_channel[chan -1], msg);
+                send_message_to_channel(irc_serv->the_channel[chan -1], msg, sd);
 
             }
             else

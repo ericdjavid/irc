@@ -118,10 +118,9 @@ void client_printer_channel(int sd, std::string str, std::string numeric, std::s
     // TODO : try with :
     (void)numeric;
     (void)user;
-    // :irc.example.org 332 borja #cmsc23300 :A channel for CMSC 23300 students
     std::string beg("jam!~edjavid@localhost");
     std::string the_print;
-    the_print = beg + " PRIVMSG " + channel_name + " " + str + "\r\n";
+    the_print = "PRIVMSG " + channel_name + " :" + str + "\r\n";
     std::cout << "Printing: |" << the_print << "|" << std::endl;
     // Allocate memory
     char *ccx = new char[the_print.length() + 1];

@@ -115,7 +115,7 @@ void        print_channels(std::vector<Channel> ptr)
     std::cout << "|||     END    |||" << std::endl;
 }
 
-void        send_message_to_channel(class Channel chan, std::string message)
+void        send_message_to_channel(class Channel chan, std::string message, int sd)
 { 
     std::cout << "we re inside send message to channel function, user list is " << std::endl;
     std::vector<User> user_list = chan.get_users();
@@ -124,11 +124,11 @@ void        send_message_to_channel(class Channel chan, std::string message)
     std::vector<User>::iterator it = user_list.begin();
     while (it != user_list.end())
     {
+        (void)sd;
         std::cout << "id is " << it->get_id() << std::endl;
-        // ! NOT WORKING, TRY TO SEND MSG TO ALL OUTSIDE THIS FUNCTION, IN THE MAIN FUNCTION
-        // client_printer(it->get_id(), message, "332", "user");
+        // if (!(it->get_id() == sd))
         client_printer_channel(it->get_id(), message, "332", it->get_nick(), chan.get_name());
-
         it++;
+        return;
     }
 }
