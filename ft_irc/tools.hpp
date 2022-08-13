@@ -7,6 +7,7 @@
 #include <fstream>
 #include <algorithm>
 #include "user.hpp"
+#include <sstream>
 
 template<typename T>
 T FromString(const std::string& str)
@@ -17,6 +18,17 @@ T FromString(const std::string& str)
     return ret;
 }
 
+std::string to_str(int k)
+{
+    std::stringstream ss;  
+    ss<<k;  
+    std::string s; 
+    ss>>s;
+    std::cout<<"String representation of an integer value is : "<<s;   
+    return (s);
+}
+
+// RETURN INDEX OF VECTOR OR -1 IF NOT FOUND
 int check_vector_arr(std::vector<std::string> buff_arr, std::string target)
 {
 	int i = 0;
@@ -101,25 +113,20 @@ void client_printer2(int fd, class User *us, std::string str, std::string numeri
     else
         the_print = beg + numeric + " " + target + " :" + str + "\r\n";
     std::cout << "Message sent to client is: |" << the_print << "|" << std::endl;
-    // Allocate memory
-    char *ccx = new char[the_print.length() + 1];
-    // Copy contents
-    std::copy(the_print.begin(), the_print.end(), ccx);
-    if (send(fd , ccx, the_print.size() , 0 ) != (ssize_t)the_print.size())
+
+    if (send(fd, the_print.c_str(), the_print.length(), 0) == -1)
     {
-        perror("send");
+        std::cout << "Problem with join send" << std::endl;
     }
-    delete[] ccx;
     return ;
 }
 
 void client_printer_channel(int sd, std::string str, std::string numeric, std::string user,std::string channel_name)
 {   
-    // TODO : try with :
     (void)numeric;
     (void)user;
     std::string the_print;
-    the_print = "PRIVMSG " + channel_name + " :" + str + "\r\n";
+    the_print = "PRIVMSG " + channel_name + " " + str + "\r\n";
     std::cout << "Printing: |" << the_print << "|" << std::endl;
     // Allocate memory
     char *ccx = new char[the_print.length() + 1];
