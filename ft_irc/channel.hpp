@@ -4,6 +4,7 @@
 #include <vector>
 #include "user.hpp"
 #include "server.hpp"
+#include <algorithm>
 
 class Channel
 {
@@ -327,4 +328,41 @@ void send_message_to_channel(class Channel *chan, std::string message, int sd)
         it++;
     }
     return;
+}
+
+std::string     get_all_user_in_one_string(std::string name, std::vector<Channel> tab)
+{
+    std::string response;
+    int i = 0;
+    std::vector<User> tmp;
+//    std::vector<Channel>::iterator it = tab.begin();
+    std::vector<Channel>::iterator it1 = tab.begin();
+    while (it1 != tab.end())
+    {
+        if (it1->get_name() == name)
+        {
+            tmp = it1->get_users(); 
+            std::reverse(tmp.begin(), tmp.end());
+            std::vector<User>::iterator it2;
+            it2 = tmp.begin();
+            while (it2 != tmp.end())
+            {
+                if (it2 == tmp.end() - 1)
+                {
+                    response += " @" + it2->get_nick();
+                    std::cout << "123Reponse ==>" << response << std::endl;
+                }
+                else
+                {
+                    response = response + " " + it2->get_nick();
+                }
+                std::cout << "Reponse ==>" << response << std::endl;
+                it2++;
+                i++;
+            }
+            return (response);
+        }
+        it1++;
+    }
+    return ("pas d'utilisateur function channel.hpp:357");
 }
