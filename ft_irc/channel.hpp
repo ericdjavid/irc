@@ -8,10 +8,10 @@
 class Channel
 {
     private:
-    std::vector<User>     _users;
+    std::vector<User>   _users;
     std::vector<User>	_ban_users;
-    std::string                 _name;
-    char                        _properties;
+    std::string         _name;
+    char                _properties;
 
     public:
 

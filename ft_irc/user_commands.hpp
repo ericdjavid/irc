@@ -13,16 +13,30 @@
 int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std::string> buff_arr)
 {
     int ret = 0;
+    // ? NICK & USER
+    if ((ret = check_vector_arr(buff_arr, "NICK")) >= 0)
+    {
+        nick_command(buff_arr.at(ret - 1).substr(5), index, irc_serv);
+        // if already used
+        // :localhost 443 nick_de_depart nick_demande :Nickname is already in use
+	    return (1);
+    }
+    if ((ret = check_vector_arr(buff_arr, "USERNAME")) >= 0)
+    {
+        username_command(buff_arr.at(ret - 1).substr(9), index, irc_serv);
+	    return (1);
+    }
+
     // ? QUIT
     if (check_vector_arr(buff_arr, "QUIT") > 0)
     {
         delete_from_list(irc_serv, sd);
 	    return (1);
     }
-    // ? NICK
+    // ? NICK & USER
     if ((ret = check_vector_arr(buff_arr, "NICK")) > 0)
         nick_command(buff_arr.at(ret - 1).substr(5), index, irc_serv);
-    if ((ret = check_vector_arr(buff_arr, "USERNAME")) > 0)
+    if ((ret = check_vector_arr(buff_arr, "userhost")) > 0)
         username_command(buff_arr.at(ret - 1).substr(9), index, irc_serv);
 
     // ? PONG
@@ -410,7 +424,8 @@ std::cout << targets.at(it) << std::endl;
         if (check_if_user_exist_with_nick(target, irc_serv->the_users) >= 0)
         {
             std::cout << "the user " << target << " exists =) , sending msg" << std::endl;
-            std::string endmsg = "PRVMSG " + target + msg;
+            // ! WEIRD, WHEN IT S PRVMSG, IT IS NOT SEND TO DEST...
+            std::string endmsg = "PRVMSG " + target + " " + msg;
             // client_printer(irc_serv->the_users.at(check_if_user_exist_with_nick(target, irc_serv->the_users)).get_id(), endmsg, 0, target );
             int target_id = irc_serv->the_users.at(check_if_user_exist_with_nick(target, irc_serv->the_users)).get_id();
             std::cout << "ID of " << target << " is " << target_id << std::endl;
