@@ -333,7 +333,7 @@ void        send_message_to_channel(class Channel *chan, std::string message, in
 
 std::string     get_all_user_in_one_string(std::string name, std::vector<Channel> tab)
 {
-    std::string response = "@";
+    std::string response;
     int i = 0;
     std::vector<Channel>::iterator it = tab.begin();
 
@@ -348,9 +348,13 @@ std::string     get_all_user_in_one_string(std::string name, std::vector<Channel
             while (it2 != tmp.rend())
             {
                 if (i == 0)
-                    response = response + it2->get_nick();
-                else
-                    response = " " + response + it2->get_nick();
+{
+                    response = it2->get_nick();
+std::cout << "123Reponse ==>" << response << std::endl;
+}
+               else
+                    response = response + " " + it2->get_nick();
+std::cout << "Reponse ==>" << response << std::endl;
                 it2++;
                 i++;
             }
