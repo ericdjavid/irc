@@ -158,6 +158,7 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
         else
         {
             index2 = get_channel(chann_name, irc_serv->the_channel);
+            irc_serv->the_users.at(index).tmp = chann_name;
             irc_serv->the_channel.at(index2).add_user(irc_serv->the_users[index]);
             std::string join = ":" + irc_serv->the_users.at(index).get_nick() + "!~" + irc_serv->the_users.at(index).get_username() + "@localhost" + " JOIN :" + chann_name + "\r\n";
 std::cout << "text is " << join << std::endl;
