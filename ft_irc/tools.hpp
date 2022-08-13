@@ -118,7 +118,6 @@ void client_printer_channel(int sd, std::string str, std::string numeric, std::s
     // TODO : try with :
     (void)numeric;
     (void)user;
-    std::string beg("jam!~edjavid@localhost");
     std::string the_print;
     the_print = "PRIVMSG " + channel_name + " :" + str + "\r\n";
     std::cout << "Printing: |" << the_print << "|" << std::endl;

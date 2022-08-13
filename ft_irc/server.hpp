@@ -110,3 +110,22 @@ void delete_from_list(the_serv *irc_serv, int sd)
         }
 	    return;
 }
+
+std::string	get_response_1(int	id, std::vector<User> tab, std::string command_name, the_serv *serv, Channel *chan)
+{
+	std::vector<User>::iterator	it = tab.begin();
+	std::string					response;
+    (void)chan;
+    (void)serv;
+	while(it != tab.end())
+	{
+		if(it->get_id() == id)
+		{
+			std::cout << "GET RESPONSE : |" << it->get_nick() << "| |" << it->get_username() << "|" << std::endl;
+			response = ":" + it->get_nick() + "!~" + it->get_username() + "@localhost" + " " + command_name + "\r\n";
+			break ;
+		}
+		it++;
+	}
+	return (response);
+}
