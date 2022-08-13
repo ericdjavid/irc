@@ -70,18 +70,24 @@ int ft_deal_next(std::vector<std::string> buff_arr, the_serv *irc_serv, int sd)
 			if (nick_already_in_use(nick, irc_serv->the_users) == 0)
 			{
 				static int i = -1;
-				std::string nick2 = "LambdaNick" + to_str(++i);
-				class User tmp(sd, nick2, username);
-				irc_serv->the_users.push_back(tmp);	
+				if (nick == username)
+				{
+					std::string nick2 = "LambdaNick" + to_str(++i);
+					class User tmp(sd, nick2, username);
+					irc_serv->the_users.push_back(tmp);	
+				}
+				else
+				{
+					class User tmp(sd, nick, username);
+					irc_serv->the_users.push_back(tmp);	
+				}
 
 				// SEND THE NICK
 				int index = get_index(irc_serv->the_users, sd);
         		std::string resp = ":" + irc_serv->the_users.at(index).get_nick() + "!~" + irc_serv->the_users.at(index).get_username() + "@localhost NICK :" + nick + "\r\n";
-        		std::cout << "rest is |" << resp << "|" << std::endl;
+        		std::cout << "Sending the nick is |" << resp << "|" << std::endl;
 	    		if (send(sd,resp.c_str(), resp.length(), 0) == -1)
-        		{
             		std::cout << "Problem with nick resp" << std::endl;
-        		}
 
         		std::string PING(":localhost PING localhost :localhost\r\n");
 	            if (send(sd,PING.c_str(), PING.length(), 0) == -1)
