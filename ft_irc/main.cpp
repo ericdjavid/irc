@@ -156,6 +156,7 @@ int main(int argc, char **argv)
         // timeval tmp;
         // tmp.tv_sec = 5;
         // (void)tmp
+        // TODO: BUG when join a channel and then part and rejoin
         activity = select( max_sd + 1 , &readfds , NULL , NULL , NULL); //third argument of select equals NULL, so select can wait an infinite time. If 3rd value set to 5 sec, select will wait 5sec
 
         if ((activity < 0) && (errno!=EINTR))
@@ -247,12 +248,7 @@ int main(int argc, char **argv)
                         printf("Host disconnected , ip %s , port %d \n" ,
                             inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
                         
-                        char const* QUIT = 
-                        "QUIT\n";
-                        if( send(new_socket, QUIT, strlen(QUIT), 0) != (ssize_t)strlen(QUIT) )
-                        {
-                            perror("QUIT");
-                        }
+                        
                         delete_from_list(&irc_serv, sd);
 
                         //Close the socket and mark as 0 in list for reuse
