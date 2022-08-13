@@ -155,12 +155,22 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
             index2 = get_channel(chann_name, irc_serv->the_channel);
             irc_serv->the_channel.at(index2).add_user(irc_serv->the_users[index]);
             std::string join = ":" + irc_serv->the_users.at(index).get_nick() + "!~" + irc_serv->the_users.at(index).get_username() + "@localhost" + " JOIN :" + chann_name + "\r\n";
+            std::string join2 = ":localhost 353 " + irc_serv->the_users.at(index).get_nick() + " = " + chann_name + " :" + get_all_user_in_one_string(chann_name, irc_serv->the_channel) + "\r\n";
+            std::string join3 = ":localhost " + irc_serv->the_users.at(index).get_nick() + " " + chann_name + " :End of NAMES list.\r\n";
             std::cout << "text is " << join << std::endl;
-	        if (send(sd,join.c_str(), join.length(), 0) == -1)
+	        if (send(sd, join.c_str(), join.length(), 0) == -1)
             {
                 std::cout << "Problem with join send" << std::endl;
             }
-
+            if (send(sd,join2.c_str(), join.length(), 0) == -1)
+            {
+                std::cout << "Problem with join2 send" << std::endl;
+            }
+            if (send(sd, join3.c_str(), join.length(), 0) == -1)
+            {
+                std::cout << "Problem with join send3" << std::endl;
+            }
+            std::cout << "JOIN2 : |" << join2 << "|" << std::endl;
         }
         //DISPLAY INFOS ABOUT CHANNELS AND USER
         std::cout << "Channels are as following :" << std::endl;
@@ -359,12 +369,9 @@ std::cout << targets.at(it) << std::endl;
             else if (channel_to_target != -1 && user_to_delete != "/*,\\not_in_channel")
             {
                 kick_user_out_from_channel(user_to_delete, irc_serv->the_channel.at(channel_to_target).get_users_ptr());
-                //response = get_response_1(sd, irc_serv->the_users, buff_arr.at(ret -1), irc_serv, &(irc_serv->the_channel.at(channel_to_target)));
-                //std::cout << "RESPONSE : |" << response << "|" << std::endl;
                 response = ":" + get_user_name(sd, irc_serv->the_users) + "!~" + get_user_name_2(sd, irc_serv->the_users) + "@localhost PART " +  irc_serv->the_channel.at(channel_to_target).get_name() + " :" + test.reason + "\r\n";
                 std::cout << "RESPONSE : |" << response << "|" << std::endl;
                 send(sd, response.c_str(), response.length(), 0);
-                // send(sd, response.c_str(), response.length(), 0);
             }
             //DISCONNECT CURRENT USER FROM test.channel
             count++;

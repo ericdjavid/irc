@@ -331,3 +331,32 @@ void        send_message_to_channel(class Channel *chan, std::string message, in
     return;
 }
 
+std::string     get_all_user_in_one_string(std::string name, std::vector<Channel> tab)
+{
+    std::string response = "@";
+    int i = 0;
+    std::vector<Channel>::iterator it = tab.begin();
+
+    while (it != tab.end())
+    {
+        if (it->get_name() == name)
+        {
+            std::vector<User>::reverse_iterator it2;
+            std::vector<User> tmp;
+            tmp = it->get_users(); 
+            it2 = tmp.rbegin();
+            while (it2 != tmp.rend())
+            {
+                if (i == 0)
+                    response = response + it2->get_nick();
+                else
+                    response = " " + response + it2->get_nick();
+                it2++;
+                i++;
+            }
+            return (response);
+        }
+        it++;
+    }
+    return ("pas d'utilisateur function channel.hpp:357");
+}
