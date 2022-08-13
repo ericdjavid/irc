@@ -9,12 +9,9 @@
 #include "tools.hpp"
 #include "user_commands.hpp"
 
-bool ft_check_password(std::vector<std::string> buff_arr, the_serv *irc_serv, int sd)
+bool ft_check_password(std::vector<std::string> buff_arr, the_serv *irc_serv, int sd, std::string user)
 {
 	int ret = 0;
-	std::string nick;
-	std::string user;
-	std::string tmp_user("edjavid");
 	if ((ret = check_vector_arr(buff_arr, "PASS")) > 0)
 	{ 
 		ret -= 1;
@@ -22,7 +19,7 @@ bool ft_check_password(std::vector<std::string> buff_arr, the_serv *irc_serv, in
 		std::cout << "Pass is " << pass << std::endl;
 		if (!pass.compare(irc_serv->password))
 		{
-			client_printer(sd, "Good password entered =)", "371", tmp_user);
+			client_printer(sd, "Good password entered =)", "371", user);
 			return true;
 		}
 		else
@@ -33,7 +30,7 @@ bool ft_check_password(std::vector<std::string> buff_arr, the_serv *irc_serv, in
 	}
 	else
 	{
-		client_printer(sd, "No password set up, please connect with password", "471", tmp_user);
+		client_printer(sd, "No password set up, please connect with password", "471", user);
 		return false;
 	}
 	return false;
@@ -68,13 +65,12 @@ int ft_deal_next(std::vector<std::string> buff_arr, the_serv *irc_serv, int sd)
 		std::string the_str("Your host is localhost, running version 1\r\n");
 		client_printer(sd, the_str, "002", user);
 		client_printer(sd, "This localhost was created at [add hour]\r\n", "003", user);
-		if (ft_check_password(buff_arr, irc_serv, sd) == true)
+		if (ft_check_password(buff_arr, irc_serv, sd, user) == true)
 		{
 			if (nick_already_in_use(nick, irc_serv->the_users) == 0)
 			{
 				class User tmp(sd, nick, username);
-				irc_serv->the_users.push_back(tmp);
-				
+				irc_serv->the_users.push_back(tmp);	
         		std::string PING(":localhost PING localhost :localhost\r\n");
 	            if (send(sd,PING.c_str(), PING.length(), 0) == -1)
                 {
@@ -101,7 +97,7 @@ int ft_deal_next(std::vector<std::string> buff_arr, the_serv *irc_serv, int sd)
 		if (check_if_user_exist(sd, irc_serv->the_users) == 0)
 		{
 			std::cout << "Please set password" << std::endl;
-			if (ft_check_password(buff_arr, irc_serv, sd) == true)
+			if (ft_check_password(buff_arr, irc_serv, sd, "tmp") == true)
 			{
 				std::cout << "Please set nick" << std::endl;
 				class User tmp(sd);

@@ -395,7 +395,7 @@ std::cout << targets.at(it) << std::endl;
                 // SEND THE MSG TO ALL THE USER LIST OF THE CHANNEL
                 std::cout << "Chan is " << chan << std::endl;
 
-                send_message_to_channel(irc_serv->the_channel[chan -1], msg, sd);
+                send_message_to_channel(&irc_serv->the_channel[chan -1], msg, sd);
 
             }
             else
