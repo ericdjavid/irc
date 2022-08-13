@@ -60,8 +60,12 @@ t_part2		split_part_command(std::string command)
 		else if(command.find(':') != std::string::npos)
 		{
 			tmp =  command.substr(0, command.find(':'));
-			result->reason = tmp;
+			if (tmp[0] != '#')
+				tmp = "#" + tmp;
+			result->channels.push_back(tmp);
 			command = command.substr(command.find(':') + 1);
+			result->reason = command;
+			command = "\0";
 		}
 		i++;
 	}
