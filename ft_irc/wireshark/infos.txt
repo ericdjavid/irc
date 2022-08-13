@@ -1,1 +1,0 @@
-docker pull linuxserver/wireshark && docker run -it <ID DE l'IMAGE>
