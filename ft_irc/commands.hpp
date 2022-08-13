@@ -41,6 +41,7 @@ int ft_deal_next(std::vector<std::string> buff_arr, the_serv *irc_serv, int sd)
 	std::string nick;
 	std::string user;
 	int ret = 0;
+	static int i = -1;
 
 	// IRSSI NORMAL PROCEDURE
 	if ((ret = check_vector_arr(buff_arr, "NICK")) > 0 && buff_arr.size() > 1)
@@ -54,17 +55,15 @@ int ft_deal_next(std::vector<std::string> buff_arr, the_serv *irc_serv, int sd)
 		}
 		ret = check_vector_arr(buff_arr, "USER");
 		if (ret >= 0)
-			user = buff_arr.at(ret - 1).substr(5);
+			user = buff_arr.at(ret - 1).substr(5, nick.size());
 		else
 			user = "Lambda User";
-		std::cout << "user is " << user << std::endl;
-		// std::string msg = nick + user + "\r\n";
+		std::cout << "User is " << user << std::endl;
 		std::string username =  user.substr(0, user.find(" "));
-		// client_printer(sd, msg, "001", user);
-		// std::cout << "username = " << username;
-		// std::string the_str("Your host is localhost, running version 1\r\n");
-		// client_printer(sd, the_str, "002", user);
-		// client_printer(sd, "This localhost was created at [add hour]\r\n", "003", user);
+		if (nick == username)
+		{
+			nick = "LambdaNick" + to_str(++i);
+		}
 		std::string msg = ":localhost 001 " + nick + " :Welcome to the Internet Relay Network " + nick + "!~" + username + "@localhost\r\n";
 		send(sd, msg.c_str(), msg.length(), 0);
 		msg = ":localhost 002 " + nick + " :Your host is openlocalhost, running version 1.0\r\n";
@@ -77,25 +76,15 @@ int ft_deal_next(std::vector<std::string> buff_arr, the_serv *irc_serv, int sd)
 		{
 			if (nick_already_in_use(nick, irc_serv->the_users) == 0)
 			{
-				static int i = -1;
-				if (nick == username)
-				{
-					std::string nick2 = "LambdaNick" + to_str(++i);
-					class User tmp(sd, nick2, username);
-					irc_serv->the_users.push_back(tmp);	
-				}
-				else
-				{
-					class User tmp(sd, nick, username);
-					irc_serv->the_users.push_back(tmp);	
-				}
-
+				class User tmp(sd, nick, username);
+				irc_serv->the_users.push_back(tmp);	
 				// SEND THE NICK
 				int index = get_index(irc_serv->the_users, sd);
         		std::string resp = ":" + irc_serv->the_users.at(index).get_nick() + "!~" + irc_serv->the_users.at(index).get_username() + "@localhost NICK :" + nick + "\r\n";
         		std::cout << "Sending the nick is |" << resp << "|" << std::endl;
 	    		if (send(sd,resp.c_str(), resp.length(), 0) == -1)
             		std::cout << "Problem with nick resp" << std::endl;
+
 
         		std::string PING(":localhost PING localhost :localhost\r\n");
 	            if (send(sd,PING.c_str(), PING.length(), 0) == -1)
@@ -107,12 +96,14 @@ int ft_deal_next(std::vector<std::string> buff_arr, the_serv *irc_serv, int sd)
 			else
 			{
 				std::cout << "user not created, nick" << nick << " already in use" << std::endl;
+				i--;
 				return 1;
 			}
 		}
 		else
 		{
 			std::cout << "no password set by user" << std::endl;
+			i--;
 			return 1;
 		}
 	}

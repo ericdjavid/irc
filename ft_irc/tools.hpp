@@ -161,6 +161,8 @@ int nick_already_in_use(std::string nick, std::vector<User> vector)
     it = vector.begin();
     while (it != vector.end())
     {
+        std::cout << "CHECK IF NICK ALREADY USED" << std::endl;
+        std::cout << "Comparing " << it->get_nick() << " with " << nick << std::endl; 
         if (it->get_nick() == nick)
             return (1);
         it++;
