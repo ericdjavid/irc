@@ -313,10 +313,10 @@ void        print_channels(std::vector<Channel> ptr)
     std::cout << "|||     END    |||" << std::endl;
 }
 
-void        send_message_to_channel(class Channel chan, std::string message, int sd)
+void        send_message_to_channel(class Channel *chan, std::string message, int sd)
 { 
     std::cout << "we re inside send message to channel function, user list is " << std::endl;
-    std::vector<User> user_list = chan.get_users();
+    std::vector<User> user_list = chan->get_users();
     display_users(user_list);
     std::cout << "msg is " << message << std::endl;
     std::vector<User>::iterator it = user_list.begin();
@@ -325,7 +325,7 @@ void        send_message_to_channel(class Channel chan, std::string message, int
         (void)sd;
         std::cout << "id is " << it->get_id() << std::endl;
         // if (!(it->get_id() == sd))
-        client_printer_channel(it->get_id(), message, "332", it->get_nick(), chan.get_name());
+        client_printer_channel(it->get_id(), message, "332", it->get_nick(), chan->get_name());
         it++;
         return;
     }
