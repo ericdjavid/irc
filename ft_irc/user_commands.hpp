@@ -155,17 +155,17 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
             index2 = get_channel(chann_name, irc_serv->the_channel);
             irc_serv->the_channel.at(index2).add_user(irc_serv->the_users[index]);
             std::string join = ":" + irc_serv->the_users.at(index).get_nick() + "!~" + irc_serv->the_users.at(index).get_username() + "@localhost" + " JOIN :" + chann_name + "\r\n";
-            std::string join2 = ":localhost 353 " + irc_serv->the_users.at(index).get_nick() + " = " + chann_name + " :" + get_all_user_in_one_string(chann_name, irc_serv->the_channel) + "\r\n";
-            std::string join3 = ":localhost 366 " + irc_serv->the_users.at(index).get_nick() + " " + chann_name + " :End of NAMES list.\r\n";
-            std::cout << "text is " << join << std::endl;
+std::cout << "text is " << join << std::endl;
 	        if (send(sd, join.c_str(), join.length(), 0) == -1)
             {
                 std::cout << "Problem with join send" << std::endl;
             }
+            std::string join2 = ":localhost 353 " + irc_serv->the_users.at(index).get_nick() + " = " + chann_name + " :" + get_all_user_in_one_string(chann_name, irc_serv->the_channel) + "\r\n";
             if (send(sd,join2.c_str(), join.length(), 0) == -1)
             {
                 std::cout << "Problem with join2 send" << std::endl;
             }
+            std::string join3 = ":localhost 366 " + irc_serv->the_users.at(index).get_nick() + " " + chann_name + " :End of NAMES list.\r\n";
             if (send(sd, join3.c_str(), join.length(), 0) == -1)
             {
                 std::cout << "Problem with join send3" << std::endl;
