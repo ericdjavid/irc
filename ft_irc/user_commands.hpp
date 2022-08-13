@@ -355,7 +355,9 @@ std::cout << targets.at(it) << std::endl;
             else if (channel_to_target != -1 && user_to_delete != "/*,\\not_in_channel")
             {
                 kick_user_out_from_channel(user_to_delete, irc_serv->the_channel.at(channel_to_target).get_users_ptr());
-                response = get_response_1(sd, irc_serv->the_users, buff_arr.at(ret -1), irc_serv, &(irc_serv->the_channel.at(channel_to_target)));
+                //response = get_response_1(sd, irc_serv->the_users, buff_arr.at(ret -1), irc_serv, &(irc_serv->the_channel.at(channel_to_target)));
+                //std::cout << "RESPONSE : |" << response << "|" << std::endl;
+                response = ":" + get_user_name(sd, irc_serv->the_users) + "!~" + get_user_name_2(sd, irc_serv->the_users) + "@localhost PART " +  irc_serv->the_channel.at(channel_to_target).get_name() + " :" + test.reason + "\r\n";
                 std::cout << "RESPONSE : |" << response << "|" << std::endl;
                 send(sd, response.c_str(), response.length(), 0);
                 // send(sd, response.c_str(), response.length(), 0);
