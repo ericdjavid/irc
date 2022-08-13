@@ -96,6 +96,7 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
     if ((ret = check_vector_arr(buff_arr, "JOIN")) > 0)
     {
         std::string     c_name = buff_arr[0];
+std::cout << "!!!!!!!------" << c_name << "-----!!!!!" << std::endl;
         std::string     chann_name = c_name.substr(5, c_name.length() - 5);
         int             index2 = 0;
 
@@ -203,10 +204,18 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
 		target.erase(0,1);
 		target = target.substr(0, target.size()-1);
 //		channel_kick.pop_back();
-		std::string reason = test.substr(test.find(':'));
-		reason = reason.substr(1);
+		std::string reason;
+		reason.clear();
+		if (test.length() != channel_kick.length())
+		{
+			reason = test.substr(test.find(':'));
+			reason = reason.substr(1);
 std::cout << "reason _______ " << reason << std::endl;
+		}
 		channel_kick = "#" + channel_kick;
+		if (reason.empty() == true)
+			reason = ("no reason");
+std::cout << "target_____" << target << " channel kick_____" << channel_kick << " reason _______ " << reason << std::endl;
 		if ((i = check_if_channel_exist(channel_kick, irc_serv->the_channel)) == -1)
 			std::cout << "ERR_NOSUCHCHANNEL || 403\n";
 		else
@@ -223,12 +232,21 @@ std::cout << "reason _______ " << reason << std::endl;
 						std::cout << " ERR_USERNOTINCHANNEL || 441" << std::endl;
 					else
 					{
-						std::string endmsg;
-						if (reason.empty() == false)
-            				endmsg = irc_serv->the_users.at(index).get_nick() + " KICK " + target + reason;
-						else
-            				endmsg = irc_serv->the_users.at(index).get_nick() + " KICK " + target;
-						client_printer2(sd, &irc_serv->the_users.at(get_index(irc_serv->the_users, sd)), endmsg, 0, target);
+					//	std::string endmsg;
+					//	if (reason.empty() == false)
+            		//		endmsg = irc_serv->the_users.at(index).get_nick() + " KICK " + target + reason;
+					//	else
+            		//		endmsg = irc_serv->the_users.at(index).get_nick() + " KICK " + target;
+					//	client_printer2(sd, &irc_serv->the_users.at(get_index(irc_serv->the_users, sd)), endmsg, 0, target);
+						std::string kick_msg = ":" + irc_serv->the_users.at(index).get_nick() + "!~" + irc_serv->the_users.at(index).get_username() + "@localhost KICK " + channel_kick + " " + target + " :" + reason;
+						if (send(sd, kick_msg.c_str(), kick_msg.length(), 0) == -1)
+						{
+							std::cout << "Problem with join send" << std::endl;
+						}
+						if (send(sd, kick_msg.c_str(), kick_msg.length(), 0) == -1)
+						{
+							std::cout << "Problem with join send" << std::endl;
+						}
 						kick_user_out_from_channel(target, irc_serv->the_channel.at(channel_id).get_users_ptr());
 					}
 				}
