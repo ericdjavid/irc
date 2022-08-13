@@ -2,18 +2,30 @@
 #pragma once
 #include <vector>
 #include "../server.hpp"
+#include "../user.hpp"
 
-void nick_command(std::string nick, int index, the_serv *irc_serv)
+void nick_command(std::string nick, int index, the_serv *irc_serv, int sd)
 {
     // TODO if nick is ok
+
     if (check_if_user_exist_with_nick(nick, irc_serv->the_users) == -1)
     {
         irc_serv->the_users.at(index).set_the_nick(nick);
         std::cout << "Nick changed" << std::endl;
+        // :oldnickname!~username@localhost NICK :newnick\r\n;
+
+        std::string resp = ":" + irc_serv->the_users.at(index).get_nick() + "!~" + irc_serv->the_users.at(index).get_username() + "@localhost NICK :" + nick + "\r\n";
+        std::cout << "rest is |" << resp << "|" << std::endl;
+	    if (send(sd,resp.c_str(), resp.length(), 0) == -1)
+        {
+            std::cout << "Problem with join send" << std::endl;
+        }
         return;
     }
     else
     {
+        // if already used
+        // :localhost 443 nick_de_depart nick_demande :Nickname is already in use
         std::cout << "Sorry but nick exists";
         return;
     }

@@ -7,6 +7,7 @@
 #include <fstream>
 #include <algorithm>
 #include "user.hpp"
+#include <sstream>
 
 template<typename T>
 T FromString(const std::string& str)
@@ -15,6 +16,16 @@ T FromString(const std::string& str)
     T ret = 0; 
     ss >> ret;
     return ret;
+}
+
+std::string to_str(int k)
+{
+    std::stringstream ss;  
+    ss<<k;  
+    std::string s; 
+    ss>>s;
+    std::cout<<"String representation of an integer value is : "<<s;   
+    return (s);
 }
 
 // RETURN INDEX OF VECTOR OR -1 IF NOT FOUND
