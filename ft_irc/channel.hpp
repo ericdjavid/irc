@@ -4,6 +4,7 @@
 #include <vector>
 #include "user.hpp"
 #include "server.hpp"
+#include <algorithm>
 
 class Channel
 {
@@ -335,32 +336,35 @@ std::string     get_all_user_in_one_string(std::string name, std::vector<Channel
 {
     std::string response;
     int i = 0;
-    std::vector<Channel>::iterator it = tab.begin();
-
-    while (it != tab.end())
+    std::vector<User> tmp;
+//    std::vector<Channel>::iterator it = tab.begin();
+    std::vector<Channel>::iterator it1 = tab.begin();
+    while (it1 != tab.end())
     {
-        if (it->get_name() == name)
+        if (it1->get_name() == name)
         {
-            std::vector<User>::reverse_iterator it2;
-            std::vector<User> tmp;
-            tmp = it->get_users(); 
-            it2 = tmp.rbegin();
-            while (it2 != tmp.rend())
+            tmp = it1->get_users(); 
+            std::reverse(tmp.begin(), tmp.end());
+            std::vector<User>::iterator it2;
+            it2 = tmp.begin();
+            while (it2 != tmp.end())
             {
-                if (i == 0)
-{
-                    response = it2->get_nick();
-std::cout << "123Reponse ==>" << response << std::endl;
-}
-               else
+                if (it2 == tmp.end() - 1)
+                {
+                    response += " @" + it2->get_nick();
+                    std::cout << "123Reponse ==>" << response << std::endl;
+                }
+                else
+                {
                     response = response + " " + it2->get_nick();
-std::cout << "Reponse ==>" << response << std::endl;
+                }
+                std::cout << "Reponse ==>" << response << std::endl;
                 it2++;
                 i++;
             }
             return (response);
         }
-        it++;
+        it1++;
     }
     return ("pas d'utilisateur function channel.hpp:357");
 }
