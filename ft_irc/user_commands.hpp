@@ -414,7 +414,6 @@ std::cout << targets.at(it) << std::endl;
             // client_printer(irc_serv->the_users.at(check_if_user_exist_with_nick(target, irc_serv->the_users)).get_id(), endmsg, 0, target );
             int target_id = irc_serv->the_users.at(check_if_user_exist_with_nick(target, irc_serv->the_users)).get_id();
             std::cout << "ID of " << target << " is " << target_id << std::endl;
-            // TODO! LE PREMIER MSG NE S ENVOIE PAS, A FIX
             // TODO GERER LES ERREURS
             // client_printer(target_id, endmsg, "371", target);
             client_printer2(target_id, &irc_serv->the_users.at(get_index(irc_serv->the_users, sd)), endmsg, "0", target);

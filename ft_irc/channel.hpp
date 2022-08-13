@@ -324,10 +324,10 @@ void        send_message_to_channel(class Channel *chan, std::string message, in
     {
         (void)sd;
         std::cout << "id is " << it->get_id() << std::endl;
-        // if (!(it->get_id() == sd))
-        client_printer_channel(it->get_id(), message, "332", it->get_nick(), chan->get_name());
+        if (!(it->get_id() == sd))
+            client_printer_channel(it->get_id(), message, "332", it->get_nick(), chan->get_name());
         it++;
-        return;
     }
+    return;
 }
 
