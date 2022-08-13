@@ -41,6 +41,7 @@ int main(int argc, char **argv)
     fd_set readfds;
 
     the_serv irc_serv;
+    irc_serv.port = argv[1];
     irc_serv.password = pswd;
 
     //initialise all client_socket[] to 0 so not checked

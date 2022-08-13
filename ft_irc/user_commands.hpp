@@ -7,7 +7,6 @@
 #include "commands.hpp"
 #include "channel.hpp"
 #include <sys/socket.h> //send
-#include "channel.cpp"
 #include "part.hpp"
 #include "./commands/nick.hpp"
 
@@ -32,18 +31,73 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
         // ? PING
         sleep(3);
         std::string PING("PING localhost\r\n");
-	    if (send(sd,PING.c_str(), PING.length(), 0) == -1)
+	    if (send(sd,PING.c_str(), PING.size(), 0) == -1)
         {
             std::cout << "Problem with PING send" << std::endl;
         }
 	    return (0);
     }
+    // ?MODE
+
+    std::string mod1 = "MODE " + irc_serv->the_users.at(get_index(irc_serv->the_users, sd)).tmp;
+    if ((ret = check_vector_arr(buff_arr, mod1)) > 0)
+    {
+        std::cout << "MODE1" << std::endl;
+        std::string resp = ":localhost 324 " + irc_serv->the_users.at(index).get_nick() + " " + irc_serv->the_users.at(get_index(irc_serv->the_users, sd)).tmp + " +stn\r\n";
+        std::cout << resp << std::endl;
+	    if (send(sd,resp.c_str(), resp.length(), 0) == -1)
+        {
+            std::cout << "Problem with join send" << std::endl;
+        }
+        std::string resp_mod = ":" + irc_serv->the_users.at(index).get_nick() + "!~" + irc_serv->the_users.at(index).get_username() + "@localhost" + " JOIN :" + irc_serv->the_users.at(get_index(irc_serv->the_users, sd)).tmp + "\r\n";
+        std::cout << resp_mod << std::endl;
+	    if (send(sd,resp_mod.c_str(), resp_mod.length(), 0) == -1)
+        {
+            std::cout << "Problem with join send" << std::endl;
+        }
+    }
+
+    std::string mod2 = "MODE " + irc_serv->the_users.at(get_index(irc_serv->the_users, sd)).tmp + " b";
+    if ((ret = check_vector_arr(buff_arr, mod2)) > 0)
+    {
+        std::cout << "MODE2" << std::endl;
+        std::string resp = ":localhost 368 " + irc_serv->the_users.at(index).get_nick() + " " + irc_serv->the_users.at(get_index(irc_serv->the_users, sd)).tmp + " :End of Channel Ban List\r\n";
+        std::cout << resp << std::endl;
+	    if (send(sd,resp.c_str(), resp.length(), 0) == -1)
+        {
+            std::cout << "Problem with join send" << std::endl;
+        }
+    }
+
+    if ((ret = check_vector_arr(buff_arr, "WHO")) > 0)
+    {
+        std::string resp2 = ":localhost 329 " + irc_serv->the_users.at(index).get_nick() + " " + irc_serv->the_users.at(get_index(irc_serv->the_users, sd)).tmp + " 1603137669\r\n";
+	    if (send(sd,resp2.c_str(), resp2.length(), 0) == -1)
+        {
+            std::cout << "Problem with join send" << std::endl;
+        }
+        resp2 = ":localhost 352 " + irc_serv->the_users.at(index).get_nick() + " " + irc_serv->the_users.at(get_index(irc_serv->the_users, sd)).tmp + " ~" + irc_serv->the_users.at(index).get_nick() + " localhost " + irc_serv->the_users.at(index).get_nick() + " H :0 PCname\r\n";
+        std::cout << resp2 << std::endl;
+	    if (send(sd,resp2.c_str(), resp2.length(), 0) == -1)
+        {
+            std::cout << "Problem with join send" << std::endl;
+        }
+
+        std::string resp3 = ":localhost 315 " + irc_serv->the_users.at(index).get_nick() + " " + irc_serv->the_users.at(get_index(irc_serv->the_users, sd)).tmp + " :End of /WHO list.\r\n"; 
+        std::cout << resp3 << std::endl;
+	    if (send(sd,resp3.c_str(), resp3.length(), 0) == -1)
+        {
+            std::cout << "Problem with join send" << std::endl;
+        }
+    }
+
+
     // ? JOIN
     if ((ret = check_vector_arr(buff_arr, "JOIN")) > 0)
     {
         std::string     c_name = buff_arr[0];
         std::string     chann_name = c_name.substr(5, c_name.length() - 5);
-        int     index2 = 0;
+        int             index2 = 0;
 
         // IF USER IS ALREADY IN A CHANNEL, HE CAN T CREATE ANOTHER ONE
         if (compare_to_existing_channels(chann_name, irc_serv->the_channel) == 0)
@@ -58,6 +112,26 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
                 tmp.add_user(irc_serv->the_users[index]);
                 irc_serv->the_channel.push_back(tmp);
                 irc_serv->the_users.at(index).set_operat(true);
+                std::string join = ":" + irc_serv->the_users.at(index).get_nick() + "!~" + irc_serv->the_users.at(index).get_username() + "@localhost" + " JOIN :" + chann_name + "\r\n";
+                std::cout << "text is " << join << std::endl;
+	            if (send(sd,join.c_str(), join.length(), 0) == -1)
+                {
+                    std::cout << "Problem with join send" << std::endl;
+                }
+                std::string join2 = ":localhost 353 " + irc_serv->the_users.at(index).get_nick() + " @ " + chann_name + " : " + irc_serv->the_users.at(index).get_nick() + " @mage\r\n";
+                std::cout << "text is " << join2 << std::endl;
+	            if (send(sd,join2.c_str(), join2.length(), 0) == -1)
+                {
+                    std::cout << "Problem with join send" << std::endl;
+                }
+                std::string join3 = ":localhost 366 " + irc_serv->the_users.at(index).get_nick() + " " + chann_name + " :End of /NAMES list.\r\n";
+	            if (send(sd,join3.c_str(), join3.length(), 0) == -1)
+                {
+                    std::cout << "Problem with join send" << std::endl;
+                }
+                std::cout << "text is " << join3 << std::endl;
+                irc_serv->the_users.at(index).tmp = chann_name;
+                return 0;
             }
             else
             {
@@ -269,9 +343,10 @@ std::cout << targets.at(it) << std::endl;
             else if (channel_to_target != -1 && user_to_delete != "/*,\\not_in_channel")
             {
                 kick_user_out_from_channel(user_to_delete, irc_serv->the_channel.at(channel_to_target).get_users_ptr());
-                response = get_response_1(sd, irc_serv->the_users, buff_arr.at(ret -1) + " :");
+                response = get_response_1(sd, irc_serv->the_users, buff_arr.at(ret -1), irc_serv, &(irc_serv->the_channel.at(channel_to_target)));
                 std::cout << "RESPONSE : |" << response << "|" << std::endl;
                 send(sd, response.c_str(), response.length(), 0);
+                // send(sd, response.c_str(), response.length(), 0);
             }
             //DISCONNECT CURRENT USER FROM test.channel
             count++;
@@ -320,7 +395,7 @@ std::cout << targets.at(it) << std::endl;
                 // SEND THE MSG TO ALL THE USER LIST OF THE CHANNEL
                 std::cout << "Chan is " << chan << std::endl;
 
-                send_message_to_channel(irc_serv->the_channel[chan -1], msg);
+                send_message_to_channel(irc_serv->the_channel[chan -1], msg, sd);
 
             }
             else

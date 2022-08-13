@@ -16,6 +16,7 @@ typedef class User
 		bool		_set_nick;
 
 	public:
+		std::string tmp;
     	User(int id, std::string nick, std::string User)
     	{
 			_id = id;
@@ -119,19 +120,3 @@ std::string						get_user_name(int id, std::vector<User> tab)
 	return ("/*,\\not_in_channel");
 }
 
-std::string						get_response_1(int	id, std::vector<User> tab, std::string command_name)
-{
-	std::vector<User>::iterator	it = tab.begin();
-	std::string					response;
-	while(it != tab.end())
-	{
-		if(it->get_id() == id)
-		{
-			std::cout << "GET RESPONSE : |" << it->get_nick() << "| |" << it->get_username() << "|" << std::endl;
-			response = ":" + it->get_nick() + "!~" + it->get_username() + "@localhost " + command_name;
-			break ;
-		}
-		it++;
-	}
-	return (response);
-}
