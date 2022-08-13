@@ -162,13 +162,13 @@ int main(int argc, char **argv)
         if ((activity < 0) && (errno!=EINTR))
         {
             printf("select error");
+            return 1;
         }
 
         // If something happened on the master socket,
         // then its an incoming connection
         if (FD_ISSET(master_socket, &readfds))
         {
-
             if ((new_socket = accept(master_socket,
                     (struct sockaddr *)&address, (socklen_t*)&addrlen))<0)
             {
@@ -214,10 +214,10 @@ int main(int argc, char **argv)
                     //Somebody disconnected , get his details and print
                     getpeername(sd , (struct sockaddr*)&address , \
                         (socklen_t*)&addrlen);
-                    printf("Host disconnected , ip %s , port %d \n" ,
-                          inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
+                    printf("Host disconnected , ip %s , port %d \n" , \
+                        inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
+                    ft_quit(&irc_serv, get_index(irc_serv.the_users, sd), sd);
                     delete_from_list(&irc_serv, sd);
-
                     //Close the socket and mark as 0 in list for reuse
                     close( sd );
                     client_socket[i] = 0;
