@@ -1,4 +1,5 @@
 #pragma once
+#include "./commands/kill.hpp"
 #include <vector>
 #include <string>
 #include <iostream>
@@ -494,7 +495,7 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
             std::cout << "the user don't exist =(" << std::endl;
     }
 
-    // ? OPERATOR STAT
+    // ? OPERATOR
     if ((ret = check_vector_arr(buff_arr, "OPER")) > 0)
     {
         // BECORME OPERATOR
@@ -507,7 +508,20 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
         {
             irc_serv->the_users.at(get_index(irc_serv->the_users, sd)).set_operat(true);
             std::cout << "User " << user << " set as operator" << std::endl;
+            std::string resp = ":localhost 324 " + irc_serv->the_users.at(index).get_nick() + " " + irc_serv->the_users.at(get_index(irc_serv->the_users, sd)).tmp + " b\r\n";
+            if (debug)
+                std::cout << resp << std::endl;
+            if (send(sd, resp.c_str(), resp.length(), 0) == -1)
+                std::cout << "Problem with oper send" << std::endl;
+        }
+        else
+        {
+            //   464     ERR_PASSWDMISMATCH ":Password incorrect"
+            ultimate_printer(sd, ":Password incorrect", "464", user);
         }
     }
+    //? KILL
+    if ((ret = check_vector_arr(buff_arr, "kill")) > 0)
+        return (ft_kill(&user, buff_arr.at(ret -1), irc_serv));
     return (0);
 }
