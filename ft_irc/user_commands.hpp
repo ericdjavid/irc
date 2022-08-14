@@ -91,7 +91,21 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
 
     if ((ret = check_vector_arr(buff_arr, "WHO")) > 0)
     {
-        std::string resp2 = ":localhost 329 " + irc_serv->the_users.at(index).get_nick() + " " + irc_serv->the_users.at(get_index(irc_serv->the_users, sd)).tmp + " 1603137669\r\n";
+        // TODO: ajouter les elements de response dans le cas d'un join dans un channel
+        if (irc_serv->the_channel.at(get_channel(irc_serv->the_users.at(get_index(irc_serv->the_users, sd)).tmp, irc_serv->the_channel)).get_created_value() == true) //IF CHANNEL WAS ALREADY CREATED
+        {
+            std::cout << "C'EST LES MIENS" << std::endl;
+            std::string     resp4;
+
+            resp4 = ":localhost 352 " + irc_serv->the_users.at(index).get_nick() + " " + irc_serv->the_users.at(get_index(irc_serv->the_users, sd)).tmp + " ~" + irc_serv->the_users.at(index).get_username() + " localhost localhost " + irc_serv->the_users.at(index).get_nick() + " H :0 0PNH PC\r\n";
+            send(sd, resp4.c_str(), resp4.length(), 0);
+            resp4 = ":localhost 352 " + irc_serv->the_users.at(index).get_nick() + " " + irc_serv->the_users.at(get_index(irc_serv->the_users, sd)).tmp + " ~" + irc_serv->the_users.at(index).get_username() + " localhost localhost *.nl " + irc_serv->the_users.at(index).get_nick() + " H :3 0PTN PN\r\n";
+            send(sd, resp4.c_str(), resp4.length(), 0);
+            resp4 = ":localhost 315 " + irc_serv->the_users.at(index).get_nick() + " " + irc_serv->the_users.at(get_index(irc_serv->the_users, sd)).tmp + " :End of WHO list.\r\n";
+            send(sd, resp4.c_str(), resp4.length(), 0);
+        }
+        else {
+                    std::string resp2 = ":localhost 329 " + irc_serv->the_users.at(index).get_nick() + " " + irc_serv->the_users.at(get_index(irc_serv->the_users, sd)).tmp + " 1603137669\r\n";
         if (send(sd, resp2.c_str(), resp2.length(), 0) == -1)
             std::cout << "Problem with join send" << std::endl;
         resp2 = ":localhost 352 " + irc_serv->the_users.at(index).get_nick() + " " + irc_serv->the_users.at(get_index(irc_serv->the_users, sd)).tmp + " ~" + irc_serv->the_users.at(index).get_nick() + " localhost localhost " + irc_serv->the_users.at(index).get_nick() + " H :0 PNT PC\r\n";
@@ -102,8 +116,7 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
         std::cout << resp3 << std::endl;
         if (send(sd, resp3.c_str(), resp3.length(), 0) == -1)
             std::cout << "Problem with join send" << std::endl;
-
-        // TODO: ajouter les elements de response dans le cas d'un join dans un channel   
+        }
         // :ircnet.hostsailor.com 352 nick channel ~user 62.210.32.169 ircnet.hostsailor.com nick H :0 0PNH PC
         // :ircnet.hostsailor.com 352 nick channel ~user 62.210.32.169 *.nl yoyop H :3 0PNT PC
         // :ircnet.hostsailor.com 315 nick channel :End of WHO list.
@@ -158,6 +171,7 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
         {
             index2 = get_channel(chann_name, irc_serv->the_channel);
             irc_serv->the_users.at(index).tmp = chann_name;
+            irc_serv->the_channel.at(get_channel(chann_name, irc_serv->the_channel)).set_created_true();
             irc_serv->the_channel.at(index2).add_user(irc_serv->the_users[index]);
             std::string join = ":" + irc_serv->the_users.at(index).get_nick() + "!~" + irc_serv->the_users.at(index).get_username() + "@localhost" + " JOIN :" + chann_name + "\r\n";
             std::cout << "text is " << join << std::endl;
@@ -243,6 +257,7 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
             std::cout << "reason _______ " << reason << std::endl;
         }
         channel_kick = "#" + channel_kick;
+        std::cout << "||||||||||||||||||||||||||||||||||||||||||||||| CHANNEL_KICK_NAME : " << channel_kick << " |||||||||||||||||||||||||||||||||||||||||||||||" << std::endl;
         if (reason.empty() == true)
             reason = ("no reason");
         std::cout << "target_____" << target << " channel kick_____" << channel_kick << " reason _______ " << reason << std::endl;
@@ -268,7 +283,7 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
                         //	else
                         //		endmsg = irc_serv->the_users.at(index).get_nick() + " KICK " + target;
                         //	client_printer2(sd, &irc_serv->the_users.at(get_index(irc_serv->the_users, sd)), endmsg, 0, target);
-                        std::string kick_msg = ":" + irc_serv->the_users.at(index).get_nick() + "!~" + irc_serv->the_users.at(index).get_username() + "@localhost KICK " + channel_kick + " " + target + " :" + reason;
+                        std::string kick_msg = ":" + irc_serv->the_users.at(index).get_nick() + "!~" + irc_serv->the_users.at(index).get_username() + "@localhost KICK " + channel_kick + " " + target + " :" + reason + "\r\n";
                         std::cout << "send ==>" << kick_msg << std::endl;
                         std::cout << "kick msg==>" << kick_msg << std::endl;
                         if (send(sd, kick_msg.c_str(), kick_msg.length(), 0) == -1)
@@ -380,6 +395,8 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
             channel_to_target = get_channel(test->channels.at(count), irc_serv->the_channel);
             if (channel_to_target == -1)
             {
+                std::string err_403 = test->channels.at(count) + " :No such channel\r\n";
+                send(sd, err_403.c_str(), err_403.length(), 0);
                 std::cout << "ERR_NOSUCHCHANNEL (403)" << std::endl;
             }
             else
@@ -388,13 +405,13 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
             }
             if (user_to_delete == "/*,\\not_in_channel")
             {
+                std::string err_442 = test->channels.at(count) + " :You're not on that channel\r\n";
+                send(sd, err_442.c_str(), err_442.length(), 0);
                 std::cout << "ERR_NOTONCHANNEL (442)" << std::endl;
             }
             else if (channel_to_target != -1 && user_to_delete != "/*,\\not_in_channel")
             {
                 kick_user_out_from_channel(user_to_delete, irc_serv->the_channel.at(channel_to_target).get_users_ptr());
-                // response = get_response_1(sd, irc_serv->the_users, buff_arr.at(ret -1), irc_serv, &(irc_serv->the_channel.at(channel_to_target)));
-                // std::cout << "RESPONSE : |" << response << "|" << std::endl;
                 response = ":" + get_user_name(sd, irc_serv->the_users) + "!~" + get_user_name_2(sd, irc_serv->the_users) + "@localhost PART " + irc_serv->the_channel.at(channel_to_target).get_name() + " :" + test->reason + "\r\n";
                 std::cout << "RESPONSE : |" << response << "|" << std::endl;
                 send(sd, response.c_str(), response.length(), 0);
