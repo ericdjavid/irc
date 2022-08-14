@@ -89,7 +89,6 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
         // TODO: ajouter les elements de response dans le cas d'un join dans un channel
         if (irc_serv->the_channel.at(get_channel(irc_serv->the_users.at(get_index(irc_serv->the_users, sd)).tmp, irc_serv->the_channel)).get_created_value() == true) //IF CHANNEL WAS ALREADY CREATED
         {
-            std::cout << "C'EST LES MIENS" << std::endl;
             std::string     resp4;
 
             resp4 = ":localhost 352 " + irc_serv->the_users.at(index).get_nick() + " " + irc_serv->the_users.at(get_index(irc_serv->the_users, sd)).tmp + " ~" + irc_serv->the_users.at(index).get_username() + " localhost localhost " + irc_serv->the_users.at(index).get_nick() + " H :0 0PNH PC\r\n";
@@ -217,14 +216,22 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
         channel_ban = "#" + channel_ban;
 
         if ((i = check_if_channel_exist(channel_ban, irc_serv->the_channel)) == -1)
+        {
+            std::string koko2 = ":localhost 403 " + irc_serv->the_users.at(index).get_nick() + " " + target + " " + channel_ban + " :No such channel\r\n";
+            send(sd, koko2.c_str(), koko2.length(), 0);
             std::cout << "///////////////////error no channel///////////////////////\n";
+        }
         else
         {
             int channel_id = get_channel(channel_ban, irc_serv->the_channel);
             if ((i = check_if_user_exist_with_nick(target, irc_serv->the_users)) != -1)
             {
                 if ((i = check_if_user_exist_in_channel(target, irc_serv->the_channel.at(channel_id).get_users())) == -1)
+                {
+                    std::string koko = ":localhost 441 " + irc_serv->the_users.at(index).get_nick() + " " + target + " " + channel_ban + " :They aren't on that channel\r\n";
+                    send(sd, koko.c_str(), koko.length(), 0);
                     std::cout << "11111111111User is not in the channel\n";
+                }
                 else
                     ban_user_out_from_channel(target, irc_serv->the_channel.at(channel_id).get_users(), irc_serv->the_channel.at(channel_id).get_ban_users());
             }
@@ -263,19 +270,31 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
             reason = ("no reason");
         std::cout << "target_____" << target << " channel kick_____" << channel_kick << " reason _______ " << reason << std::endl;
         if ((i = check_if_channel_exist(channel_kick, irc_serv->the_channel)) == -1)
+        {
+            std::string err_403_No_such_channel = ":localhost 403 " + irc_serv->the_users.at(index).get_nick() + " " + target + " " + channel_kick + " :No such channel\r\n";
+            send(sd, err_403_No_such_channel.c_str(), err_403_No_such_channel.length(), 0);
             std::cout << "ERR_NOSUCHCHANNEL || 403\n";
+        }
         else
         {
             int channel_id = get_channel(channel_kick, irc_serv->the_channel);
             if ((i = check_if_user_exist_with_nick(target, irc_serv->the_users)) != -1)
             {
                 if ((i = check_if_user_exist_in_channel(target, irc_serv->the_channel.at(channel_id).get_users())) == -1)
+                {
+                    std::string err_441_NotInChannel = ":localhost 441 " + irc_serv->the_users.at(index).get_nick() + " " + target + " " + channel_kick + " :They aren't on that channel\r\n";
+                    send(sd, err_441_NotInChannel.c_str(), err_441_NotInChannel.length(), 0);
                     std::cout << "ERR_USERNOTINCHANNEL || 441\n";
+                }
                 else
                 {
                     std::string kicker = get_user_name(sd, irc_serv->the_channel.at(channel_id).get_users());
                     if ((i = check_if_user_exist_in_channel(kicker, irc_serv->the_channel.at(channel_id).get_users())) == -1)
+                    {
+                        std::string err_441_notInChannel = ":localhost 441 " + irc_serv->the_users.at(index).get_nick() + " " + target + " " + channel_kick + " :They aren't on that channel\r\n";
+                        send(sd, err_441_notInChannel.c_str(), err_441_notInChannel.length(), 0);
                         std::cout << " ERR_USERNOTINCHANNEL || 441" << std::endl;
+                    }
                     else
                     {
                         //	std::string endmsg;
@@ -297,7 +316,11 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
                 }
             }
             else
+            {
+                std::string err_441_kick = ":localhost 441 " + irc_serv->the_users.at(index).get_nick() + " " + target + " " + channel_kick + " :They aren't on that channel\r\n";
+                send(sd, err_441_kick.c_str(), err_441_kick.length(), 0);
                 std::cout << "ERR_USERNOTINCHANNEL || 441\n";
+            }
         }
     }
 
@@ -397,7 +420,7 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
             channel_to_target = get_channel(test->channels.at(count), irc_serv->the_channel);
             if (channel_to_target == -1)
             {
-                std::string err_403 = test->channels.at(count) + " :No such channel\r\n";
+                std::string err_403 = ":localhost 403 " + irc_serv->the_users.at(index).get_nick() + " " + test->channels.at(count) + " :No such channel\r\n";
                 send(sd, err_403.c_str(), err_403.length(), 0);
                 std::cout << "ERR_NOSUCHCHANNEL (403)" << std::endl;
             }
@@ -407,7 +430,7 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
             }
             if (user_to_delete == "/*,\\not_in_channel")
             {
-                std::string err_442 = test->channels.at(count) + " :You're not on that channel\r\n";
+                std::string err_442 = ":localhost 442 " + irc_serv->the_users.at(index).get_nick() + " " + test->channels.at(count) + " :You're not on that channel\r\n";
                 send(sd, err_442.c_str(), err_442.length(), 0);
                 std::cout << "ERR_NOTONCHANNEL (442)" << std::endl;
             }
@@ -417,7 +440,6 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
                 std::cout << "RESPONSE : |" << response << "|" << std::endl;
                 send_kick_to_channel(response, irc_serv->the_channel.at(get_channel(test->channels[count], irc_serv->the_channel)).get_users_ptr());
                 kick_user_out_from_channel(user_to_delete, irc_serv->the_channel.at(channel_to_target).get_users_ptr());
-                //send(sd, response.c_str(), response.length(), 0);
             }
             // DISCONNECT CURRENT USER FROM test.channel
             count++;
@@ -473,6 +495,8 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
             }
             else
             {
+                std::string err_401_pvmsg = ":localhost 401 " + irc_serv->the_users.at(index).get_nick() + " " + target + " :No such nick/channel\r\n";
+                send(sd, err_401_pvmsg.c_str(), err_401_pvmsg.length(), 0);
                 std::cout << "Channel not found" << std::endl;
                 return 0;
             }
@@ -492,7 +516,11 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
             client_printer2(target_id, &irc_serv->the_users.at(get_index(irc_serv->the_users, sd)), endmsg, "0", target);
         }
         else
+        {
+            std::string err_401_pv = ":localhost 401 " + irc_serv->the_users.at(index).get_nick() + " " + target + " :No such nick/channel\r\n";
+            send(sd, err_401_pv.c_str(), err_401_pv.length(), 0);
             std::cout << "the user don't exist =(" << std::endl;
+        }
     }
 
     // ? OPERATOR

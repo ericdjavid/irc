@@ -15,14 +15,12 @@ int ft_kill(User *user, std::string cmd, the_serv *irc_serv)
     {
         if (debug)
             std::cout << C_RED << "Partial CMD =(" << C_END;
-        // error msg to client ?
         return 0;
     }
     if (user->is_operat() == false)
     {
         if (debug)
             std::cout << C_RED << "User is not operator" << C_END;
-        // SEND ERROR MSG TO CLIENT
         return (0);
     }
     else
@@ -37,8 +35,7 @@ int ft_kill(User *user, std::string cmd, the_serv *irc_serv)
          
         if (int ret = check_if_user_exist_with_nick(nick, irc_serv->the_users) >= 0)
         {
-            // SEND KILL MSG
-            // KICK him 361 ? 
+            // SEND KILL MSG 361
             ft_quit(irc_serv, get_index(irc_serv->the_users, irc_serv->the_users.at(ret).get_id()), irc_serv->the_users.at(ret).get_id());
             return (0);
         }
