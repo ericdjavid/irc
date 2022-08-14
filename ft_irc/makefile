@@ -45,6 +45,12 @@ $(NAME):	$(OBJS)
 	@rm *.o 
 	@echo "$<\n[$(C_GREEN)OK$(C_END)]"
 
+the_debug:	$(OBJS)
+	@echo "$<\n[$(C_PURPLE)COMPILING$(C_END)]"
+	$(CC) $(FLAGS) -o $(NAME) $(OBJS) -D DEBUG=1
+	@rm *.o 
+	@echo "$<\n[$(C_GREEN)OK$(C_END)]"
+
 clean:
 	@echo "$<[$(C_YELLOW)CLEANING$(C_END)]"
 	@rm -f *.o
@@ -54,6 +60,8 @@ fclean: clean
 	@rm -f $(NAME)
 
 re:	fclean all
+
+debug: fclean the_debug 
 
 # indique a Makefile les cibles qui ne sont pas des fichiers
 .PHONY : all clean fclean re

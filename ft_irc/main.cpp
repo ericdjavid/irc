@@ -15,6 +15,7 @@
 #include "server.hpp"
 #include "commands.hpp"
 #include "user_commands.hpp"
+#include "debug.hpp"
 
 #define TRUE 1
 #define FALSE 0
@@ -25,6 +26,10 @@ int main(int argc, char **argv)
 {
     if (argc != 3)
         error("Bad number of parameters");
+    if (DEBUG)
+        std::cout << "Debug mode on" << std::endl;
+    else
+        std::cout << "Debug mode off" << std::endl;
     std::string port(argv[1]);
     std::string pswd(argv[2]);
     int uport = FromString<int>(port);
