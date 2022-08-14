@@ -82,7 +82,6 @@ void get_buffer(char *buff)
 
 void client_printer(int sd, std::string str, std::string numeric, std::string user)
 {
-
     std::string beg(":localhost ");
     std::string the_print;
     if (numeric == "0")
@@ -92,6 +91,27 @@ void client_printer(int sd, std::string str, std::string numeric, std::string us
     // Allocate memory
     char *ccx = new char[the_print.length() + 1];
     // Copy contents
+    std::copy(the_print.begin(), the_print.end(), ccx);
+    if (send(sd, ccx, the_print.size(), 0) != (ssize_t)the_print.size())
+    {
+        perror("send");
+    }
+    delete[] ccx;
+    return;
+}
+
+void ultimate_printer(int sd, std::string str, std::string numeric, std::string user)
+{
+    std::string beg(":localhost ");
+    std::string the_print;
+    if (numeric == "0")
+        the_print = str + "\r\n";
+    else
+        the_print = beg + numeric + " " + user + str + "\r\n";
+    // Allocate memory
+    char *ccx = new char[the_print.length() + 1];
+    // Copy contents
+    // std::cout << "||THEPRINT:|" << the_print << "||" << std::endl;
     std::copy(the_print.begin(), the_print.end(), ccx);
     if (send(sd, ccx, the_print.size(), 0) != (ssize_t)the_print.size())
     {

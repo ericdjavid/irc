@@ -8,6 +8,7 @@
 #include "server.hpp"
 #include "tools.hpp"
 #include "user_commands.hpp"
+#include "debug.hpp"
 
 bool ft_check_password(std::vector<std::string> buff_arr, the_serv *irc_serv, int sd, std::string user)
 {
@@ -198,7 +199,8 @@ int ft_treat_commands(std::vector<std::string> buff_arr, the_serv *irc_serv, int
 	}
 	else
 	{
-		std::cout << "User nick don't exist in DB, starting the connexion process!" << std::endl;
+		if (DEBUG)
+			std::cout << "User nick don't exist in DB, starting the connexion process!" << std::endl;
 		if (ft_deal_next(buff_arr, irc_serv, sd) == 1)
 			return -2;
 	}

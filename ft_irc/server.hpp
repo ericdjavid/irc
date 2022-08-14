@@ -62,7 +62,7 @@ int     get_index(std::vector<class User> user_list, int id)
         index++;
         it++;
     }
-    return 0;
+    return -1;
 
 }
 
