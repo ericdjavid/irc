@@ -91,7 +91,8 @@ int	check_if_channel_exist(std::string channel_name, std::vector<class Channel> 
 	int i = 0;
 	for (std::vector<class Channel>::iterator it = the_channel.begin(); it != the_channel.end(); it++)
 	{
-std::cout << "Channel name ==>" << channel_name << "---chanel is ==>" << it->get_name() << "----\n";
+        if (debug)
+            std::cout << "Channel name ==>" << channel_name << "---chanel is ==>" << it->get_name() << "----\n";
 		if (channel_name == it->get_name())
 			return (i);
 		i++;
@@ -121,7 +122,8 @@ std::string	get_response_1(int	id, std::vector<User> tab, std::string command_na
 	{
 		if(it->get_id() == id)
 		{
-			std::cout << "GET RESPONSE : |" << it->get_nick() << "| |" << it->get_username() << "|" << std::endl;
+            if (debug)
+			    std::cout << "GET RESPONSE : |" << it->get_nick() << "| |" << it->get_username() << "|" << std::endl;
 			response = ":" + it->get_nick() + "!~" + it->get_username() + "@localhost" + " " + command_name + "\r\n";
 			break ;
 		}

@@ -12,9 +12,13 @@ int ft_quit(the_serv *irc_serv, int index, int sd)
     if (index == -1)
         return (1);
     std::string resp = ":" + irc_serv->the_users.at(index).get_nick() + "!~" + irc_serv->the_users.at(index).get_username() + "@localhost QUIT :\"leaving\"\r\n";
-    std::cout << resp << std::endl;
+    if (debug)
+        std::cout << resp << std::endl;
     if (send(sd, resp.c_str(), resp.length(), 0) == -1)
-        std::cout << "Problem with quit send" << std::endl;
+    {
+        if (debug)
+            std::cout << "Problem with quit send" << std::endl;
+    }
     delete_from_list(irc_serv, sd);
     return (1);
 }

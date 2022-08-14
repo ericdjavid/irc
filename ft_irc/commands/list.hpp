@@ -9,7 +9,8 @@
 int ft_list(std::string buff, the_serv *irc_serv, User *user)
 {
     std::vector<Channel> tmp = irc_serv->the_channel;
-    std::cout << "buff is" << buff.size() << std::endl;
+    if (debug)
+        std::cout << "buff is" << buff.size() << std::endl;
     // all channels
     if (buff.size() == 5 || buff.size() == 4)
     {
