@@ -8,6 +8,7 @@
 #include <algorithm>
 #include "user.hpp"
 #include <sstream>
+#include "debug.hpp"
 
 template <typename T>
 T FromString(const std::string &str)
@@ -111,7 +112,8 @@ void ultimate_printer(int sd, std::string str, std::string numeric, std::string 
     // Allocate memory
     char *ccx = new char[the_print.length() + 1];
     // Copy contents
-    // std::cout << "||THEPRINT:|" << the_print << "||" << std::endl;
+    if (debug)
+        std::cout << "||THEPRINT:|" << the_print << "||" << std::endl;
     std::copy(the_print.begin(), the_print.end(), ccx);
     if (send(sd, ccx, the_print.size(), 0) != (ssize_t)the_print.size())
     {
@@ -181,8 +183,6 @@ int nick_already_in_use(std::string nick, std::vector<User> vector)
     it = vector.begin();
     while (it != vector.end())
     {
-        std::cout << "CHECK IF NICK ALREADY USED" << std::endl;
-        std::cout << "Comparing " << it->get_nick() << " with " << nick << std::endl;
         if (it->get_nick() == nick)
             return (1);
         it++;
@@ -223,13 +223,13 @@ void display_users(std::vector<User> the_users)
     std::vector<User>::iterator it;
 
     it = the_users.begin();
-    std::cout << "||||||||||||| USERS |||||||||||||" << std::endl;
+    std::cout << C_YELLOW << "||||||||||||| USERS |||||||||||||" << C_END;
     while (it != the_users.end())
     {
         std::cout << "id : " << it->get_id() << " | nick : " << it->get_nick() << " | username : " << it->get_username() << std::endl;
         it++;
     }
-    std::cout << "||||||||||||| END |||||||||||||" << std::endl;
+    std::cout << C_YELLOW << "||||||||||||| END |||||||||||||" << std::endl << C_END;
 }
 
 int check_if_many_user(std::string target)

@@ -316,13 +316,13 @@ void print_channels(std::vector<Channel> ptr)
         return;
 
     it = ptr.begin();
-    std::cout << "|||  CHANNELS  |||" << std::endl;
+    std::cout<< C_YELLOW << "|||  CHANNELS  |||" << C_END;
     while (it != ptr.end())
     {
         std::cout << it->get_name() << std::endl;
         it++;
     }
-    std::cout << "|||     END    |||" << std::endl;
+    std::cout << C_YELLOW << "|||     END    |||" << C_END;
 }
 
 void send_message_to_channel(class Channel *chan, std::string message, int sd)

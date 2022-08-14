@@ -66,7 +66,7 @@ int     get_index(std::vector<class User> user_list, int id)
 
 }
 
-// FONCTION POUR PARCOURIR LA LISTE DES USERS, RENVOIE 0 SI PAS TROUVE, SINN INDEX DE L USER
+// FONCTION POUR PARCOURIR LA LISTE DES USERS, RENVOIE -1 SI PAS TROUVE, SINN INDEX DE L USER
 int 	check_if_user_exist_with_nick(std::string nick, std::vector<class User> the_users)
 {
     if (the_users.empty() == true)

@@ -28,11 +28,9 @@ int main(int argc, char **argv)
         error("Bad number of parameters");
     if (argc == 4)
     {
-        std::cout << "Debug mode on" << std::endl;
+        std::cout << C_RED "Debug mode on" << C_END;
         debug = 1;
     }
-    else
-        std::cout << "Debug mode off" << std::endl;
     std::string port(argv[1]);
     std::string pswd(argv[2]);
     int uport = FromString<int>(port);
@@ -110,7 +108,7 @@ int main(int argc, char **argv)
         perror("bind failed");
         exit(EXIT_FAILURE);
     }
-    printf("Listener on port %d \n", PORT);
+    std::cout << C_BLUE << "Listener on port" << PORT << C_END;
 
     /*
         The listen system call allows the process to listen
@@ -132,7 +130,7 @@ int main(int argc, char **argv)
 
     //accept the incoming connection
     addrlen = sizeof(address);
-    puts("Waiting for connections ...");
+    std::cout << C_BLUE << "Waiting for connections" << C_END;
 
     while(TRUE)
     {
@@ -184,15 +182,14 @@ int main(int argc, char **argv)
             }
             
             // Inform user of socket number - used in send and receive commands
-            printf("New connection , socket fd is %d , ip is : %s , port : %d \n" , new_socket , inet_ntoa(address.sin_addr) , ntohs (address.sin_port));
+            if (debug)
+                printf("New connection , socket fd is %d , ip is : %s , port : %d \n" , new_socket , inet_ntoa(address.sin_addr) , ntohs (address.sin_port));
 
             // Send new connection greeting message
             char const* greetings = 
             "Welcome to our IRC server \n 1) Enter the required password using the command [PASS password]\n 2) Join or create a server using the commande [JOIN name]\n";
             if( send(new_socket, greetings, strlen(greetings), 0) != (ssize_t)strlen(greetings) )
-            {
                 perror("send");
-            }
 
             // Add new socket to array of sockets
             for (i = 0; i < max_clients; i++)
@@ -201,7 +198,8 @@ int main(int argc, char **argv)
                 if( client_socket[i] == 0 )
                 {
                     client_socket[i] = new_socket;
-                    printf("Adding to list of sockets as %d\n" , i);
+                    if (debug)
+                        printf("Adding to list of sockets as %d\n" , i);
                     break;
                 }
             }
@@ -221,7 +219,8 @@ int main(int argc, char **argv)
                     //Somebody disconnected , get his details and print
                     getpeername(sd , (struct sockaddr*)&address , \
                         (socklen_t*)&addrlen);
-                    printf("Host disconnected , ip %s , port %d \n" , \
+                    if (debug)
+                        printf("Host disconnected , ip %s , port %d \n" , \
                         inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
                     ft_quit(&irc_serv, get_index(irc_serv.the_users, sd), sd);
                     delete_from_list(&irc_serv, sd);
@@ -242,27 +241,21 @@ int main(int argc, char **argv)
                     tokenize(cpp_buf, '\n', buff_arr);
 
                     int ret = 0;
-                    if ((ret = ft_treat_commands(buff_arr, &irc_serv, sd)) == 1)
-                    {
-                        // the socket has been treated, we continue
-                        continue;
-                    }
-                    else if (ret == -2)
+                    if ((ret = ft_treat_commands(buff_arr, &irc_serv, sd)) == -2)
                     {
                         // We close the connexion
                         getpeername(sd , (struct sockaddr*)&address , \
                             (socklen_t*)&addrlen);
-                        printf("Host disconnected , ip %s , port %d \n" ,
+                        if (debug)
+                            printf("Host disconnected , ip %s , port %d \n" ,
                             inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
-                        
-                        
                         delete_from_list(&irc_serv, sd);
-
+                        ft_quit(&irc_serv, get_index(irc_serv.the_users, sd), sd);
                         //Close the socket and mark as 0 in list for reuse
                         close( sd );
                         client_socket[i] = 0;
                     }
-                    FD_ZERO(&readfds);
+                    // FD_ZERO(&readfds);
                 }
             }
         }
