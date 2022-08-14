@@ -278,3 +278,14 @@ int check_partial_cmd(std::string cmd, int size)
     }
     return 0;
 }
+
+void    send_kick_to_channel(std::string msg, std::vector<User> *tab)
+{
+    std::vector<User>::iterator it;
+    it = tab->begin();
+    while (it != tab->end())
+    {
+        send(it->get_id(), msg.c_str(), msg.length(), 0);
+        it++;
+    }
+}
