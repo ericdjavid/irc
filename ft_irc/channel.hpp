@@ -9,10 +9,11 @@
 class Channel
 {
 private:
-    std::vector<User> _users;
-    std::vector<User> _ban_users;
-    std::string _name;
-    char _properties;
+    std::vector<User>   _users;
+    std::vector<User>   _ban_users;
+    std::string         _name;
+    char                _properties;
+    bool                _created;
 
 public:
     ~Channel(){};
@@ -24,6 +25,7 @@ public:
         _name = name;
         _users = users;
         _properties = prop;
+        _created = false;
     }
 
     Channel(std::string name, std::vector<User> users, std::vector<User> ban_u, char prop)
@@ -32,6 +34,17 @@ public:
         _users = users;
         _ban_users = ban_u;
         _properties = prop;
+        _created = false;
+    }
+
+    void    set_created_true(void)
+    {
+        _created = true;
+    }
+
+    bool    get_created_value(void)
+    {
+        return _created;
     }
 
     User get_a_user(int i)
@@ -364,5 +377,19 @@ std::string     get_all_user_in_one_string(std::string name, std::vector<Channel
         }
         it1++;
     }
-    return ("pas d'utilisateur function channel.hpp:357");
+    return ("pas d'utilisateur function channel.hpp:367");
 }
+
+// Channel     *get_channel_ptr(std::string name, std::vector<Channel> tab)
+// {
+//     std::vector<Channel>::iterator it;
+
+//     it = tab.begin();
+//     while(it != tab.end())
+//     {
+//         if (it->get_name() == name)
+//             return (&(*it));
+//         it++;
+//     }
+//     return (NULL);
+// }

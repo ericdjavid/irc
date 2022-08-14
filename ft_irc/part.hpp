@@ -88,23 +88,3 @@ t_part2		*split_part_command(std::string command)
 	result->nb_chann = result->channels.size();
 	return(result);
 }
-
-// void		free_t_part2(t_part2 var)
-// {
-// 	// std::vector<std::string>::iterator it;
-// 	// it = var.begin();
-// 	// while (it != var.end)
-// }
-
-// void		free_t_part(t_part2 var)
-// {
-// 	int		i = 0;
-
-// 	free(var.channel);
-// 	while(i < var.nb_chann)
-// 	{
-// 		free(var.channels);
-// 		i++;
-// 	}
-// 	std::cout << "Free is done" << std::endl;
-// }
