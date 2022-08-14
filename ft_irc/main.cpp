@@ -24,17 +24,19 @@
 
 int main(int argc, char **argv)
 {
-    if (argc != 3)
+    if (argc < 3 || argc > 4)
         error("Bad number of parameters");
-    if (DEBUG)
+    if (argc == 4)
+    {
         std::cout << "Debug mode on" << std::endl;
+        debug = 1;
+    }
     else
         std::cout << "Debug mode off" << std::endl;
     std::string port(argv[1]);
     std::string pswd(argv[2]);
     int uport = FromString<int>(port);
     int PORT = uport;
-
     int opt = TRUE;
     int master_socket , addrlen , new_socket , client_socket[30] , max_clients = 30 , activity, i , valread , sd = 0;
     int max_sd;

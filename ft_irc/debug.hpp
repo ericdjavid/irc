@@ -1,7 +1,5 @@
-
-#ifndef DEBUG
-# define DEBUG 0
-#endif
+#pragma once
+int     debug = 0;
 
 // #	COLORS
 #define C_GREY		=	"\e[1;30m"

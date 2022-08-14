@@ -11,7 +11,7 @@
 #include "./commands/nick.hpp"
 #include "./commands/quit.hpp"
 #include "./commands/list.hpp"
-
+#include "debug.hpp"
 
 int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std::string> buff_arr)
 {
@@ -20,7 +20,7 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
 
     // ? LIST
     if ((ret = check_vector_arr(buff_arr, "LIST")) >= 0)
-        return(ft_list(buff_arr.at(ret -1), irc_serv, &user));
+        return (ft_list(buff_arr.at(ret - 1), irc_serv, &user));
 
     // ? NICK & USER
     if ((ret = check_vector_arr(buff_arr, "NICK")) >= 0)
@@ -85,9 +85,7 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
         std::string resp = ":localhost 368 " + irc_serv->the_users.at(index).get_nick() + " " + irc_serv->the_users.at(get_index(irc_serv->the_users, sd)).tmp + " :End of Channel Ban List\r\n";
         std::cout << resp << std::endl;
         if (send(sd, resp.c_str(), resp.length(), 0) == -1)
-        {
             std::cout << "Problem with join send" << std::endl;
-        }
         return (0);
     }
 
@@ -95,22 +93,20 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
     {
         std::string resp2 = ":localhost 329 " + irc_serv->the_users.at(index).get_nick() + " " + irc_serv->the_users.at(get_index(irc_serv->the_users, sd)).tmp + " 1603137669\r\n";
         if (send(sd, resp2.c_str(), resp2.length(), 0) == -1)
-        {
             std::cout << "Problem with join send" << std::endl;
-        }
-        resp2 = ":localhost 352 " + irc_serv->the_users.at(index).get_nick() + " " + irc_serv->the_users.at(get_index(irc_serv->the_users, sd)).tmp + " ~" + irc_serv->the_users.at(index).get_nick() + " localhost " + irc_serv->the_users.at(index).get_nick() + " H :0 PCname\r\n";
+        resp2 = ":localhost 352 " + irc_serv->the_users.at(index).get_nick() + " " + irc_serv->the_users.at(get_index(irc_serv->the_users, sd)).tmp + " ~" + irc_serv->the_users.at(index).get_nick() + " localhost localhost " + irc_serv->the_users.at(index).get_nick() + " H :0 PNT PC\r\n";
         std::cout << resp2 << std::endl;
         if (send(sd, resp2.c_str(), resp2.length(), 0) == -1)
-        {
             std::cout << "Problem with join send" << std::endl;
-        }
-
-        std::string resp3 = ":localhost 315 " + irc_serv->the_users.at(index).get_nick() + " " + irc_serv->the_users.at(get_index(irc_serv->the_users, sd)).tmp + " :End of /WHO list.\r\n";
+        std::string resp3 = ":localhost 315 " + irc_serv->the_users.at(index).get_nick() + " " + irc_serv->the_users.at(get_index(irc_serv->the_users, sd)).tmp + " :End of WHO list.\r\n";
         std::cout << resp3 << std::endl;
         if (send(sd, resp3.c_str(), resp3.length(), 0) == -1)
-        {
             std::cout << "Problem with join send" << std::endl;
-        }
+
+        // TODO: ajouter les elements de response dans le cas d'un join dans un channel   
+        // :ircnet.hostsailor.com 352 nick channel ~user 62.210.32.169 ircnet.hostsailor.com nick H :0 0PNH PC
+        // :ircnet.hostsailor.com 352 nick channel ~user 62.210.32.169 *.nl yoyop H :3 0PNT PC
+        // :ircnet.hostsailor.com 315 nick channel :End of WHO list.
         return (0);
     }
 
@@ -137,22 +133,17 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
                 irc_serv->the_channel.push_back(tmp);
                 irc_serv->the_users.at(index).set_operat(true);
                 std::string join = ":" + irc_serv->the_users.at(index).get_nick() + "!~" + irc_serv->the_users.at(index).get_username() + "@localhost" + " JOIN :" + chann_name + "\r\n";
+                if (debug)
                 std::cout << "text is " << join << std::endl;
                 if (send(sd, join.c_str(), join.length(), 0) == -1)
-                {
                     std::cout << "Problem with join send" << std::endl;
-                }
                 std::string join2 = ":localhost 353 " + irc_serv->the_users.at(index).get_nick() + " = " + chann_name + " :@" + irc_serv->the_users.at(index).get_nick() + "\r\n";
                 std::cout << "text is " << join2 << std::endl;
                 if (send(sd, join2.c_str(), join2.length(), 0) == -1)
-                {
                     std::cout << "Problem with join send" << std::endl;
-                }
-                std::string join3 = ":localhost 366 " + irc_serv->the_users.at(index).get_nick() + " " + chann_name + " :End of /NAMES list.\r\n";
+                std::string join3 = ":localhost 366 " + irc_serv->the_users.at(index).get_nick() + " " + chann_name + " :End of NAMES list.\r\n";
                 if (send(sd, join3.c_str(), join3.length(), 0) == -1)
-                {
                     std::cout << "Problem with join send" << std::endl;
-                }
                 std::cout << "text is " << join3 << std::endl;
                 irc_serv->the_users.at(index).tmp = chann_name;
                 return 0;
@@ -171,19 +162,13 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
             std::string join = ":" + irc_serv->the_users.at(index).get_nick() + "!~" + irc_serv->the_users.at(index).get_username() + "@localhost" + " JOIN :" + chann_name + "\r\n";
             std::cout << "text is " << join << std::endl;
             if (send(sd, join.c_str(), join.length(), 0) == -1)
-            {
                 std::cout << "Problem with join send" << std::endl;
-            }
             std::string join2 = ":localhost 353 " + irc_serv->the_users.at(index).get_nick() + " = " + chann_name + " :" + get_all_user_in_one_string(chann_name, irc_serv->the_channel) + "\r\n";
             if (send(sd, join2.c_str(), join2.length(), 0) == -1)
-            {
                 std::cout << "Problem with join2 send" << std::endl;
-            }
             std::string join3 = ":localhost 366 " + irc_serv->the_users.at(index).get_nick() + " " + chann_name + " :End of NAMES list.\r\n";
             if (send(sd, join3.c_str(), join3.length(), 0) == -1)
-            {
                 std::cout << "Problem with join send3" << std::endl;
-            }
             std::cout << "JOIN1 : |" << join << "|" << std::endl;
             std::cout << "JOIN2 : |" << join2 << "|" << std::endl;
             std::cout << "JOIN3 : |" << join3 << "|" << std::endl;
@@ -249,10 +234,18 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
         target.erase(0, 1);
         target = target.substr(0, target.size() - 1);
         //		channel_kick.pop_back();
-        std::string reason = test.substr(test.find(':'));
-        reason = reason.substr(1);
-        std::cout << "reason _______ " << reason << std::endl;
+        std::string reason;
+        reason.clear();
+        if (test.length() != channel_kick.length())
+        {
+            reason = test.substr(test.find(':'));
+            reason = reason.substr(1);
+            std::cout << "reason _______ " << reason << std::endl;
+        }
         channel_kick = "#" + channel_kick;
+        if (reason.empty() == true)
+            reason = ("no reason");
+        std::cout << "target_____" << target << " channel kick_____" << channel_kick << " reason _______ " << reason << std::endl;
         if ((i = check_if_channel_exist(channel_kick, irc_serv->the_channel)) == -1)
             std::cout << "ERR_NOSUCHCHANNEL || 403\n";
         else
@@ -269,12 +262,19 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
                         std::cout << " ERR_USERNOTINCHANNEL || 441" << std::endl;
                     else
                     {
-                        std::string endmsg;
-                        if (reason.empty() == false)
-                            endmsg = irc_serv->the_users.at(index).get_nick() + " KICK " + target + reason;
-                        else
-                            endmsg = irc_serv->the_users.at(index).get_nick() + " KICK " + target;
-                        client_printer2(sd, &irc_serv->the_users.at(get_index(irc_serv->the_users, sd)), endmsg, 0, target);
+                        //	std::string endmsg;
+                        //	if (reason.empty() == false)
+                        //		endmsg = irc_serv->the_users.at(index).get_nick() + " KICK " + target + reason;
+                        //	else
+                        //		endmsg = irc_serv->the_users.at(index).get_nick() + " KICK " + target;
+                        //	client_printer2(sd, &irc_serv->the_users.at(get_index(irc_serv->the_users, sd)), endmsg, 0, target);
+                        std::string kick_msg = ":" + irc_serv->the_users.at(index).get_nick() + "!~" + irc_serv->the_users.at(index).get_username() + "@localhost KICK " + channel_kick + " " + target + " :" + reason;
+                        std::cout << "send ==>" << kick_msg << std::endl;
+                        std::cout << "kick msg==>" << kick_msg << std::endl;
+                        if (send(sd, kick_msg.c_str(), kick_msg.length(), 0) == -1)
+                        {
+                            std::cout << "Problem with join send" << std::endl;
+                        }
                         kick_user_out_from_channel(target, irc_serv->the_channel.at(channel_id).get_users_ptr());
                     }
                 }

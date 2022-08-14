@@ -11,7 +11,9 @@ if [ $# -eq 0 ]; then
     exit 1
 elif [ "$1" == "DEBUG" ]; then
     echo "Using debug mode"
-    make debug && valgrind --leak-check=full ./IRC 8080 lolcat
-    rm a.out
+    make re && valgrind --leak-check=full ./IRC 8080 lolcat DEBUG
+    exit 1
+else
+    echo "Bad argument, try again please"
     exit 1
 fi
