@@ -56,16 +56,19 @@ int ft_deal_next(std::vector<std::string> buff_arr, the_serv *irc_serv, int sd)
 		}
 		ret = check_vector_arr(buff_arr, "USER");
 		if (ret >= 0)
-			user = buff_arr.at(ret - 1).substr(5, nick.size());
+		{
+			user = buff_arr.at(ret - 1).substr(5);
+			user = user.substr(0, user.find(" "));
+		}
 		else
 			user = "Lambda User";
 		std::cout << "User is " << user << std::endl;
-		std::string username = user.substr(0, user.find(" "));
+		std::string username = user.substr(0, nick.size());
 		if (nick == username)
 		{
 			nick = "LambdaNick" + to_str(++i);
 		}
-		std::string msg = ":localhost 001 " + nick + " :Welcome to the Internet Relay Network " + nick + "!~" + username + "@localhost\r\n";
+		std::string msg = ":localhost 001 " + nick + " :Welcome to the Internet Relay Network " + nick + "!~" + user + "@localhost\r\n";
 		send(sd, msg.c_str(), msg.length(), 0);
 		msg = ":localhost 002 " + nick + " :Your host is openlocalhost, running version 1.0\r\n";
 		send(sd, msg.c_str(), msg.length(), 0);
@@ -77,7 +80,7 @@ int ft_deal_next(std::vector<std::string> buff_arr, the_serv *irc_serv, int sd)
 		{
 			if (nick_already_in_use(nick, irc_serv->the_users) == 0)
 			{
-				class User tmp(sd, nick, username);
+				class User tmp(sd, nick, user);
 				irc_serv->the_users.push_back(tmp);
 				// SEND THE NICK
 				int index = get_index(irc_serv->the_users, sd);
