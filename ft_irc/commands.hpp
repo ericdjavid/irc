@@ -127,10 +127,12 @@ int ft_deal_next(std::vector<std::string> buff_arr, the_serv *irc_serv, int sd)
 			std::cout << "NC process" << std::endl;
 		if (check_if_user_exist(sd, irc_serv->the_users) == 0)
 		{
-			std::cout << "Please set password" << std::endl;
+			if (debug)
+				std::cout << "Please set password" << std::endl;
 			if (ft_check_password(buff_arr, irc_serv, sd, "tmp") == true)
 			{
-				std::cout << "Please set nick" << std::endl;
+				if (debug)
+					std::cout << "Please set nick" << std::endl;
 				class User tmp(sd);
 				irc_serv->the_users.push_back(tmp);
 				return 0;

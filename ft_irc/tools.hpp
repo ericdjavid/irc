@@ -129,7 +129,8 @@ void client_printer2(int fd, class User *us, std::string str, std::string numeri
     std::string the_print;
     if (numeric == "0")
     {
-        std::cout << "Numeric is 0" << std::endl;
+        if (debug)
+            std::cout << "Numeric is 0" << std::endl;
         the_print = beg + str + "\r\n";
     }
     else
