@@ -413,10 +413,11 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
             }
             else if (channel_to_target != -1 && user_to_delete != "/*,\\not_in_channel")
             {
-                kick_user_out_from_channel(user_to_delete, irc_serv->the_channel.at(channel_to_target).get_users_ptr());
                 response = ":" + get_user_name(sd, irc_serv->the_users) + "!~" + get_user_name_2(sd, irc_serv->the_users) + "@localhost PART " + irc_serv->the_channel.at(channel_to_target).get_name() + " :" + test->reason + "\r\n";
                 std::cout << "RESPONSE : |" << response << "|" << std::endl;
-                send(sd, response.c_str(), response.length(), 0);
+                send_kick_to_channel(response, irc_serv->the_channel.at(get_channel(test->channels[count], irc_serv->the_channel)).get_users_ptr());
+                kick_user_out_from_channel(user_to_delete, irc_serv->the_channel.at(channel_to_target).get_users_ptr());
+                //send(sd, response.c_str(), response.length(), 0);
             }
             // DISCONNECT CURRENT USER FROM test.channel
             count++;
