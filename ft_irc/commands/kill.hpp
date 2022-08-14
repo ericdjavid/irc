@@ -10,7 +10,6 @@
 
 int ft_kill(User *user, std::string cmd, the_serv *irc_serv)
 {
-    std::cout << "KILL CALED" << std::endl;
     if (check_partial_cmd(cmd, 5))
     {
         if (debug)

@@ -102,7 +102,8 @@ int	check_if_channel_exist(std::string channel_name, std::vector<class Channel> 
 
 void delete_from_list(the_serv *irc_serv, int sd)
 {
-        std::cout << "Deleting sd from list if exists" << std::endl;
+        if (debug)
+            std::cout << "Deleting sd from list if exists" << std::endl;
         int ind = get_index(irc_serv->the_users, sd);
         if (ind >= 0)
         {

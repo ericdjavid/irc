@@ -463,8 +463,8 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
         std::string msg = buff.substr(buff.find(':'));
         if(debug)
 			std::cout << "target is |" << target << "|" << std::endl;
-        // if(debug)
-				 std::cout << "msg is " << msg << std::endl;
+        if(debug)
+		    std::cout << "msg is " << msg << std::endl;
         if (buff[0] == '#')
         {
             if (debug)
