@@ -143,21 +143,18 @@ void client_printer2(int fd, class User *us, std::string str, std::string numeri
     return;
 }
 
-void client_printer_channel(int sd, std::string str, std::string numeric, std::string user, std::string channel_name)
+void client_printer_channel(int sd, std::string str, User *user, std::string channel_name)
 {
-    (void)numeric;
-    (void)user;
-    std::string the_print;
-    the_print = "PRIVMSG " + channel_name + " " + str + "\r\n";
-    std::cout << "Printing: |" << the_print << "|" << std::endl;
+    std::string the_print = ":" + user->get_nick() + "!~" + user->get_username() + "@localhost PRIVMSG " + channel_name + " :" + str + "\r\n";
+    // the_print = "PRIVMSG " + channel_name + " " + str + "\r\n";
+    if (debug)
+        std::cout << "Printing: |" << the_print << "|" << std::endl;
     // Allocate memory
     char *ccx = new char[the_print.length() + 1];
     // Copy contents
     std::copy(the_print.begin(), the_print.end(), ccx);
     if (send(sd, ccx, the_print.size(), 0) != (ssize_t)the_print.size())
-    {
         perror("send");
-    }
     delete[] ccx;
     return;
 }

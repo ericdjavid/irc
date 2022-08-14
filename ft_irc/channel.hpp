@@ -325,7 +325,7 @@ void print_channels(std::vector<Channel> ptr)
     std::cout << C_YELLOW << "|||     END    |||" << C_END;
 }
 
-void send_message_to_channel(class Channel *chan, std::string message, int sd)
+void send_message_to_channel(class Channel *chan, std::string message, int sd, User *user)
 {
     if (debug)
         std::cout << "we re inside send message to channel function, user list is " << std::endl;
@@ -337,7 +337,7 @@ void send_message_to_channel(class Channel *chan, std::string message, int sd)
     while (it != user_list.end())
     {
         if (!(it->get_id() == sd))
-            client_printer_channel(it->get_id(), message, "332", it->get_nick(), chan->get_name());
+            client_printer_channel(it->get_id(), message, user, chan->get_name());
         it++;
     }
     return;
