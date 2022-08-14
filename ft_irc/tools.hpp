@@ -272,7 +272,8 @@ int check_partial_cmd(std::string cmd, int size)
 {
     if (cmd.size() == (size_t)size)
     {
-        std::cout << "Wrong or partial command =(" << std::endl;
+        if (debug)
+            std::cout << "Wrong or partial command =(" << std::endl;
         return 1;
     }
     return 0;
