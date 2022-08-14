@@ -10,10 +10,18 @@
 #include "part.hpp"
 #include "./commands/nick.hpp"
 #include "./commands/quit.hpp"
+#include "./commands/list.hpp"
+
 
 int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std::string> buff_arr)
 {
     int ret = 0;
+    User user = irc_serv->the_users.at(index);
+
+    // ? LIST
+    if ((ret = check_vector_arr(buff_arr, "LIST")) >= 0)
+        return(ft_list(buff_arr.at(ret -1), irc_serv, &user));
+
     // ? NICK & USER
     if ((ret = check_vector_arr(buff_arr, "NICK")) >= 0)
     {
@@ -161,13 +169,13 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
             irc_serv->the_users.at(index).tmp = chann_name;
             irc_serv->the_channel.at(index2).add_user(irc_serv->the_users[index]);
             std::string join = ":" + irc_serv->the_users.at(index).get_nick() + "!~" + irc_serv->the_users.at(index).get_username() + "@localhost" + " JOIN :" + chann_name + "\r\n";
-std::cout << "text is " << join << std::endl;
-	        if (send(sd, join.c_str(), join.length(), 0) == -1)
+            std::cout << "text is " << join << std::endl;
+            if (send(sd, join.c_str(), join.length(), 0) == -1)
             {
                 std::cout << "Problem with join send" << std::endl;
             }
             std::string join2 = ":localhost 353 " + irc_serv->the_users.at(index).get_nick() + " = " + chann_name + " :" + get_all_user_in_one_string(chann_name, irc_serv->the_channel) + "\r\n";
-            if (send(sd,join2.c_str(), join2.length(), 0) == -1)
+            if (send(sd, join2.c_str(), join2.length(), 0) == -1)
             {
                 std::cout << "Problem with join2 send" << std::endl;
             }
@@ -176,9 +184,9 @@ std::cout << "text is " << join << std::endl;
             {
                 std::cout << "Problem with join send3" << std::endl;
             }
-std::cout << "JOIN1 : |" << join << "|" << std::endl;
-std::cout << "JOIN2 : |" << join2 << "|" << std::endl;
-std::cout << "JOIN3 : |" << join3 << "|" << std::endl;
+            std::cout << "JOIN1 : |" << join << "|" << std::endl;
+            std::cout << "JOIN2 : |" << join2 << "|" << std::endl;
+            std::cout << "JOIN3 : |" << join3 << "|" << std::endl;
         }
         // DISPLAY INFOS ABOUT CHANNELS AND USER
         std::cout << "Channels are as following :" << std::endl;
@@ -327,7 +335,7 @@ std::cout << "JOIN3 : |" << join3 << "|" << std::endl;
             if ((i = check_if_user_exist_with_nick(target, irc_serv->the_users)) >= 0)
             {
                 std::cout << "the user " << target << " exists =) , sending msg" << std::endl;
-                std::string endmsg = irc_serv->the_users.at(index).get_nick() + " NOTICE " + target + message;
+                std::string endmsg = irc_serv->the_users.at(index).get_nick() + " NOTICE " + target + " " + message;
                 // client_printer(irc_serv->the_users.at(check_if_user_exist_with_nick(target, irc_serv->the_users)).get_id(), endmsg, 0, target );
                 int target_id = irc_serv->the_users.at(check_if_user_exist_with_nick(target, irc_serv->the_users)).get_id();
                 std::cout << "ID of " << target << " is " << target_id << std::endl;
