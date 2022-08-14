@@ -24,7 +24,7 @@ int nick_command(std::string nick, int index, the_serv *irc_serv, int sd)
     }
     else
     {
-        // if already used
+        // If already used
         // :localhost 443 nick_de_depart nick_demande :Nickname is already in use
         ultimate_printer(sd, nick + ":Nickname is already in use", "433", irc_serv->the_users.at(index).get_nick());
         if (debug)

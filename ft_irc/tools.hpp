@@ -256,6 +256,7 @@ std::vector<std::string> get_everyone(std::string target, int i)
     return (targets);
 }
 
+// RETURN 1 IF WRONG AND 0 IF OK
 int check_partial_cmd(std::string cmd, int size)
 {
     if (cmd.size() == (size_t)size)

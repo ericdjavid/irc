@@ -68,6 +68,11 @@ public:
 		return (_username);
 	}
 
+	bool is_operat()
+	{
+		return _is_operat;
+	}
+
 	void set_operat(bool n)
 	{
 		_is_operat = n;
