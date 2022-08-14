@@ -275,8 +275,9 @@ std::cout << "target_____" << target << " channel kick_____" << channel_kick << 
 					//	else
             		//		endmsg = irc_serv->the_users.at(index).get_nick() + " KICK " + target;
 					//	client_printer2(sd, &irc_serv->the_users.at(get_index(irc_serv->the_users, sd)), endmsg, 0, target);
-						std::string kick_msg = ":" + irc_serv->the_users.at(index).get_nickname() + "!~" + irc_serv->the_users.at(index).get_username() + "@localhost KICK " + channel_kick + " " + target + " :" + reason;
+						std::string kick_msg = ":" + irc_serv->the_users.at(index).get_nick() + "!~" + irc_serv->the_users.at(index).get_username() + "@localhost KICK " + channel_kick + " " + target + " :" + reason;
 std::cout << "send ==>" << kick_msg << std::endl;
+std::cout << "kick msg==>" << kick_msg << std::endl;
 						if (send(sd, kick_msg.c_str(), kick_msg.length(), 0) == -1)
 						{
 							std::cout << "Problem with join send" << std::endl;
