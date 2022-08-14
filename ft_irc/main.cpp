@@ -155,13 +155,6 @@ int main(int argc, char **argv)
             if(sd > max_sd)
                 max_sd = sd;
         }
-
-        //wait for an activity on one of the sockets , timeout is equal to 5 sec ,
-        //so wait indefinitely
-        // timeval tmp;
-        // tmp.tv_sec = 5;
-        // (void)tmp
-        // TODO: BUG when join a channel and then part and rejoin
         activity = select( max_sd + 1 , &readfds , NULL , NULL , NULL); //third argument of select equals NULL, so select can wait an infinite time. If 3rd value set to 5 sec, select will wait 5sec
 
         if ((activity < 0) && (errno!=EINTR))
