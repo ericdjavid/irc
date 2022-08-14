@@ -27,7 +27,7 @@ void	show_data_parsed_part(t_part2 var)
 	std::cout << "reason : " << var.reason << std::endl;
 }
 
-t_part2		split_part_command(std::string command)
+t_part2		*split_part_command(std::string command)
 {
 	t_part2		*result = new t_part2;
 	std::string		tmp;
@@ -86,8 +86,15 @@ t_part2		split_part_command(std::string command)
 		result->channels.push_back(command);
 	}
 	result->nb_chann = result->channels.size();
-	return(*result);
+	return(result);
 }
+
+// void		free_t_part2(t_part2 var)
+// {
+// 	// std::vector<std::string>::iterator it;
+// 	// it = var.begin();
+// 	// while (it != var.end)
+// }
 
 // void		free_t_part(t_part2 var)
 // {

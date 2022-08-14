@@ -365,7 +365,7 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
     // ?PART
     if ((ret = check_vector_arr(buff_arr, "PART")) > 0)
     {
-        t_part2 test;
+        t_part2 *test;
 
         std::cout << "PART called" << std::endl;
         std::string user_to_delete;
@@ -375,9 +375,9 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
         int count = 0;
 
         test = split_part_command(command);
-        while (count < test.nb_chann)
+        while (count < test->nb_chann)
         {
-            channel_to_target = get_channel(test.channels.at(count), irc_serv->the_channel);
+            channel_to_target = get_channel(test->channels.at(count), irc_serv->the_channel);
             if (channel_to_target == -1)
             {
                 std::cout << "ERR_NOSUCHCHANNEL (403)" << std::endl;
@@ -395,15 +395,16 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
                 kick_user_out_from_channel(user_to_delete, irc_serv->the_channel.at(channel_to_target).get_users_ptr());
                 // response = get_response_1(sd, irc_serv->the_users, buff_arr.at(ret -1), irc_serv, &(irc_serv->the_channel.at(channel_to_target)));
                 // std::cout << "RESPONSE : |" << response << "|" << std::endl;
-                response = ":" + get_user_name(sd, irc_serv->the_users) + "!~" + get_user_name_2(sd, irc_serv->the_users) + "@localhost PART " + irc_serv->the_channel.at(channel_to_target).get_name() + " :" + test.reason + "\r\n";
+                response = ":" + get_user_name(sd, irc_serv->the_users) + "!~" + get_user_name_2(sd, irc_serv->the_users) + "@localhost PART " + irc_serv->the_channel.at(channel_to_target).get_name() + " :" + test->reason + "\r\n";
                 std::cout << "RESPONSE : |" << response << "|" << std::endl;
                 send(sd, response.c_str(), response.length(), 0);
             }
             // DISCONNECT CURRENT USER FROM test.channel
             count++;
         }
-        show_data_parsed_part(test);
-        // free_t_part(test);
+        show_data_parsed_part(*test);
+        delete test;
+        // free_t_part2(test);
         /*
         DOC:
             - https://dd.ircdocs.horse/refs/commands/part
