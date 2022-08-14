@@ -287,10 +287,11 @@ int ft_deal_with_commands(int index, int sd, the_serv *irc_serv, std::vector<std
                         std::string kick_msg = ":" + irc_serv->the_users.at(index).get_nick() + "!~" + irc_serv->the_users.at(index).get_username() + "@localhost KICK " + channel_kick + " " + target + " :" + reason + "\r\n";
                         std::cout << "send ==>" << kick_msg << std::endl;
                         std::cout << "kick msg==>" << kick_msg << std::endl;
-                        if (send(sd, kick_msg.c_str(), kick_msg.length(), 0) == -1)
-                        {
-                            std::cout << "Problem with join send" << std::endl;
-                        }
+                        send_kick_to_channel(kick_msg, irc_serv->the_channel.at(channel_id).get_users_ptr());
+                        // if (send(sd, kick_msg.c_str(), kick_msg.length(), 0) == -1)
+                        // {
+                        //     std::cout << "Problem with join send" << std::endl;
+                        // }
                         kick_user_out_from_channel(target, irc_serv->the_channel.at(channel_id).get_users_ptr());
                     }
                 }
