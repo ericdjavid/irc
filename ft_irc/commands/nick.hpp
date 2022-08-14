@@ -27,7 +27,8 @@ int nick_command(std::string nick, int index, the_serv *irc_serv, int sd)
         // If already used
         // :localhost 443 nick_de_depart nick_demande :Nickname is already in use
         ultimate_printer(sd, nick + ":Nickname is already in use", "433", irc_serv->the_users.at(index).get_nick());
-        std::cout << C_RED << " Sorry but nick exists" << C_END;
+        if (debug)
+            std::cout << C_RED << " Sorry but nick exists" << C_END;
         return (0);
     }
 }
@@ -35,6 +36,7 @@ int nick_command(std::string nick, int index, the_serv *irc_serv, int sd)
 int username_command(std::string username, int index, the_serv *irc_serv)
 {
         irc_serv->the_users.at(index).set_username(username);
-        std::cout << "Username changed" << std::endl;
+        if (debug)
+            std::cout << "Username changed" << std::endl;
     return (0);
 }

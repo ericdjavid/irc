@@ -166,11 +166,13 @@ int check_if_user_exist_in_channel(std::string target, std::vector<class User> u
         return (-1);
     for (std::vector<User>::iterator it = users_channel.begin(); it != users_channel.end(); it++)
     {
-        std::cout << "user ==>" << it->get_nick() << "target ==>" << target << "----" << std::endl;
+        if (debug)
+            std::cout << "user ==>" << it->get_nick() << "target ==>" << target << "----" << std::endl;
         if (it->get_nick() == target)
             return (1);
     }
-    std::cout << "User not found in the channel \n";
+    if (debug)
+        std::cout << "User not found in the channel \n";
     return (-1);
 }
 
@@ -180,16 +182,22 @@ void kick_user_out_from_channel(std::string target, std::vector<class User> *use
     int i = 0;
     for (std::vector<User>::iterator it = users_channel->begin(); it != users_channel->end(); it++)
     {
-        std::cout << "user ==> " << it->get_nick() << std::endl;
-        std::cout << "target ==> " << target << std::endl;
+        if (debug)
+        {
+            std::cout << "user ==> " << it->get_nick() << std::endl;
+            std::cout << "target ==> " << target << std::endl;
+        }
         if (it->get_nick() == target)
             break;
         else
             i++;
     }
     users_channel->erase(users_channel->begin() + i);
-    for (std::vector<User>::iterator it = users_channel->begin(); it != users_channel->end(); it++)
-        std::cout << "user ==> " << it->get_nick() << std::endl;
+    if (debug)
+    {
+        for (std::vector<User>::iterator it = users_channel->begin(); it != users_channel->end(); it++)
+            std::cout << "user ==> " << it->get_nick() << std::endl;
+    }
 }
 
 // Fonction pour ban l'user
@@ -199,7 +207,8 @@ void ban_user_out_from_channel(std::string target, std::vector<class User> users
     User tmp;
     for (std::vector<User>::iterator it = users_channel.begin(); it != users_channel.end(); it++)
     {
-        std::cout << "user ==> " << it->get_nick() << std::endl;
+        if (debug)
+            std::cout << "user ==> " << it->get_nick() << std::endl;
         if (it->get_nick() == target)
             break;
         else
@@ -207,8 +216,11 @@ void ban_user_out_from_channel(std::string target, std::vector<class User> users
     }
     tmp = users_channel.at(i);
     users_channel.erase(users_channel.begin() + i);
-    for (std::vector<User>::iterator it = users_channel.begin(); it != users_channel.end(); it++)
-        std::cout << "user ==> " << it->get_nick() << std::endl;
+    if (debug)
+    {
+        for (std::vector<User>::iterator it = users_channel.begin(); it != users_channel.end(); it++)
+            std::cout << "user ==> " << it->get_nick() << std::endl;
+    }
     // get user then push back!!!!!!!!!!!!!11
     ban_users.push_back(tmp);
 }
@@ -300,7 +312,8 @@ int get_channel(std::string name, std::vector<Channel> channels)
     int i = 0;
     while (it != channels.end())
     {
-        std::cout << "CHANNEL NAME : |" << name << "| SIZE : " << name.size() << " | GET_NAME : |" << it->get_name() << "| SIZE : " << it->get_name().size() << std::endl;
+        if (debug)
+            std::cout << "CHANNEL NAME : |" << name << "| SIZE : " << name.size() << " | GET_NAME : |" << it->get_name() << "| SIZE : " << it->get_name().size() << std::endl;
         if (it->get_name() == name)
         {
             //            std::cout << "VALEUR DE RETOUR : " << i << std::endl;
@@ -367,13 +380,15 @@ std::string     get_all_user_in_one_string(std::string name, std::vector<Channel
                 if (it2 == tmp.end() - 1)
                 {
                     response += " @" + it2->get_nick();
-                    std::cout << "123Reponse ==>" << response << std::endl;
+                    if (debug)
+                        std::cout << "123Reponse ==>" << response << std::endl;
                 }
                 else
                 {
                     response = response + " " + it2->get_nick();
                 }
-                std::cout << "Reponse ==>" << response << std::endl;
+                if (debug)
+                    std::cout << "Reponse ==>" << response << std::endl;
                 it2++;
                 i++;
             }

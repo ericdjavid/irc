@@ -17,14 +17,18 @@ void	show_data_parsed_part(t_part2 var)
     int         j = 0;
 
 	i = var.nb_chann;
-	std::cout << "chann en cours : " << var.channel << std::endl;
-    std::cout << "nb chann a quitter : " << var.nb_chann << std::endl;
+	if (debug)
+		std::cout << "chann en cours : " << var.channel << std::endl;
+    if (debug)
+		std::cout << "nb chann a quitter : " << var.nb_chann << std::endl;
 	while (j < i)
     {
-    	std::cout << "chan " << j << " a quitter : " << var.channels.at(j) << std::endl;
+		if (debug)
+    		std::cout << "chan " << j << " a quitter : " << var.channels.at(j) << std::endl;
         j++;
     }
-	std::cout << "reason : " << var.reason << std::endl;
+	if (debug)
+		std::cout << "reason : " << var.reason << std::endl;
 }
 
 t_part2		*split_part_command(std::string command)
